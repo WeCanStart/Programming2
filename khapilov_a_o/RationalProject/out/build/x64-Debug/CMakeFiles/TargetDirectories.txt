@@ -1,0 +1,6 @@
+C:/Users/artem/source/repos/Programming/khapilov_a_o/RationalProject/out/build/x64-Debug/CMakeFiles/rational.doctest.dir
+C:/Users/artem/source/repos/Programming/khapilov_a_o/RationalProject/out/build/x64-Debug/CMakeFiles/edit_cache.dir
+C:/Users/artem/source/repos/Programming/khapilov_a_o/RationalProject/out/build/x64-Debug/CMakeFiles/rebuild_cache.dir
+C:/Users/artem/source/repos/Programming/khapilov_a_o/RationalProject/out/build/x64-Debug/rational/CMakeFiles/rational.dir
+C:/Users/artem/source/repos/Programming/khapilov_a_o/RationalProject/out/build/x64-Debug/rational/CMakeFiles/edit_cache.dir
+C:/Users/artem/source/repos/Programming/khapilov_a_o/RationalProject/out/build/x64-Debug/rational/CMakeFiles/rebuild_cache.dir
