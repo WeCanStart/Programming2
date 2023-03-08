@@ -1,4 +1,4 @@
-#include <ArrayD/ArrayD.hpp>
+#include <arrayd/arrayd.hpp>
 #include <iostream>
 #include <string>
 #include <sstream>
