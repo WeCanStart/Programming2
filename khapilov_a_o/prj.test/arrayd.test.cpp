@@ -1,5 +1,5 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include <Doctest/doctest.h>
+#include <doctest/doctest.h>
 
 #include <rational/rational.hpp>
 
