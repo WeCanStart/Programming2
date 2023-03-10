@@ -1,66 +1,177 @@
+
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
 #include <doctest/doctest.h>
 
 #include <rational/rational.hpp>
+#include <sstream>
 
-TEST_CASE("[rational] - Rational ctor") {
-  CHECK(Rational() == Rational(0, 1));
-  CHECK(Rational(3) == Rational(3, 1));
-  CHECK(Rational(-3) == Rational(-3, 1));
-  CHECK(Rational(10, 6) == Rational(5, 3));
-  CHECK(Rational(-10, 6) == Rational(-5, 3));
-  CHECK(Rational(10, -6) == Rational(-5, 3));
-  CHECK(Rational(-10, -6) == Rational(5, 3));
-  CHECK_THROWS(Rational(1, 0));
+TEST_CASE("Comparing Rationals with themselfs and integers") {
+
+    SUBCASE("comparing rationals")
+    {
+        Rational R = Rational(3, 2);
+        Rational A;
+        Rational B = Rational(20, 3);
+        Rational C = Rational(3, 2);
+
+        CHECK((R == B) == false);
+        CHECK((R == C) == true);
+
+        CHECK((R != B) == true);
+        CHECK((R != C) == false);
+
+        CHECK((R < B) == true);
+        CHECK((R < C) == false);
+        CHECK((R < A) == false);
+
+        CHECK((R > B) == false);
+        CHECK((R > C) == false);
+        CHECK((R > A) == true);
+
+        CHECK((R >= B) == false);
+        CHECK((R >= C) == true);
+        CHECK((R >= A) == true);
+
+        CHECK((R <= B) == true);
+        CHECK((R <= C) == true);
+        CHECK((R <= A) == false);
+    }
+    SUBCASE("comparing rationals-integers")
+    {
+        Rational R = Rational(3, 3);
+        int32_t A = 0;
+        int32_t B = 20;
+        int32_t C = 1;
+
+        CHECK((R == B) == false);
+        CHECK((R == C) == true);
+
+        CHECK((R != B) == true);
+        CHECK((R != C) == false);
+
+        CHECK((R < B) == true);
+        CHECK((R < C) == false);
+        CHECK((R < A) == false);
+
+        CHECK((R > B) == false);
+        CHECK((R > C) == false);
+        CHECK((R > A) == true);
+
+        CHECK((R >= B) == false);
+        CHECK((R >= C) == true);
+        CHECK((R >= A) == true);
+
+        CHECK((R <= B) == true);
+        CHECK((R <= C) == true);
+        CHECK((R <= A) == false);
+    }
 }
 
-TEST_CASE("[rational] - Rational assignment arithmetic ops") {
-    Rational a;
-    a = Rational(1, 2);
-    CHECK((a += Rational(1, 3)) == Rational(5, 6));
-    CHECK(a == Rational(5, 6));
-    a = Rational(1, 2);
-    CHECK((a -= Rational(1, 3)) == Rational(1, 6));
-    CHECK(a == Rational(1, 6));
-    a = Rational(1, 2);
-    CHECK((a *= Rational(1, 3)) == Rational(1, 6));
-    CHECK(a == Rational(1, 6));
-    a = Rational(1, 2);
-    CHECK((a /= Rational(1, 3)) == Rational(3, 2));
-    CHECK(a == Rational(3, 2));
-    a = Rational(1, 2);
-    CHECK(a++ == Rational(1, 2));
-    CHECK(a == Rational(3, 2));
-    a = Rational(1, 2);
-    CHECK(++a == Rational(3, 2));
-    CHECK(a == Rational(3, 2));
-    a = Rational(1, 2);
-    Rational b;
-    CHECK((b = a) == a);
-    CHECK_THROWS(Rational(1, 1) /= Rational(0, 1));
+TEST_CASE("Operator ...=") {
+    SUBCASE("+=")
+    {
+        Rational R = Rational(3, 2);
+        R += 1;
+        CHECK(R == Rational(5, 2));
+        R += Rational(4, 9);
+        CHECK(R == (Rational(53, 18)));
+    }
+    SUBCASE("-=")
+    {
+        Rational R = Rational(3, 2);
+        R -= 1;
+        CHECK(R == Rational(1, 2));
+        R -= Rational(4, 9);
+        CHECK(R == Rational(1, 18));
+        R -= 1;
+        CHECK(R == Rational(-17, 18));
+    }
+    SUBCASE("*=")
+    {
+        Rational R = Rational(3, 2);
+        R *= 3;
+        CHECK(R == Rational(9, 2));
+        R *= Rational(5, 3);
+        CHECK(R == Rational(15, 2));
+        R *= 0;
+        CHECK(R == Rational(0, 1));
+
+    }
+    SUBCASE("/=")
+    {
+        Rational R = Rational(3, 2);
+        R /= 3;
+        CHECK(R == Rational(1, 2));
+        R /= Rational(5, 3);
+        CHECK(R == Rational(3, 10));
+        CHECK_THROWS(R /= 0);
+
+    }
 }
 
-TEST_CASE("[rational] - Rational arithmetic ops") {
-    CHECK(Rational(1, 2) + Rational(1, 3) == Rational(5, 6));
-    CHECK(Rational(1, 2) - Rational(1, 3) == Rational(1, 6));
-    CHECK(Rational(1, 2) * Rational(1, 3) == Rational(1, 6));
-    CHECK(Rational(1, 2) / Rational(1, 3) == Rational(3, 2));
-    CHECK_THROWS(Rational(1, 1) / Rational(0, 1));
+TEST_CASE("Operator ...")
+{
+    Rational A = Rational(3, 2);
+    Rational B = Rational(4, 5);
+    Rational C = Rational(0, 1);
+    Rational D = Rational(1, 1);
+    Rational A1 = A;
+    SUBCASE("+")
+    {
+        CHECK(A == A1);
+        A1 += B;
+        CHECK((A + B) == A1);
+        CHECK((A + C) == A);
+        A1 = A;
+        A1 += D;
+        CHECK((A + D) == A1);
+    }
+    SUBCASE("-")
+    {
+        A1 = A;
+        A1 -= B;
+        CHECK((A - B) == A1);
+        CHECK((A - C) == A);
+        A1 = A;
+        A1 -= D;
+        CHECK((A - D) == A1);
+    }
+    SUBCASE("*")
+    {
+        A1 = A;
+        A1 *= B;
+        CHECK((A * B) == A1);
+        CHECK((A * C) == 0);
+        CHECK((A * D) == A);
+    }
+    SUBCASE("/")
+    {
+        A1 = A;
+        A1 /= B;
+        CHECK((A / B) == A1);
+        CHECK_THROWS(A / C);
+        CHECK((A / D) == A);
+    }
 }
 
-TEST_CASE("[rational] - Rational extras") {
-    CHECK(sqr(Rational(2, 3)) == Rational(4, 9));
-    CHECK(pow(Rational(2, 3), -3) == Rational(27, 8));
-    CHECK(pow(Rational(2, 3), 0) == Rational(1, 1));
-    CHECK(pow(Rational(2, 3), 3) == Rational(8, 27));
-    CHECK_THROWS(Rational(1, 1) / Rational(0, 1));
+TEST_CASE("Streams")
+{
+    Rational a(0);
+    std::stringstream strm;
+    strm << "1/1\n";
+    strm >> a;
+    CHECK(a == 1);
+    strm << "-1/1\n";
+    strm >> a;
+    CHECK(a == -1);
+    strm << "0/1\n";
+    strm >> a;
+    CHECK(a == 0);
+    strm << "1/0\n";
+    CHECK_THROWS(strm >> a);
 }
 
-TEST_CASE("[rational] - Rational bool operators") {
-    CHECK(Rational(1, 2) > Rational(1, 3));
-    CHECK(Rational(1, 2) >= Rational(1, 3));
-    CHECK(Rational(1, 3) < Rational(1, 2));
-    CHECK(Rational(1, 3) <= Rational(1, 2));
-    CHECK(Rational(1, 2) == Rational(1, 2));
-    CHECK(Rational(1, 3) != Rational(1, 2));
+TEST_CASE("Throws")
+{
+    CHECK_THROWS(Rational(0, 0));
 }

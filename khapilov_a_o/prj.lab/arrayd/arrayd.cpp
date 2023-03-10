@@ -16,11 +16,17 @@ ArrayD::ArrayD(const ArrayD& prev) {
 }
 ArrayD::ArrayD(int32_t sizeInp) {
     size = sizeInp;
-    memory = new int32_t[size, 0];
+    memory = new int32_t[size];
+    for (int i = 0; i < size; ++i) {
+        memory[i] = 0;
+    }
 }
 ArrayD::ArrayD(int32_t sizeInp, int32_t num) {
     size = sizeInp;
-    memory = new int32_t[size, num];
+    memory = new int32_t[size];
+    for (int i = 0; i < size; ++i) {
+        memory[i] = num;
+    }
 }
 
 ArrayD& ArrayD::operator=(const ArrayD& rhs) {
@@ -29,6 +35,7 @@ ArrayD& ArrayD::operator=(const ArrayD& rhs) {
     for (int i = 0; i < size; ++i) {
         memory[i] = rhs.memory[i];
     }
+    return *this;
 }
 ArrayD& ArrayD::operator+=(const int32_t rhs) {
     for (int i = 0; i < size; ++i) {
@@ -100,9 +107,9 @@ ArrayD& ArrayD::operator%=(const int32_t& rhs) {
 std::ostream& operator<<(std::ostream& ostrm, const ArrayD& rhs) {
     return rhs.writeTo(ostrm);
 }
-std::istream& operator>>(std::istream& istrm, ArrayD& rhs) {
-    return rhs.readFrom(istrm);
-}
+//std::istream& operator>>(std::istream& istrm, ArrayD& rhs) {
+//    return rhs.readFrom(istrm);
+//}
 
 ArrayD operator+(ArrayD lhs, const int32_t rhs) {
     lhs += rhs;
@@ -152,28 +159,28 @@ std::ostream& ArrayD::writeTo(std::ostream& ostrm) const
     return ostrm;
 }
 
-std::istream& ArrayD::readFrom(std::istream& istrm)
-{
-    int32_t numInp(0);
-    char sym(0);
-    istrm >> sym;
-    istringstream input;
-    for (int i = 0; i < size; ++i) {
-        istrm >> sym >> input
-    }
-    
-    if (istrm.good()) {
-        if (ArrayD::cmm == sym) {
-            if (denomInp <= 0) {
-                throw std::invalid_argument("Expected positive denomerator");
-            }
-            num = numInp;
-            denom = denomInp;
-            redusing();
-        }
-        else {
-            istrm.setstate(std::ios_base::failbit);
-        }
-    }
-    return istrm;
-}
+//std::istream& ArrayD::readFrom(std::istream& istrm)
+//{
+//    int32_t numInp(0);
+//    char sym(0);
+//    istrm >> sym;
+//    std::istringstream input;
+//    for (int i = 0; i < size; ++i) {
+//        istrm >> sym >> input;
+//    }
+//    
+//    if (istrm.good()) {
+//        if (ArrayD::cmm == sym) {
+//            if (denomInp <= 0) {
+//                throw std::invalid_argument("Expected positive denomerator");
+//            }
+//            num = numInp;
+//            denom = denomInp;
+//            redusing();
+//        }
+//        else {
+//            istrm.setstate(std::ios_base::failbit);
+//        }
+//    }
+//    return istrm;
+//}
