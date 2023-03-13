@@ -32,15 +32,6 @@ TEST_CASE("[arrayd] - ArrayD arithmetic ops") {
     CHECK((a /= 2) == b);
     CHECK(a == b);
     a = ArrayD(2, 4);
-    b = ArrayD(2, 5);
-    CHECK((++a) == b);
-    CHECK(a == ArrayD(2, 5));
-    a = ArrayD(2, 4);
-    b = ArrayD(2, 4);
-    CHECK(a++ == b);
-    b = ArrayD(2, 5);
-    CHECK(a == b);
-    a = ArrayD(2, 4);
     b = ArrayD(0);
     CHECK((b = a) == a);
     CHECK_THROWS(a /= 0);
@@ -49,13 +40,17 @@ TEST_CASE("[arrayd] - ArrayD arithmetic ops") {
 TEST_CASE("[arrayd] - ArrayD arithmetic ops") {
     ArrayD a(2, 4);
     ArrayD b(2, 5);
-    CHECK(a + 1 == b);
-    b = ArrayD(2, 3);
-    CHECK(a - 1 == b);
+    a = a + 1;
+    CHECK(a == b);
+    b = ArrayD(2, 4);
+    a = a - 1;
+    CHECK(a == b);
     b = ArrayD(2, 8);
+    a = a * 2;
     CHECK(a * 2 == b);
     b = ArrayD(2, 2);
-    CHECK(a / 2 == b);
+    a = a / 4;
+    CHECK(a == b);
     CHECK_THROWS(a / 0);
 }
 

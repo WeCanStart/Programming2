@@ -67,7 +67,7 @@ TEST_CASE("Comparing Rationals with themselfs and integers") {
     }
 }
 
-TEST_CASE("Operator ...=") {
+TEST_CASE("Assignment operator ...=") {
     SUBCASE("+=")
     {
         Rational R = Rational(3, 2);
@@ -95,7 +95,6 @@ TEST_CASE("Operator ...=") {
         CHECK(R == Rational(15, 2));
         R *= 0;
         CHECK(R == Rational(0, 1));
-
     }
     SUBCASE("/=")
     {
@@ -105,7 +104,6 @@ TEST_CASE("Operator ...=") {
         R /= Rational(5, 3);
         CHECK(R == Rational(3, 10));
         CHECK_THROWS(R /= 0);
-
     }
 }
 
