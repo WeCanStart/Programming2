@@ -105,6 +105,16 @@ TEST_CASE("Assignment operator ...=") {
         CHECK(R == Rational(3, 10));
         CHECK_THROWS(R /= 0);
     }
+    SUBCASE("pref ++")
+    {
+        Rational R = Rational(1, 2);
+        CHECK(++R == Rational(3, 2));
+        CHECK(R == Rational(3, 2));
+        R = Rational(1, 2);
+        CHECK(R++ == Rational(1, 2));
+        CHECK(R == Rational(3, 2));
+        CHECK_THROWS(R /= 0);
+    }
 }
 
 TEST_CASE("Operator ...")
