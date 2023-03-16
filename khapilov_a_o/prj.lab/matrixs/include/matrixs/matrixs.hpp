@@ -30,6 +30,7 @@ public:
 public:
     ptrdiff_t rows_;
     ptrdiff_t cols_;
+    ptrdiff_t len_;
     int* data_;
 };
 

@@ -157,11 +157,9 @@ TEST_CASE("Streams")
     Rational a(0);
     std::stringstream strm;
     strm.str("");//strm.clear(); doesnt work
-    strm << "1/1\n";
+    strm << "1/1 -1/1\n";
     strm >> a;
     CHECK(a == 1);
-    strm.str("");
-    strm << "-1/1\n";
     strm >> a;
     CHECK(a == -1);
     strm.str("");

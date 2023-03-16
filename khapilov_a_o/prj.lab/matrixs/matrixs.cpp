@@ -1,14 +1,21 @@
 #include <matrixs/matrixs.hpp>
 #include <iostream>
 
-MatrixS::MatrixS() : cols_(0), rows_(0), data_(nullptr) {};
+MatrixS::MatrixS() : rows_(0), cols_(0), data_(nullptr) {};
 
-MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_) : cols_()
-{
-}
+MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_) : rows_(rowsInp_), cols_(colsInp_) {
+    len_ = rows_ + rows_ * cols_;
+    data_ = new int[len_];
+    for (ptrdiff_t i = 0; i < rows_; ++i) {
+        data_[i] = data_ + rows_ *
+    }
+    for (ptrdiff_t i = rows_; i < len_; ++i) {
 
-MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_, int num)
-{
+    }
+};
+
+MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_, int num) : rows_(rowsInp_), cols_(colsInp_) {
+
 }
 
 MatrixS::MatrixS(MatrixS&)

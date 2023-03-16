@@ -201,17 +201,21 @@ std::ostream& Rational::WriteTo(std::ostream& ostrm) const
 
 std::istream& Rational::ReadFrom(std::istream& istrm)
 {
+    char sym('-');
+    while (std::isspace(istrm.peek())) {
+        sym = istrm.get();
+    }
     int32_t numInp_(0);
     int32_t denomInp_(0);
-    char sym('-');
-    bool isNeg(0);
+    sym = '-' ;
+    bool isNeg(false);
     if (istrm.peek() == '-') {
-        isNeg = 1;
-        istrm >> sym;
+        isNeg = true;
+        sym = istrm.get();
     }
 
-    while ('0' <= istrm.peek() && istrm.peek() <= '9') {
-        istrm >> sym;
+    while (std::isdigit(istrm.peek())) {
+        sym = istrm.get();
         numInp_ *= 10;
         numInp_ += static_cast<int>(sym - '0');
     }
@@ -225,9 +229,9 @@ std::istream& Rational::ReadFrom(std::istream& istrm)
         return istrm;
     }
 
-    istrm >> sym;
-    while ('0' <= istrm.peek() && istrm.peek() <= '9') {
-        istrm >> sym;
+    sym = istrm.get();
+    while (std::isdigit(istrm.peek())) {
+        sym = istrm.get();
         denomInp_ *= 10;
         denomInp_ += static_cast<int>(sym - '0');
     }
