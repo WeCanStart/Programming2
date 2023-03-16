@@ -1,58 +1,49 @@
 #pragma once
-#ifndef ARRAYD_ARRAYD_HPP_20230228
-#define ARRAYD_ARRAYD_HPP_20230228
+
+#ifndef MATRIXS_MATRIXS_HPP_20230315
+#define MATRIXS_MATRIXS_HPP_20230315
 
 #include <iosfwd>
 #include <cstdint>
 
-class ArrayD{
+class MatrixS {
 public:
-    ArrayD();
-    ArrayD(const ptrdiff_t len);
-    ArrayD(const ArrayD&);
-    ArrayD(ptrdiff_t sizeInp, double number);
+    MatrixS();
+    MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_);
+    MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_, int num);
+    MatrixS(MatrixS&);
 
-    ~ArrayD();
+    ~MatrixS();
 
-    double& operator[](ptrdiff_t index);
-    const double& operator[](ptrdiff_t index) const;
+    MatrixS& operator+=(int);
+    MatrixS& operator-=(int);
+    MatrixS& operator*=(int);
+    MatrixS& operator/=(int);
 
-    void reserve(ptrdiff_t newCapacity_);
-    void resize(ptrdiff_t newSsize_);
-    void push_back(double newElement);
-    double pop_back();
+    MatrixS& operator+=(MatrixS);
+    MatrixS& operator-=(MatrixS);
+    MatrixS& operator*=(MatrixS);
+    MatrixS& operator/=(MatrixS);
 
-    ArrayD& operator=(const ArrayD& rhs);
-    ArrayD& operator+=(const double rhs);
-    ArrayD& operator-=(const double rhs);
-    ArrayD& operator*=(const double rhs);
-    ArrayD& operator/=(const double rhs);
-
-    ArrayD& operator+();
-    ArrayD& operator-();
-
-    std::ostream& writeTo(std::ostream& ostrm) const;
-    /*std::istream& readFrom(std::istream& istrm);*/
-
+    int det();
+    MatrixS pow(int);
 public:
-    ptrdiff_t ssize_;
-    ptrdiff_t capacity_;
-    double* memory_;
-
-    static const char cmm{ ',' };
+    ptrdiff_t rows_;
+    ptrdiff_t cols_;
+    int* data_;
 };
 
-std::ostream& operator<<(std::ostream& ostrm, const ArrayD& rhs);
-//std::istream& operator>>(std::istream& istrm, ArrayD& rhs);
+MatrixS operator-(MatrixS);
+MatrixS operator+(MatrixS);
 
-ArrayD operator+(ArrayD lhs, const double rhs);
-ArrayD operator-(ArrayD lhs, const double rhs);
-ArrayD operator*(ArrayD lhs, const double rhs);
-ArrayD operator/(ArrayD lhs, const double rhs);
+MatrixS operator+(MatrixS, int);
+MatrixS operator-(MatrixS, int);
+MatrixS operator*(MatrixS, int);
+MatrixS operator/(MatrixS, int);
 
-ArrayD operator%(ArrayD lhs, const double& rhs);
-
-bool operator==(const ArrayD& lhs, const ArrayD& rhs);
-bool operator!=(const ArrayD& lhs, const ArrayD& rhs);
+MatrixS operator+(MatrixS, MatrixS);
+MatrixS operator-(MatrixS, MatrixS);
+MatrixS operator*(MatrixS, MatrixS);
+MatrixS operator/(MatrixS, MatrixS);
 
 #endif

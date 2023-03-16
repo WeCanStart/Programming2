@@ -50,8 +50,6 @@ ArrayD operator-(ArrayD lhs, const double rhs);
 ArrayD operator*(ArrayD lhs, const double rhs);
 ArrayD operator/(ArrayD lhs, const double rhs);
 
-ArrayD operator%(ArrayD lhs, const double& rhs);
-
 bool operator==(const ArrayD& lhs, const ArrayD& rhs);
 bool operator!=(const ArrayD& lhs, const ArrayD& rhs);
 
