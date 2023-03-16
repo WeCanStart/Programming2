@@ -8,7 +8,7 @@
 class Rational{
   public:
       Rational();
-      Rational(const int32_t numInp);
+      Rational(const int32_t numInp) noexcept;
       Rational(const Rational&) = default;
       Rational(Rational&&) = default;
       Rational(int32_t numInp, int32_t denomInp);
@@ -26,19 +26,19 @@ class Rational{
 
       Rational& operator%=(const Rational& rhs);
 
-      bool isPositive() const;
-      bool isZero() const;
-      bool isNegative() const;
+      bool IsPositive() const;
+      bool IsZero() const;
+      bool IsNegative() const;
 
-      std::ostream& writeTo(std::ostream& ostrm) const;
-      std::istream& readFrom(std::istream& istrm);
+      std::ostream& WriteTo(std::ostream& ostrm) const;
+      std::istream& ReadFrom(std::istream& istrm);
 
 private:
     int32_t gcd(int32_t a, int32_t b) const;
     void redusing();
 private:
-    int32_t num{ 0 };
-    int32_t denom{ 1 };
+    int32_t num_{ 0 };
+    int32_t denom_{ 1 };
 
     static const char slash{ '/' };
 };

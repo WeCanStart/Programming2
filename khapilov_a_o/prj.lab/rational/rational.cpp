@@ -2,59 +2,59 @@
 #include <iostream>
 
 Rational::Rational() {
-    num = 0;
-    denom = 1;
+    num_ = 0;
+    denom_ = 1;
 }
-Rational::Rational(int32_t numInp) {
-    num = numInp;
-    denom = 1;
+Rational::Rational(int32_t numInp_) noexcept{
+    num_ = numInp_;
+    denom_ = 1;
 }
-Rational::Rational(int32_t numInp, int32_t denomInp) {
-    if (denomInp < 0) {
-        denomInp *= -1;
-        numInp *= -1;
+Rational::Rational(int32_t numInp_, int32_t denomInp_) {
+    if (denomInp_ < 0) {
+        denomInp_ *= -1;
+        numInp_ *= -1;
     }
-    if (denomInp == 0) {
+    if (denomInp_ == 0) {
         throw std::invalid_argument("Divide by zero exception");
     }
-    num = numInp;
-    denom = denomInp;
+    num_ = numInp_;
+    denom_ = denomInp_;
     redusing();
 }
 
 Rational& Rational::operator=(const Rational& rhs) {
-    num = rhs.num;
-    denom = rhs.denom;
+    num_ = rhs.num_;
+    denom_ = rhs.denom_;
     return *this;
 }
 Rational& Rational::operator+=(const Rational& rhs) {
-    int32_t mult = rhs.denom / gcd(denom, rhs.denom);
-    num *= mult;
-    denom *= mult;
-    num += denom / rhs.denom * rhs.num;
+    int32_t mult = rhs.denom_ / gcd(denom_, rhs.denom_);
+    num_ *= mult;
+    denom_ *= mult;
+    num_ += denom_ / rhs.denom_ * rhs.num_;
     redusing();
     return *this;
 }
 Rational& Rational::operator-=(const Rational& rhs) {
-    int32_t mult = rhs.denom / gcd(denom, rhs.denom);
-    num *= mult;
-    denom *= mult;
-    num -= denom / rhs.denom * rhs.num;
+    int32_t mult = rhs.denom_ / gcd(denom_, rhs.denom_);
+    num_ *= mult;
+    denom_ *= mult;
+    num_ -= denom_ / rhs.denom_ * rhs.num_;
     redusing();
     return *this;
 }
 Rational& Rational::operator*=(const Rational& rhs) {
-    num *= rhs.num;
-    denom *= rhs.denom;
+    num_ *= rhs.num_;
+    denom_ *= rhs.denom_;
     redusing();
     return *this;
 }
 Rational& Rational::operator/=(const Rational& rhs) {
-    if (rhs.isZero()) {
+    if (rhs.IsZero()) {
         throw std::invalid_argument("Divide by zero exception");
     }
-    num *= rhs.denom;
-    denom *= rhs.num;
+    num_ *= rhs.denom_;
+    denom_ *= rhs.num_;
     redusing();
     return *this;
 }
@@ -79,29 +79,29 @@ Rational Rational::operator--(int) {
 }
 
 Rational& Rational::operator%=(const Rational& rhs) {
-    int32_t mult = rhs.denom / gcd(denom, rhs.denom);
-    num *= mult;
-    denom *= mult;
-    num %= denom / rhs.denom * rhs.num;
+    int32_t mult = rhs.denom_ / gcd(denom_, rhs.denom_);
+    num_ *= mult;
+    denom_ *= mult;
+    num_ %= denom_ / rhs.denom_ * rhs.num_;
     redusing();
     return *this;
 }
 
-bool Rational::isPositive() const {
-    return num > 0;
+bool Rational::IsPositive() const {
+    return num_ > 0;
 }
-bool Rational::isZero() const {
-    return num == 0;
+bool Rational::IsZero() const {
+    return num_ == 0;
 }
-bool Rational::isNegative() const {
-    return num < 0;
+bool Rational::IsNegative() const {
+    return num_ < 0;
 }
 
 std::ostream& operator<<(std::ostream& ostrm, const Rational& rhs) {
-    return rhs.writeTo(ostrm);
+    return rhs.WriteTo(ostrm);
 }
 std::istream& operator>>(std::istream& istrm, Rational& rhs) {
-    return rhs.readFrom(istrm);
+    return rhs.ReadFrom(istrm);
 }
 
 Rational& operator+(Rational& rhs) {
@@ -157,15 +157,15 @@ Rational operator%(Rational lhs, const Rational& rhs)
 
 bool operator==(Rational lhs, const Rational& rhs) {
     lhs -= rhs;
-    return lhs.isZero();
+    return lhs.IsZero();
 }
 bool operator>(Rational lhs, const Rational& rhs) {
     Rational diff = lhs - rhs;
-    return diff.Rational::isPositive();
+    return diff.Rational::IsPositive();
 }
 bool operator<(Rational lhs, const Rational& rhs) {
     Rational diff = lhs - rhs;
-    return diff.Rational::isNegative();
+    return diff.Rational::IsNegative();
 }
 bool operator!=(const Rational& lhs, const Rational& rhs) {
     return !operator==(lhs, rhs);
@@ -188,35 +188,64 @@ int32_t Rational::gcd(int32_t a, int32_t b) const {
 }
 
 void Rational::redusing() {
-    int32_t dev = gcd(std::abs(num), denom);
-    num /= dev;
-    denom /= dev;
+    int32_t dev = gcd(std::abs(num_), denom_);
+    num_ /= dev;
+    denom_ /= dev;
 }
 
-std::ostream& Rational::writeTo(std::ostream& ostrm) const
+std::ostream& Rational::WriteTo(std::ostream& ostrm) const
 {
-    ostrm << num << slash << denom;
+    ostrm << num_ << slash << denom_;
     return ostrm;
 }
 
-std::istream& Rational::readFrom(std::istream& istrm)
+std::istream& Rational::ReadFrom(std::istream& istrm)
 {
-    int32_t numInp(0);
-    char separator(0);
-    int32_t denomInp(0);
-    istrm >> numInp >> separator >> denomInp;
+    int32_t numInp_(0);
+    int32_t denomInp_(0);
+    char sym('-');
+    bool isNeg(0);
+    if (istrm.peek() == '-') {
+        isNeg = 1;
+        istrm >> sym;
+    }
+
+    while ('0' <= istrm.peek() && istrm.peek() <= '9') {
+        istrm >> sym;
+        numInp_ *= 10;
+        numInp_ += static_cast<int>(sym - '0');
+    }
+    if (sym == '-') {
+        istrm.setstate(std::ios_base::failbit);
+        return istrm;
+    }
+
+    if (istrm.peek() != '/') {
+        istrm.setstate(std::ios_base::failbit);
+        return istrm;
+    }
+
+    istrm >> sym;
+    while ('0' <= istrm.peek() && istrm.peek() <= '9') {
+        istrm >> sym;
+        denomInp_ *= 10;
+        denomInp_ += static_cast<int>(sym - '0');
+    }
+    if (sym == '/') {
+        istrm.setstate(std::ios_base::failbit);
+        return istrm;
+    }
+    
     if (istrm.good()) {
-        if (Rational::slash == separator) {
-            if (denomInp <= 0) {
-                throw std::invalid_argument("Expected positive denomerator");
-            }
-            num = numInp;
-            denom = denomInp;
-            redusing();
+        if (denomInp_ == 0) {
+            throw std::invalid_argument("Devide by zero");
         }
-        else {
-            istrm.setstate(std::ios_base::failbit);
+        num_ = numInp_;
+        denom_ = denomInp_;
+        if (isNeg) {
+            num_ *= -1;
         }
+        redusing();
     }
     return istrm;
 }

@@ -4,6 +4,7 @@
 #include <arrayd/arrayd.hpp>
 #include <iostream>
 
+
 TEST_CASE("[arrayd] - ArrayD ctor") {
     ArrayD a(3);
     ArrayD b(3, 0);
@@ -47,7 +48,7 @@ TEST_CASE("[arrayd] - ArrayD arithmetic ops") {
     CHECK(a == b);
     b = ArrayD(2, 8);
     a = a * 2;
-    CHECK(a * 2 == b);
+    CHECK(a == b);
     b = ArrayD(2, 2);
     a = a / 4;
     CHECK(a == b);
