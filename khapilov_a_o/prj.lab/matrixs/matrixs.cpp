@@ -4,124 +4,232 @@
 MatrixS::MatrixS() : rows_(0), cols_(0), data_(nullptr) {};
 
 MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_) : rows_(rowsInp_), cols_(colsInp_) {
+    if (rows_ < 0 || cols_ < 0) {
+        throw std::invalid_argument("sizes must be positive");
+    }
     len_ = rows_ + rows_ * cols_;
     data_ = new int[len_];
     for (ptrdiff_t i = 0; i < rows_; ++i) {
-        data_[i] = data_ + rows_ *
+        data_[i] = (i + 1) * cols_;
     }
     for (ptrdiff_t i = rows_; i < len_; ++i) {
-
+        data_[i] = 0;
     }
-};
-
-MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_, int num) : rows_(rowsInp_), cols_(colsInp_) {
-
 }
 
-MatrixS::MatrixS(MatrixS&)
-{
+MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_, int num) : rows_(rowsInp_), cols_(colsInp_) {
+    if (rows_ < 0 || cols_ < 0) {
+        throw std::invalid_argument("sizes must be positive");
+    }
+    len_ = rows_ + rows_ * cols_;
+    data_ = new int[len_];
+    for (ptrdiff_t i = 0; i < rows_; ++i) {
+        data_[i] = (i + 1) * cols_;
+    }
+    for (ptrdiff_t i = rows_; i < len_; ++i) {
+        data_[i] = num;
+    }
+}
+
+MatrixS::MatrixS(MatrixS& prev) : rows_(prev.rows_), cols_(prev.cols_), len_(prev.len_){
+    data_ = new int[len_];
+    for (ptrdiff_t i = 0; i < len_; ++i) {
+        data_[i] = prev.data_[i];
+    }
 }
 
 MatrixS::~MatrixS()
 {
+    delete[] data_;
 }
 
-MatrixS& MatrixS::operator+=(int)
-{
-    // TODO: insert return statement here
+const int& MatrixS::at(int row_, int col_) const{
+    return data_[data_[row_] + col_];
+}
+int& MatrixS::at(int row_, int col_) {
+    return data_[data_[row_] + col_];
 }
 
-MatrixS& MatrixS::operator-=(int)
+int MatrixS::getNumRows() const
 {
-    // TODO: insert return statement here
+    return rows_;
+}
+int MatrixS::getNumCols() const
+{
+    return cols_;
 }
 
-MatrixS& MatrixS::operator*=(int)
+MatrixS& MatrixS::operator=(MatrixS rhs)
 {
-    // TODO: insert return statement here
+    data_ = new int[len_];
+    for (ptrdiff_t i = 0; i < len_; ++i) {
+        data_[i] = rhs.data_[i];
+    }
+    return *this;
+}
+MatrixS& MatrixS::operator=(MatrixS& rhs)
+{
+    data_ = new int[len_];
+    for (ptrdiff_t i = 0; i < len_; ++i) {
+        data_[i] = rhs.data_[i];
+    }
+    return *this;
 }
 
-MatrixS& MatrixS::operator/=(int)
+MatrixS& operator+(MatrixS& matrix)
 {
-    // TODO: insert return statement here
+    return matrix;
 }
 
-MatrixS& MatrixS::operator+=(MatrixS)
+MatrixS& operator-(MatrixS& matrix)
 {
-    // TODO: insert return statement here
+    for (int i = 0; i < matrix.getNumRows(); ++i) {
+        for (int j = 0; j < matrix.getNumCols(); ++j) {
+            matrix.at(i, j) = -matrix.at(i, j);
+        }
+    }
+    return matrix;
 }
 
-MatrixS& MatrixS::operator-=(MatrixS)
+MatrixS& MatrixS::operator+=(int rhs)
 {
-    // TODO: insert return statement here
+    for (ptrdiff_t i = rows_; i < len_; ++i) {
+        data_[i] += rhs;
+    }
+    return *this;
 }
 
-MatrixS& MatrixS::operator*=(MatrixS)
+MatrixS& MatrixS::operator-=(int rhs)
 {
-    // TODO: insert return statement here
+    for (ptrdiff_t i = rows_; i < len_; ++i) {
+        data_[i] -= rhs;
+    }
+    return *this;
 }
 
-MatrixS& MatrixS::operator/=(MatrixS)
+MatrixS& MatrixS::operator*=(int rhs)
 {
-    // TODO: insert return statement here
+    for (ptrdiff_t i = rows_; i < len_; ++i) {
+        data_[i] *= rhs;
+    }
+    return *this;
 }
 
-int MatrixS::det()
+MatrixS operator+(MatrixS lhs, int rhs)
 {
-    return 0;
+    lhs += rhs;
+    return lhs;
 }
 
-MatrixS MatrixS::pow(int)
+MatrixS operator-(MatrixS lhs, int rhs)
 {
-    return MatrixS();
+    lhs -= rhs;
+    return lhs;
 }
 
-MatrixS operator-(MatrixS)
+MatrixS operator*(MatrixS lhs, int rhs)
 {
-    return MatrixS();
+    lhs *= rhs;
+    return lhs;
 }
 
-MatrixS operator+(MatrixS)
+MatrixS& operator+=(MatrixS& lhs, MatrixS& rhs)
 {
-    return MatrixS();
+    if (lhs.getNumRows() != rhs.getNumRows() || lhs.getNumCols() != rhs.getNumCols()) {
+        throw std::invalid_argument("Wrong shape");
+    }
+    for (ptrdiff_t i = 0; i < lhs.getNumRows(); ++i) {
+        for (ptrdiff_t j = 0; j < lhs.getNumCols(); ++j) {
+            lhs.at(i, j) += rhs.at(i, j);
+        }
+    }
+    return lhs;
 }
 
-MatrixS operator+(MatrixS, int)
+MatrixS& operator-=(MatrixS& lhs, MatrixS& rhs)
 {
-    return MatrixS();
+    if (lhs.getNumRows() != rhs.getNumRows() || lhs.getNumCols() != rhs.getNumCols()) {
+        throw std::invalid_argument("Wrong shape");
+    }
+    for (ptrdiff_t i = 0; i < lhs.getNumRows(); ++i) {
+        for (ptrdiff_t j = 0; j < lhs.getNumCols(); ++j) {
+            lhs.at(i, j) -= rhs.at(i, j);
+        }
+    }
+    return lhs;
 }
 
-MatrixS operator-(MatrixS, int)
+MatrixS& operator*=(MatrixS& lhs, MatrixS& rhs)
 {
-    return MatrixS();
+    lhs = lhs * rhs;
+    return lhs;
 }
 
-MatrixS operator*(MatrixS, int)
+MatrixS operator+(MatrixS lhs, MatrixS& rhs)
 {
-    return MatrixS();
+    lhs += rhs;
+    return lhs;
 }
 
-MatrixS operator/(MatrixS, int)
+MatrixS operator-(MatrixS lhs, MatrixS& rhs)
 {
-    return MatrixS();
+    lhs -= rhs;
+    return lhs;
 }
 
-MatrixS operator+(MatrixS, MatrixS)
+MatrixS operator*(MatrixS& lhs, MatrixS& rhs)
 {
-    return MatrixS();
+    MatrixS ret(lhs.getNumRows(), rhs.getNumCols());
+    if (lhs.getNumCols() != rhs.getNumRows()) {
+        throw std::invalid_argument("Wrong shape");
+    }
+    for (ptrdiff_t i = 0; i < lhs.getNumRows(); ++i) {
+        for (ptrdiff_t j = 0; j < lhs.getNumCols(); ++j) {
+            for (ptrdiff_t k = 0; k < rhs.getNumCols(); ++k)
+            ret.at(i, k) += lhs.at(i, j) * rhs.at(j, k);
+        }
+    }
+    return ret;
 }
 
-MatrixS operator-(MatrixS, MatrixS)
-{
-    return MatrixS();
+MatrixS sqr(MatrixS& matrix) {
+    return matrix * matrix;
 }
 
-MatrixS operator*(MatrixS, MatrixS)
+MatrixS pow(MatrixS matrix, int power)
 {
-    return MatrixS();
+    if (matrix.getNumRows() != matrix.getNumCols()) {
+        throw std::invalid_argument("Wrong shape");
+    }
+    MatrixS answer;
+    answer = IdentityMatrix(matrix.getNumRows());
+    while (power) {
+        if (power & 1) {
+            answer *= matrix;
+        }
+        matrix = sqr(matrix);
+        power >>= 1;
+    }
+    return answer;
 }
 
-MatrixS operator/(MatrixS, MatrixS)
+MatrixS IdentityMatrix(int n)
 {
-    return MatrixS();
+    MatrixS ident(n, n);
+    for (int i = 0; i < n; ++i) {
+        ident.at(i, i) = 1;
+    }
+}
+
+bool operator==(MatrixS& lhs, MatrixS& rhs) {
+    if (lhs.getNumRows() != rhs.getNumRows() || lhs.getNumCols() != rhs.getNumCols()) {
+        return false;
+    }
+    bool equal = true;
+    for (int i = 0; i < lhs.getNumRows(); ++i) {
+        for (int j = 0; j < lhs.getNumCols(); ++j) {
+            equal *= (lhs.at(i, j) == rhs.at(i, j));
+        }
+    }
+    return equal;
 }

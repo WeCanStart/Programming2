@@ -5,3 +5,7 @@ add_test(NAME rational.test COMMAND rational.test)
 add_executable(arrayd.test arrayd.test.cpp)
 target_link_libraries(arrayd.test arrayd doctest::doctest)
 add_test(NAME arrayd.test COMMAND arrayd.test)
+
+add_executable(matrixs.test matrixs.test.cpp)
+target_link_libraries(matrixs.test matrixs doctest::doctest)
+add_test(NAME matrixs.test COMMAND matrixs.test)

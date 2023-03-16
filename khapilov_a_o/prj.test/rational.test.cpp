@@ -9,10 +9,10 @@ TEST_CASE("Comparing Rationals with themselfs and integers") {
 
     SUBCASE("comparing rationals")
     {
-        Rational R = Rational(3, 2);
+        Rational R(3, 2);
         Rational A;
-        Rational B = Rational(20, 3);
-        Rational C = Rational(3, 2);
+        Rational B(20, 3);
+        Rational C(3, 2);
 
         CHECK((R == B) == false);
         CHECK((R == C) == true);
@@ -38,7 +38,7 @@ TEST_CASE("Comparing Rationals with themselfs and integers") {
     }
     SUBCASE("comparing rationals-integers")
     {
-        Rational R = Rational(3, 3);
+        Rational R(3, 3);
         int32_t A = 0;
         int32_t B = 20;
         int32_t C = 1;
@@ -70,7 +70,7 @@ TEST_CASE("Comparing Rationals with themselfs and integers") {
 TEST_CASE("Assignment operator ...=") {
     SUBCASE("+=")
     {
-        Rational R = Rational(3, 2);
+        Rational R(3, 2);
         R += 1;
         CHECK(R == Rational(5, 2));
         R += Rational(4, 9);
@@ -78,7 +78,7 @@ TEST_CASE("Assignment operator ...=") {
     }
     SUBCASE("-=")
     {
-        Rational R = Rational(3, 2);
+        Rational R(3, 2);
         R -= 1;
         CHECK(R == Rational(1, 2));
         R -= Rational(4, 9);
@@ -88,7 +88,7 @@ TEST_CASE("Assignment operator ...=") {
     }
     SUBCASE("*=")
     {
-        Rational R = Rational(3, 2);
+        Rational R(3, 2);
         R *= 3;
         CHECK(R == Rational(9, 2));
         R *= Rational(5, 3);
@@ -98,7 +98,7 @@ TEST_CASE("Assignment operator ...=") {
     }
     SUBCASE("/=")
     {
-        Rational R = Rational(3, 2);
+        Rational R(3, 2);
         R /= 3;
         CHECK(R == Rational(1, 2));
         R /= Rational(5, 3);
@@ -107,7 +107,20 @@ TEST_CASE("Assignment operator ...=") {
     }
     SUBCASE("pref ++")
     {
-        Rational R = Rational(1, 2);
+        Rational R(1, 2);
+        CHECK(++R == Rational(3, 2));
+        CHECK(R == Rational(3, 2));
+    }
+    SUBCASE("pref ++")
+    {
+        Rational R(1, 2);
+        CHECK(R++ == Rational(1, 2));
+        CHECK(R == Rational(3, 2));
+        CHECK_THROWS(R /= 0);
+    }
+    SUBCASE("pref ++")
+    {
+        Rational R(1, 2);
         CHECK(++R == Rational(3, 2));
         CHECK(R == Rational(3, 2));
         R = Rational(1, 2);
@@ -187,5 +200,5 @@ TEST_CASE("Streams")
 
 TEST_CASE("Throws")
 {
-    CHECK_THROWS(Rational(0, 0));
+    CHECK_THROWS(Rational(1, 0));
 }

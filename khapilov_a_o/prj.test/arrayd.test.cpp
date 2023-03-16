@@ -15,7 +15,7 @@ TEST_CASE("[arrayd] - ArrayD ctor") {
     CHECK_THROWS(ArrayD(-3));
 }
 
-TEST_CASE("[arrayd] - ArrayD arithmetic ops") {
+TEST_CASE("[arrayd] - ArrayD assignment arithmetic ops") {
     ArrayD a(2, 4);
     ArrayD b(2, 5);
     CHECK((a += 1) == b);
