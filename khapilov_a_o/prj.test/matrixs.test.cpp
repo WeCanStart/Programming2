@@ -63,5 +63,5 @@ TEST_CASE("[matrixs] - MatrixS custom operators") {
     b.at(1, 0) = 15;
     b.at(1, 1) = 22;
     a = sqr(a);
-    
+    CHECK(a == b);
 }

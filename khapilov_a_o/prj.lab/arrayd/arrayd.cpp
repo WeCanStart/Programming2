@@ -9,6 +9,9 @@ ArrayD::ArrayD() {
     capacity_ = 0;
 }
 ArrayD::ArrayD(const ArrayD& prev) {
+    if (this == &prev) {
+        return;
+    }
     ssize_ = prev.ssize_;
     capacity_ = prev.capacity_;
     memory_ = new double[capacity_];
@@ -20,6 +23,9 @@ ArrayD::ArrayD(const ArrayD& prev) {
     }
 }
 ArrayD::ArrayD(const ArrayD&& prev) noexcept : ssize_(prev.ssize_), capacity_(prev.capacity_){
+    if (this == &prev) {
+        return;
+    }
     memory_ = new double[capacity_];
     if (prev.memory_ == nullptr) {
         memory_ = nullptr;
@@ -144,6 +150,9 @@ double ArrayD::pop_back() {
 }
 
 ArrayD& ArrayD::operator=(const ArrayD& rhs) {
+    if (this == &rhs) {
+        return;
+    }
     ssize_ = rhs.ssize_;
     capacity_ = rhs.capacity_;
     delete[] memory_;
