@@ -40,3 +40,28 @@ TEST_CASE("[matrixs] - MatrixS bool operators") {
     b = MatrixS(1, 4);
     CHECK(a != b);
 }
+
+TEST_CASE("[matrixs] - MatrixS custom operators") {
+    MatrixS a(2, 2);
+    MatrixS b(2, 2);
+    a.at(0, 0) = 1;
+    a.at(0, 1) = 2;
+    a.at(1, 0) = 3;
+    a.at(1, 1) = 4;
+    b.at(0, 0) = 37;
+    b.at(0, 1) = 54;
+    b.at(1, 0) = 81;
+    b.at(1, 1) = 118;
+    a = pow(a, 3);
+    CHECK(a == b);
+    a.at(0, 0) = 1;
+    a.at(0, 1) = 2;
+    a.at(1, 0) = 3;
+    a.at(1, 1) = 4;
+    b.at(0, 0) = 7;
+    b.at(0, 1) = 10;
+    b.at(1, 0) = 15;
+    b.at(1, 1) = 22;
+    a = sqr(a);
+    
+}

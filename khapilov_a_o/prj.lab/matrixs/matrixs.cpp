@@ -60,13 +60,13 @@ MatrixS::~MatrixS()
 
 const int& MatrixS::at(int row_, int col_) const{
     if (row_ >= rows_ || data_[row_] + col_ >= len_) {
-        std::cout << "OUT OF RANGE";
+        throw std::out_of_range("Wrong position");
     }
     return data_[data_[row_] + col_];
 }
 int& MatrixS::at(int row_, int col_) {
     if (row_ >= rows_ || data_[row_] + col_ >= len_) {
-        std::cout << "OUT OF RANGE";
+        throw std::out_of_range("Wrong position");
     }
     return data_[data_[row_] + col_];
 }
