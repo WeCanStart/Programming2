@@ -15,11 +15,17 @@ public:
 
     ~ArrayD();
 
+    std::ptrdiff_t ssize() const;
+
     double& operator[](std::ptrdiff_t index);
     const double& operator[](std::ptrdiff_t index) const;
 
     void reserve(std::ptrdiff_t newCapacity_);
     void resize(std::ptrdiff_t newSsize_);
+
+    void insert(std::ptrdiff_t, double num);
+    void remove(std::ptrdiff_t);
+
     void push_back(double newElement);
     double pop_back();
 

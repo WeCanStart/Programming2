@@ -56,6 +56,11 @@ ArrayD::~ArrayD()
     delete[] memory_;
 }
 
+std::ptrdiff_t ArrayD::ssize() const
+{
+    return ssize_;
+}
+
 double& ArrayD::operator[](std::ptrdiff_t index) {
     if (index < 0 || index >= ssize_) {
         throw std::out_of_range("Index out of range");
@@ -94,7 +99,35 @@ void ArrayD::resize(std::ptrdiff_t newSsize_) {
     if (newSsize_ > capacity_) {
         reserve(newSsize_);
     }
+    if (newSsize_ > ssize_) {
+        for (std::ptrdiff_t i = ssize_; i < newSsize_; ++i) {
+            memory_[i] = 0;
+        }
+    }
     ssize_ = newSsize_;
+}
+
+void ArrayD::insert(std::ptrdiff_t pos, double num)
+{
+    if (pos < 0 || pos > ssize_) {
+        throw std::out_of_range("Wrong position");
+    }
+    resize(ssize_ + 1);
+    for (std::ptrdiff_t i = ssize() - 1; i > pos; --i) {
+        memory_[i] = memory_[i - 1];
+    }
+    memory_[pos] = num;
+}
+
+void ArrayD::remove(std::ptrdiff_t pos)
+{
+    if (pos < 0 || pos > ssize_) {
+        throw std::out_of_range("Wrong position");
+    }
+    for (std::ptrdiff_t i = pos + 1; i < ssize_; ++i) {
+        memory_[i - 1] = memory_[i];
+    }
+    resize(ssize_ - 1);
 }
 
 void ArrayD::push_back(double newElement) {

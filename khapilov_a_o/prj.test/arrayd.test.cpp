@@ -64,3 +64,19 @@ TEST_CASE("[arrayd] - ArrayD bool operators") {
     b = ArrayD(1, 4);
     CHECK(a != b);
 }
+
+TEST_CASE("[arrayd] - ArrayD size & capacity") {
+    ArrayD a(1, 0);
+    CHECK(a[0] == 0);
+    a.push_back(1);
+    CHECK(a[1] == 1);
+    a.insert(2, 2);
+    CHECK(a[2] == 2);
+    a.insert(1, 3);
+    CHECK(a[1] == 3);
+    CHECK(a[2] == 1);
+    a.pop_back();
+    CHECK(a[2] == 1);
+    a.remove(0);
+    CHECK(a[1] == 1);
+}
