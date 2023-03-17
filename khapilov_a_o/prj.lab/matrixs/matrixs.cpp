@@ -269,7 +269,7 @@ bool operator==(MatrixS& lhs, MatrixS& rhs) {
     bool equal = true;
     for (int i = 0; i < lhs.getNumRows(); ++i) {
         for (int j = 0; j < lhs.getNumCols(); ++j) {
-            equal *= (lhs.at(i, j) == rhs.at(i, j));
+            equal &= (lhs.at(i, j) == rhs.at(i, j));
         }
     }
     return equal;

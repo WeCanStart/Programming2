@@ -8,17 +8,18 @@
 class ArrayD{
 public:
     ArrayD();
-    ArrayD(const ptrdiff_t len);
+    ArrayD(const std::ptrdiff_t len);
     ArrayD(const ArrayD&);
-    ArrayD(ptrdiff_t sizeInp, double number);
+    ArrayD(const ArrayD&&) noexcept;
+    ArrayD(std::ptrdiff_t sizeInp, double number);
 
     ~ArrayD();
 
-    double& operator[](ptrdiff_t index);
-    const double& operator[](ptrdiff_t index) const;
+    double& operator[](std::ptrdiff_t index);
+    const double& operator[](std::ptrdiff_t index) const;
 
-    void reserve(ptrdiff_t newCapacity_);
-    void resize(ptrdiff_t newSsize_);
+    void reserve(std::ptrdiff_t newCapacity_);
+    void resize(std::ptrdiff_t newSsize_);
     void push_back(double newElement);
     double pop_back();
 
@@ -35,8 +36,8 @@ public:
     /*std::istream& readFrom(std::istream& istrm);*/
 
 public:
-    ptrdiff_t ssize_;
-    ptrdiff_t capacity_;
+    std::ptrdiff_t ssize_;
+    std::ptrdiff_t capacity_;
     double* memory_;
 
     static const char cmm{ ',' };
