@@ -35,7 +35,7 @@ ArrayD::ArrayD(std::ptrdiff_t sizeInp) {
     ssize_ = sizeInp;
     capacity_ = sizeInp;
     memory_ = new double[capacity_];
-    for (std::ptrdiff_t i = 0; i < ssize_; ++i) {
+    for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] = 0;
     }
 }
@@ -46,7 +46,7 @@ ArrayD::ArrayD(std::ptrdiff_t sizeInp, double num) {
     ssize_ = sizeInp;
     capacity_ = sizeInp;
     memory_ = new double[capacity_];
-    for (std::ptrdiff_t i = 0; i < ssize_; ++i) {
+    for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] = num;
     }
 }
@@ -62,14 +62,14 @@ std::ptrdiff_t ArrayD::ssize() const
 }
 
 double& ArrayD::operator[](std::ptrdiff_t index) {
-    if (index < 0 || index >= ssize_) {
+    if (index < 0 || index >= ssize()) {
         throw std::out_of_range("Index out of range");
     }
     return memory_[index];
 }
 
 const double& ArrayD::operator[](std::ptrdiff_t index) const{
-    if (index < 0 || index >= ssize_) {
+    if (index < 0 || index >= ssize()) {
         throw std::out_of_range("Index out of range");
     }
     return memory_[index];
@@ -77,7 +77,7 @@ const double& ArrayD::operator[](std::ptrdiff_t index) const{
 
 void ArrayD::reserve(std::ptrdiff_t newCapacity_) {
     capacity_ = newCapacity_;
-    if (capacity_ < ssize_) {
+    if (capacity_ < ssize()) {
         ssize_ = capacity_;
         return;
     }
@@ -86,9 +86,9 @@ void ArrayD::reserve(std::ptrdiff_t newCapacity_) {
         memory_ = nullptr;
     }
     else {
-        std::copy(memory_, memory_ + ssize_, newMemory_);
+        std::copy(memory_, memory_ + ssize(), newMemory_);
     }
-    for (std::ptrdiff_t i = ssize_; i < capacity_; ++i) {
+    for (std::ptrdiff_t i = ssize(); i < capacity_; ++i) {
         newMemory_[i] = 0;
     }
     delete[] memory_;
@@ -99,8 +99,8 @@ void ArrayD::resize(std::ptrdiff_t newSsize_) {
     if (newSsize_ > capacity_) {
         reserve(newSsize_);
     }
-    if (newSsize_ > ssize_) {
-        for (std::ptrdiff_t i = ssize_; i < newSsize_; ++i) {
+    if (newSsize_ > ssize()) {
+        for (std::ptrdiff_t i = ssize(); i < newSsize_; ++i) {
             memory_[i] = 0;
         }
     }
@@ -109,10 +109,10 @@ void ArrayD::resize(std::ptrdiff_t newSsize_) {
 
 void ArrayD::insert(std::ptrdiff_t pos, double num)
 {
-    if (pos < 0 || pos > ssize_) {
+    if (pos < 0 || pos > ssize()) {
         throw std::out_of_range("Wrong position");
     }
-    resize(ssize_ + 1);
+    resize(ssize() + 1);
     for (std::ptrdiff_t i = ssize() - 1; i > pos; --i) {
         memory_[i] = memory_[i - 1];
     }
@@ -121,25 +121,25 @@ void ArrayD::insert(std::ptrdiff_t pos, double num)
 
 void ArrayD::remove(std::ptrdiff_t pos)
 {
-    if (pos < 0 || pos > ssize_) {
+    if (pos < 0 || pos > ssize()) {
         throw std::out_of_range("Wrong position");
     }
-    for (std::ptrdiff_t i = pos + 1; i < ssize_; ++i) {
+    for (std::ptrdiff_t i = pos + 1; i < ssize(); ++i) {
         memory_[i - 1] = memory_[i];
     }
-    resize(ssize_ - 1);
+    resize(ssize() - 1);
 }
 
 void ArrayD::push_back(double newElement) {
-    if (ssize_ == capacity_) {
-        resize(static_cast<std::ptrdiff_t>(ssize_ + 1));
+    if (ssize() == capacity_) {
+        resize(static_cast<std::ptrdiff_t>(ssize() + 1));
     }
     memory_[ssize_ - 1] = newElement;
 }
 
 double ArrayD::pop_back() {
-    double tmp = memory_[ssize_ - 1];
-    resize(ssize_ - 1);
+    double tmp = memory_[ssize() - 1];
+    resize(ssize() - 1);
     return tmp;
 }
 
@@ -148,25 +148,25 @@ ArrayD& ArrayD::operator=(const ArrayD& rhs) {
     capacity_ = rhs.capacity_;
     delete[] memory_;
     memory_ = new double[capacity_];
-    for (std::ptrdiff_t i = 0; i < ssize_; ++i) {
+    for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         new (memory_ + i) double (rhs.memory_[i]);
     }
     return *this;
 }
 ArrayD& ArrayD::operator+=(const double rhs) {
-    for (std::ptrdiff_t i = 0; i < ssize_; ++i) {
+    for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] += rhs;
     }
     return *this;
 }
 ArrayD& ArrayD::operator-=(const double rhs) {
-    for (std::ptrdiff_t i = 0; i < ssize_; ++i) {
+    for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] -= rhs;
     }
     return *this;
 }
 ArrayD& ArrayD::operator*=(const double rhs) {
-    for (std::ptrdiff_t i = 0; i < ssize_; ++i) {
+    for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] *= rhs;
     }
     return *this;
@@ -175,7 +175,7 @@ ArrayD& ArrayD::operator/=(const double rhs) {
     if (rhs == 0) {
         throw std::invalid_argument("Divide by zero exception");
     }
-    for (std::ptrdiff_t i = 0; i < ssize_; ++i) {
+    for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] /= rhs;
     }
     return *this;
@@ -185,7 +185,7 @@ ArrayD& ArrayD::operator+() {
     return *this;
 }
 ArrayD& ArrayD::operator-() {
-    for (std::ptrdiff_t i = 0; i < ssize_; ++i) {
+    for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] = -memory_[i];
     }
     return *this;
@@ -233,7 +233,7 @@ bool operator!=(const ArrayD& lhs, const ArrayD& rhs) {
 std::ostream& ArrayD::writeTo(std::ostream& ostrm) const
 {
     ostrm << '[';
-    for (std::ptrdiff_t i = 0; i < ssize_ - 1; ++i) {
+    for (std::ptrdiff_t i = 0; i < ssize() - 1; ++i) {
         ostrm << memory_[i] << cmm;
     }
     ostrm << memory_[ssize_ - 1] << ']';
@@ -246,7 +246,7 @@ std::ostream& ArrayD::writeTo(std::ostream& ostrm) const
 //    char sym(0);
 //    istrm >> sym;
 //    std::istringstream input;
-//    for (int i = 0; i < ssize_; ++i) {
+//    for (int i = 0; i < ssize(); ++i) {
 //        istrm >> sym >> input;
 //    }
 //    
