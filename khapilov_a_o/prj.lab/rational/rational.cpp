@@ -242,7 +242,8 @@ std::istream& Rational::ReadFrom(std::istream& istrm)
     
     if (istrm.good()) {
         if (denomInp_ == 0) {
-            throw std::invalid_argument("Devide by zero");
+            istrm.setstate(std::ios_base::failbit);
+            return istrm;
         }
         num_ = numInp_;
         denom_ = denomInp_;

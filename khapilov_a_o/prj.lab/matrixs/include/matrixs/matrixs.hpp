@@ -12,6 +12,7 @@ public:
     MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_);
     MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_, int num);
     MatrixS(MatrixS&);
+    MatrixS(MatrixS&&) noexcept;
 
     ~MatrixS();
 
@@ -21,8 +22,8 @@ public:
     int getNumRows() const;
     int getNumCols() const;
 
-    MatrixS& operator=(MatrixS);
     MatrixS& operator=(MatrixS&);
+    MatrixS& operator=(MatrixS&&) noexcept;
 
     MatrixS& operator+=(int);
     MatrixS& operator-=(int);
@@ -36,8 +37,8 @@ public:
 };
 MatrixS IdentityMatrix(int);
 
-MatrixS& operator+(MatrixS&);
-MatrixS& operator-(MatrixS&);
+MatrixS operator+(MatrixS);
+MatrixS operator-(MatrixS);
 MatrixS operator+(MatrixS, int);
 MatrixS operator-(MatrixS, int);
 MatrixS operator*(MatrixS, int);

@@ -1,7 +1,7 @@
 #include <matrixs/matrixs.hpp>
 #include <iostream>
 
-MatrixS::MatrixS() : rows_(0), cols_(0), data_(nullptr) {};
+MatrixS::MatrixS() : rows_(0), cols_(0), len_(0), data_(nullptr) {};
 
 MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_) : rows_(rowsInp_), cols_(colsInp_) {
     if (rows_ < 0 || cols_ < 0) {
@@ -10,7 +10,7 @@ MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_) : rows_(rowsInp_), cols
     len_ = rows_ + rows_ * cols_;
     data_ = new int[len_];
     for (ptrdiff_t i = 0; i < rows_; ++i) {
-        data_[i] = (i + 1) * cols_;
+        data_[i] = rows_ + i * cols_;
     }
     for (ptrdiff_t i = rows_; i < len_; ++i) {
         data_[i] = 0;
@@ -24,7 +24,7 @@ MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_, int num) : rows_(rowsIn
     len_ = rows_ + rows_ * cols_;
     data_ = new int[len_];
     for (ptrdiff_t i = 0; i < rows_; ++i) {
-        data_[i] = (i + 1) * cols_;
+        data_[i] = rows_ + i * cols_;
     }
     for (ptrdiff_t i = rows_; i < len_; ++i) {
         data_[i] = num;
@@ -32,10 +32,25 @@ MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_, int num) : rows_(rowsIn
 }
 
 MatrixS::MatrixS(MatrixS& prev) : rows_(prev.rows_), cols_(prev.cols_), len_(prev.len_){
-    data_ = new int[len_];
-    for (ptrdiff_t i = 0; i < len_; ++i) {
-        data_[i] = prev.data_[i];
+    if (this == &prev) {
+        return;
     }
+    rows_ = prev.rows_;
+    cols_ = prev.cols_;
+    len_ = prev.len_;
+    data_ = new int[len_];
+    std::copy(prev.data_, prev.data_ + len_, data_);
+}
+
+MatrixS::MatrixS(MatrixS&& prev) noexcept : rows_(prev.rows_), cols_(prev.cols_), len_(prev.len_){
+    if (this == &prev) {
+        return;
+    }
+    rows_ = prev.rows_;
+    cols_ = prev.cols_;
+    len_ = prev.len_;
+    data_ = new int[len_];
+    std::copy(prev.data_, prev.data_ + len_, data_);
 }
 
 MatrixS::~MatrixS()
@@ -44,9 +59,15 @@ MatrixS::~MatrixS()
 }
 
 const int& MatrixS::at(int row_, int col_) const{
+    if (row_ >= rows_ || data_[row_] + col_ >= len_) {
+        std::cout << "OUT OF RANGE";
+    }
     return data_[data_[row_] + col_];
 }
 int& MatrixS::at(int row_, int col_) {
+    if (row_ >= rows_ || data_[row_] + col_ >= len_) {
+        std::cout << "OUT OF RANGE";
+    }
     return data_[data_[row_] + col_];
 }
 
@@ -59,16 +80,17 @@ int MatrixS::getNumCols() const
     return cols_;
 }
 
-MatrixS& MatrixS::operator=(MatrixS rhs)
-{
-    data_ = new int[len_];
-    for (ptrdiff_t i = 0; i < len_; ++i) {
-        data_[i] = rhs.data_[i];
-    }
-    return *this;
-}
 MatrixS& MatrixS::operator=(MatrixS& rhs)
 {
+    if (this == &rhs) {
+        return *this;
+    }
+    rows_ = rhs.rows_;
+    cols_ = rhs.cols_;
+    len_ = rhs.len_;
+    if (data_ != nullptr) {
+        delete[] data_;
+    }
     data_ = new int[len_];
     for (ptrdiff_t i = 0; i < len_; ++i) {
         data_[i] = rhs.data_[i];
@@ -76,12 +98,30 @@ MatrixS& MatrixS::operator=(MatrixS& rhs)
     return *this;
 }
 
-MatrixS& operator+(MatrixS& matrix)
+MatrixS& MatrixS::operator=(MatrixS&& rhs) noexcept
+{
+    if (this == &rhs) {
+        return *this;
+    }
+    rows_ = rhs.rows_;
+    cols_ = rhs.cols_;
+    len_ = rhs.len_;
+    if (data_ != nullptr) {
+        delete[] data_;
+    }
+    data_ = new int[len_];
+    for (ptrdiff_t i = 0; i < len_; ++i) {
+        data_[i] = rhs.data_[i];
+    }
+    return *this;
+}
+
+MatrixS operator+(MatrixS matrix)
 {
     return matrix;
 }
 
-MatrixS& operator-(MatrixS& matrix)
+MatrixS operator-(MatrixS matrix)
 {
     for (int i = 0; i < matrix.getNumRows(); ++i) {
         for (int j = 0; j < matrix.getNumCols(); ++j) {
@@ -219,6 +259,7 @@ MatrixS IdentityMatrix(int n)
     for (int i = 0; i < n; ++i) {
         ident.at(i, i) = 1;
     }
+    return ident;
 }
 
 bool operator==(MatrixS& lhs, MatrixS& rhs) {

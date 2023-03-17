@@ -9,7 +9,7 @@ TEST_CASE("[matrixs] - MatrixS ctor") {
     MatrixS a(3, 3);
     MatrixS b(3, 3, 0);
     CHECK(a == b);
-    CHECK_THROWS(MatrixS(1, -1));
+    CHECK_THROWS(b = MatrixS(1, -1));
 }
 
 TEST_CASE("[matrixs] - MatrixS assignment arithmetic ops") {
