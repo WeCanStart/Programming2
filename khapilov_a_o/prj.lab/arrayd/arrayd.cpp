@@ -151,7 +151,7 @@ double ArrayD::pop_back() {
 
 ArrayD& ArrayD::operator=(const ArrayD& rhs) {
     if (this == &rhs) {
-        return;
+        return *this;
     }
     ssize_ = rhs.ssize_;
     capacity_ = rhs.capacity_;

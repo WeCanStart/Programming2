@@ -44,10 +44,11 @@ TEST_CASE("[matrixs] - MatrixS bool operators") {
 TEST_CASE("[matrixs] - MatrixS custom operators") {
     MatrixS a(2, 2);
     MatrixS b(2, 2);
-    a.at(0, 0) = 1;
+    /*a.at(0, 0) = 1;
     a.at(0, 1) = 2;
     a.at(1, 0) = 3;
-    a.at(1, 1) = 4;
+    a.at(1, 1) = 4;*/
+    a = { {1, 2}, {3, 4} };
     b.at(0, 0) = 37;
     b.at(0, 1) = 54;
     b.at(1, 0) = 81;
