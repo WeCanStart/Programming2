@@ -4,14 +4,16 @@
 
 #include <iosfwd>
 #include <cstdint>
+#include <initializer_list>
 
 class ArrayD{
 public:
     ArrayD();
-    ArrayD(const std::ptrdiff_t len);
+    explicit ArrayD(const std::ptrdiff_t len);
     ArrayD(const ArrayD&);
     ArrayD(const ArrayD&&) noexcept;
     ArrayD(std::ptrdiff_t sizeInp, double number);
+    ArrayD(std::initializer_list<int> initList);   //not explicit
 
     ~ArrayD();
 

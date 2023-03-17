@@ -186,6 +186,11 @@ TEST_CASE("Streams")
     strm >> a;
     CHECK(a == -1);
     strm.str("");
+    strm << "/\n";
+    strm >> a;
+    CHECK(strm.fail());
+    strm.clear(strm.rdstate() & ~std::ios::failbit);
+    strm.str("");
     strm << "0/1\n";
     strm >> a;
     CHECK(a == 0);
@@ -193,12 +198,12 @@ TEST_CASE("Streams")
     strm << "1/0\n";
     strm >> a;
     CHECK(strm.fail());
-    strm.setstate(std::ios_base::goodbit);
+    strm.clear(strm.rdstate() & ~std::ios::failbit);
     strm.str("");
     strm << "0/k\n"; 
     strm >> a;
     CHECK(strm.fail());
-    strm.setstate(std::ios_base::goodbit);
+    strm.clear(strm.rdstate() & ~std::ios::failbit);
 }
 
 TEST_CASE("Throws")

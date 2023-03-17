@@ -8,12 +8,10 @@ ArrayD::ArrayD() {
     ssize_ = 0;
     capacity_ = 0;
 }
-ArrayD::ArrayD(const ArrayD& prev) {
+ArrayD::ArrayD(const ArrayD& prev) : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr){
     if (this == &prev) {
         return;
     }
-    ssize_ = prev.ssize_;
-    capacity_ = prev.capacity_;
     memory_ = new double[capacity_];
     if (prev.memory_ == nullptr) {
         memory_ = nullptr;
@@ -22,7 +20,7 @@ ArrayD::ArrayD(const ArrayD& prev) {
         std::copy(prev.memory_, prev.memory_ + prev.ssize_, memory_);
     }
 }
-ArrayD::ArrayD(const ArrayD&& prev) noexcept : ssize_(prev.ssize_), capacity_(prev.capacity_){
+ArrayD::ArrayD(const ArrayD&& prev) noexcept : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr){
     if (this == &prev) {
         return;
     }
@@ -55,6 +53,12 @@ ArrayD::ArrayD(std::ptrdiff_t sizeInp, double num) {
     for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] = num;
     }
+}
+
+ArrayD::ArrayD(std::initializer_list<int> initList) : ssize_(initList.size()), capacity_(initList.size()), memory_(nullptr)
+{
+    memory_ = new double[ssize_];
+    std::copy(initList.begin(), initList.end(), memory_);
 }
 
 ArrayD::~ArrayD()

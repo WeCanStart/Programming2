@@ -4,15 +4,16 @@
 #define MATRIXS_MATRIXS_HPP_20230315
 
 #include <iosfwd>
-#include <cstdint>
+#include <utility>
 
 class MatrixS {
 public:
     MatrixS();
     MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_);
     MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_, int num);
+    MatrixS(std::initializer_list<std::initializer_list<int>> initList);
     MatrixS(MatrixS&);
-    MatrixS(MatrixS&&) noexcept;
+    //MatrixS(MatrixS&&) noexcept;
 
     ~MatrixS();
 
@@ -21,6 +22,9 @@ public:
 
     int getNumRows() const;
     int getNumCols() const;
+
+    void resize(std::pair<std::ptrdiff_t, std::ptrdiff_t>);
+    std::pair<std::ptrdiff_t, std::ptrdiff_t> ssize() const noexcept;
 
     MatrixS& operator=(MatrixS&);
     MatrixS& operator=(MatrixS&&) noexcept;
