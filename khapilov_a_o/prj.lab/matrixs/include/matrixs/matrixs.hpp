@@ -7,6 +7,7 @@
 #include <utility>
 
 class MatrixS {
+    using size_type = std::pair<std::ptrdiff_t, std::ptrdiff_t>;
 public:
     MatrixS();
     MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_);
@@ -23,8 +24,8 @@ public:
     int getNumRows() const;
     int getNumCols() const;
 
-    void resize(std::pair<std::ptrdiff_t, std::ptrdiff_t>);
-    std::pair<std::ptrdiff_t, std::ptrdiff_t> ssize() const noexcept;
+    void resize(size_type);
+    size_type ssize() const noexcept;
 
     MatrixS& operator=(MatrixS&);
     MatrixS& operator=(MatrixS&&) noexcept;

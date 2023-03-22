@@ -101,7 +101,7 @@ int MatrixS::getNumCols() const
     return cols_;
 }
 
-void MatrixS::resize(std::pair<std::ptrdiff_t, std::ptrdiff_t> s)
+void MatrixS::resize(MatrixS::size_type s)
 {
     MatrixS newMatrix(s.first, s.second);
     for (std::ptrdiff_t r = 0; r < s.first; ++r) {
@@ -117,9 +117,9 @@ void MatrixS::resize(std::pair<std::ptrdiff_t, std::ptrdiff_t> s)
     *this = newMatrix;
 }
 
-std::pair<std::ptrdiff_t, std::ptrdiff_t> MatrixS::ssize() const noexcept
+MatrixS::size_type MatrixS::ssize() const noexcept
 {
-    return std::pair<std::ptrdiff_t, std::ptrdiff_t>(rows_, cols_);
+    return MatrixS::size_type(rows_, cols_);
 }
 
 MatrixS& MatrixS::operator=(MatrixS& rhs)
