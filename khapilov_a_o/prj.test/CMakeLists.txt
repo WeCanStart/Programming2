@@ -9,3 +9,7 @@ add_test(NAME arrayd.test COMMAND arrayd.test)
 add_executable(matrixs.test matrixs.test.cpp)
 target_link_libraries(matrixs.test matrixs doctest::doctest)
 add_test(NAME matrixs.test COMMAND matrixs.test)
+
+add_executable(arrayt.test arrayt.test.cpp)
+target_link_libraries(arrayt.test arrayt doctest::doctest)
+add_test(NAME arrayt.test COMMAND arrayt.test)
