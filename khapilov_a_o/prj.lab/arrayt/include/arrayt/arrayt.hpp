@@ -55,13 +55,13 @@ public:
 };
 
 template<typename T>
-ArrayT<T>::ArrayT<T>() {
+ArrayT<T>::ArrayT() {
     memory_ = nullptr;
     ssize_ = 0;
     capacity_ = 0;
 }
 template<typename T>
-ArrayT<T>::ArrayT<T>(const ArrayT<T>& prev) : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr) {
+ArrayT<T>::ArrayT(const ArrayT<T>& prev) : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr) {
     if (this == &prev) {
         return;
     }
@@ -74,7 +74,7 @@ ArrayT<T>::ArrayT<T>(const ArrayT<T>& prev) : ssize_(prev.ssize_), capacity_(pre
     }
 }
 template<typename T>
-ArrayT<T>::ArrayT<T>(const ArrayT<T>&& prev) noexcept : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr) {
+ArrayT<T>::ArrayT(const ArrayT<T>&& prev) noexcept : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr) {
     if (this == &prev) {
         return;
     }
@@ -87,7 +87,7 @@ ArrayT<T>::ArrayT<T>(const ArrayT<T>&& prev) noexcept : ssize_(prev.ssize_), cap
     }
 }
 template<typename T>
-ArrayT<T>::ArrayT<T>(std::ptrdiff_t sizeInp) {
+ArrayT<T>::ArrayT(std::ptrdiff_t sizeInp) {
     if (sizeInp < 0) {
         throw std::out_of_range("Index out of range");
     }
@@ -111,13 +111,13 @@ ArrayT<T>::ArrayT(std::ptrdiff_t sizeInp, T num) {
     }
 }
 template<typename T>
-ArrayT<T>::ArrayT<T>(std::initializer_list<T> initList) : ssize_(initList.size()), capacity_(initList.size()), memory_(nullptr)
+ArrayT<T>::ArrayT(std::initializer_list<T> initList) : ssize_(initList.size()), capacity_(initList.size()), memory_(nullptr)
 {
     memory_ = new T[ssize_];
     std::copy(initList.begin(), initList.end(), memory_);
 }
 template<typename T>
-ArrayT<T>::~ArrayT<T>()
+ArrayT<T>::~ArrayT()
 {
     delete[] memory_;
 }
@@ -312,7 +312,7 @@ bool operator==(const ArrayT<T>& lhs, const ArrayT<T>& rhs) {
     }
     bool isEqual = true;
     for (std::ptrdiff_t i = 0; i < lhs.ssize_; ++i) {
-        isEqual &= (std::abs(lhs[i] - rhs[i]) < FLT_EPSILON);
+        isEqual &= (lhs[i] == rhs[i]);
     }
     return isEqual;
 }

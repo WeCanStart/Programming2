@@ -11,5 +11,5 @@ target_link_libraries(matrixs.test matrixs doctest::doctest)
 add_test(NAME matrixs.test COMMAND matrixs.test)
 
 add_executable(arrayt.test arrayt.test.cpp)
-target_link_libraries(arrayt.test arrayt doctest::doctest)
+target_link_libraries(arrayt.test arrayt doctest::doctest rational)
 add_test(NAME arrayt.test COMMAND arrayt.test)
