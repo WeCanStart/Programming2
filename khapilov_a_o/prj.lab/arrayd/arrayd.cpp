@@ -20,19 +20,19 @@ ArrayD::ArrayD(const ArrayD& prev) : ssize_(prev.ssize_), capacity_(prev.capacit
         std::copy(prev.memory_, prev.memory_ + prev.ssize_, memory_);
     }
 }
-ArrayD::ArrayD(const ArrayD&& prev) noexcept : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr){
-    if (this == &prev) {
-        return;
-    }
-    memory_ = new double[capacity_];
-    if (prev.memory_ == nullptr) {
-        memory_ = nullptr;
-    }
-    else {
-        std::copy(prev.memory_, prev.memory_ + prev.ssize_, memory_);
-    }
-}
-ArrayD::ArrayD(std::ptrdiff_t sizeInp) {
+//ArrayD::ArrayD(const ArrayD&& prev) noexcept : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr){
+//    if (this == &prev) {
+//        return;
+//    }
+//    memory_ = new double[capacity_];
+//    if (prev.memory_ == nullptr) {
+//        memory_ = nullptr;
+//    }
+//    else {
+//        std::copy(prev.memory_, prev.memory_ + prev.ssize_, memory_);
+//    }
+//}
+ArrayD::ArrayD(const std::ptrdiff_t sizeInp) {
     if (sizeInp < 0) {
         throw std::out_of_range("Index out of range");
     }
@@ -43,7 +43,7 @@ ArrayD::ArrayD(std::ptrdiff_t sizeInp) {
         memory_[i] = 0;
     }
 }
-ArrayD::ArrayD(std::ptrdiff_t sizeInp, double num) {
+ArrayD::ArrayD(const std::ptrdiff_t sizeInp, const double num) {
     if (sizeInp < 0) {
         throw std::out_of_range("Index out of range");
     }
@@ -55,7 +55,7 @@ ArrayD::ArrayD(std::ptrdiff_t sizeInp, double num) {
     }
 }
 
-ArrayD::ArrayD(std::initializer_list<int> initList) : ssize_(initList.size()), capacity_(initList.size()), memory_(nullptr)
+ArrayD::ArrayD(const std::initializer_list<int> initList) : ssize_(initList.size()), capacity_(initList.size()), memory_(nullptr)
 {
     memory_ = new double[ssize_];
     std::copy(initList.begin(), initList.end(), memory_);
@@ -66,26 +66,26 @@ ArrayD::~ArrayD()
     delete[] memory_;
 }
 
-std::ptrdiff_t ArrayD::ssize() const
+std::ptrdiff_t ArrayD::ssize() const noexcept
 {
     return ssize_;
 }
 
-double& ArrayD::operator[](std::ptrdiff_t index) {
+double& ArrayD::operator[](const std::ptrdiff_t index) {
     if (index < 0 || index >= ssize()) {
         throw std::out_of_range("Index out of range");
     }
     return memory_[index];
 }
 
-const double& ArrayD::operator[](std::ptrdiff_t index) const{
+const double& ArrayD::operator[](const std::ptrdiff_t index) const{
     if (index < 0 || index >= ssize()) {
         throw std::out_of_range("Index out of range");
     }
     return memory_[index];
 }
 
-void ArrayD::reserve(std::ptrdiff_t newCapacity_) {
+void ArrayD::reserve(const std::ptrdiff_t newCapacity_) {
     capacity_ = newCapacity_;
     if (capacity_ < ssize()) {
         ssize_ = capacity_;
@@ -105,7 +105,7 @@ void ArrayD::reserve(std::ptrdiff_t newCapacity_) {
     memory_ = newMemory_;
 }
 
-void ArrayD::resize(std::ptrdiff_t newSsize_) {
+void ArrayD::resize(const std::ptrdiff_t newSsize_) {
     if (newSsize_ > capacity_) {
         reserve(newSsize_);
     }
@@ -117,7 +117,7 @@ void ArrayD::resize(std::ptrdiff_t newSsize_) {
     ssize_ = newSsize_;
 }
 
-void ArrayD::insert(std::ptrdiff_t pos, double num)
+void ArrayD::insert(const std::ptrdiff_t pos, const double num)
 {
     if (pos < 0 || pos > ssize()) {
         throw std::out_of_range("Wrong position");
@@ -129,7 +129,7 @@ void ArrayD::insert(std::ptrdiff_t pos, double num)
     memory_[pos] = num;
 }
 
-void ArrayD::remove(std::ptrdiff_t pos)
+void ArrayD::remove(const std::ptrdiff_t pos)
 {
     if (pos < 0 || pos > ssize()) {
         throw std::out_of_range("Wrong position");
@@ -140,7 +140,7 @@ void ArrayD::remove(std::ptrdiff_t pos)
     resize(ssize() - 1);
 }
 
-void ArrayD::push_back(double newElement) {
+void ArrayD::push_back(const double newElement) {
     if (ssize() == capacity_) {
         resize(static_cast<std::ptrdiff_t>(ssize() + 1));
     }

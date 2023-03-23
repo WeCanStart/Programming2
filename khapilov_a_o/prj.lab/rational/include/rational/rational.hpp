@@ -8,7 +8,7 @@
 class Rational{
   public:
       Rational();
-      Rational(const int32_t numInp) noexcept;
+      explicit Rational(const int32_t numInp) noexcept;
       Rational(const Rational&) = default;
       Rational(Rational&&) = default;
       Rational(int32_t numInp, int32_t denomInp);
@@ -18,6 +18,12 @@ class Rational{
       Rational& operator-=(const Rational& rhs);
       Rational& operator*=(const Rational& rhs);
       Rational& operator/=(const Rational& rhs);
+
+      Rational& operator=(const int32_t& rhs);
+      Rational& operator+=(const int32_t& rhs);
+      Rational& operator-=(const int32_t& rhs);
+      Rational& operator*=(const int32_t& rhs);
+      Rational& operator/=(const int32_t& rhs);
 
       Rational& operator++();
       Rational operator++(int);
@@ -46,13 +52,19 @@ private:
 std::ostream& operator<<(std::ostream& ostrm, const Rational& rhs);
 std::istream& operator>>(std::istream& istrm, Rational& rhs);
 
-Rational& operator+(Rational& rhs);
-Rational& operator-(Rational& rhs);
+Rational operator+(Rational& rhs);
+Rational operator-(Rational& rhs);
 
 Rational operator+(Rational lhs, const Rational& rhs);
 Rational operator-(Rational lhs, const Rational& rhs);
 Rational operator*(Rational lhs, const Rational& rhs);
 Rational operator/(Rational lhs, const Rational& rhs);
+
+Rational operator+(Rational lhs, const int32_t& rhs);
+Rational operator-(Rational lhs, const int32_t& rhs);
+Rational operator*(Rational lhs, const int32_t& rhs);
+Rational operator/(Rational lhs, const int32_t& rhs);
+
 Rational sqr(Rational myRat);
 Rational pow(Rational myRat, const int32_t power);
 
@@ -64,5 +76,12 @@ bool operator<(Rational lhs, const Rational& rhs);
 bool operator!=(const Rational& lhs, const Rational& rhs);
 bool operator<=(const Rational& lhs, const Rational& rhs);
 bool operator>=(const Rational& lhs, const Rational& rhs);
+
+bool operator==(const Rational& lhs, const int& rhs);
+bool operator>(const Rational& lhs, const int& rhs);
+bool operator<(const Rational& lhs, const int& rhs);
+bool operator!=(const Rational& lhs, const int& rhs);
+bool operator<=(const Rational& lhs, const int& rhs);
+bool operator>=(const Rational& lhs, const int& rhs);
 
 #endif

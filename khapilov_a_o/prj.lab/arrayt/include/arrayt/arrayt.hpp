@@ -14,7 +14,7 @@ public:
     ArrayT();
     explicit ArrayT(const std::ptrdiff_t len);
     ArrayT(const ArrayT<T>&);
-    ArrayT(const ArrayT<T>&&) noexcept;
+    //ArrayT(const ArrayT<T>&&) noexcept;
     ArrayT(std::ptrdiff_t sizeInp, T number);
     ArrayT(std::initializer_list<T> initList);   //not explicit
 
@@ -73,19 +73,19 @@ ArrayT<T>::ArrayT(const ArrayT<T>& prev) : ssize_(prev.ssize_), capacity_(prev.c
         std::copy(prev.memory_, prev.memory_ + prev.ssize_, memory_);
     }
 }
-template<typename T>
-ArrayT<T>::ArrayT(const ArrayT<T>&& prev) noexcept : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr) {
-    if (this == &prev) {
-        return;
-    }
-    memory_ = new T[capacity_];
-    if (prev.memory_ == nullptr) {
-        memory_ = nullptr;
-    }
-    else {
-        std::copy(prev.memory_, prev.memory_ + prev.ssize_, memory_);
-    }
-}
+//template<typename T>
+//ArrayT<T>::ArrayT(const ArrayT<T>&& prev) noexcept : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr) {
+//    if (this == &prev) {
+//        return;
+//    }
+//    memory_ = new T[capacity_];
+//    if (prev.memory_ == nullptr) {
+//        memory_ = nullptr;
+//    }
+//    else {
+//        std::copy(prev.memory_, prev.memory_ + prev.ssize_, memory_);
+//    }
+//}
 template<typename T>
 ArrayT<T>::ArrayT(std::ptrdiff_t sizeInp) {
     if (sizeInp < 0) {

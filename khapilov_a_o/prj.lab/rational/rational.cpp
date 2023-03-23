@@ -59,6 +59,22 @@ Rational& Rational::operator/=(const Rational& rhs) {
     return *this;
 }
 
+Rational& Rational::operator=(const int& rhs) {
+    return *this = Rational(rhs);
+}
+Rational& Rational::operator+=(const int& rhs) {
+    return *this += Rational(rhs);
+}
+Rational& Rational::operator-=(const int& rhs) {
+    return *this -= Rational(rhs);
+}
+Rational& Rational::operator*=(const int& rhs) {
+    return *this *= Rational(rhs);
+}
+Rational& Rational::operator/=(const int& rhs) {
+    return *this /= Rational(rhs);
+}
+
 Rational& Rational::operator++() {
     *this += 1;
     return *this;
@@ -104,10 +120,10 @@ std::istream& operator>>(std::istream& istrm, Rational& rhs) {
     return rhs.ReadFrom(istrm);
 }
 
-Rational& operator+(Rational& rhs) {
+Rational operator+(Rational& rhs) {
     return rhs;
 }
-Rational& operator-(Rational& rhs) {
+Rational operator-(Rational& rhs) {
     Rational tmp;
     tmp -= rhs;
     return tmp;
@@ -129,6 +145,24 @@ Rational operator/(Rational lhs, const Rational& rhs) {
     lhs /= rhs;
     return lhs;
 }
+
+Rational operator+(Rational lhs, const int& rhs) {
+    lhs += Rational(rhs);
+    return lhs;
+}
+Rational operator-(Rational lhs, const int& rhs) {
+    lhs -= Rational(rhs);
+    return lhs;
+}
+Rational operator*(Rational lhs, const int& rhs) {
+    lhs *= Rational(rhs);
+    return lhs;
+}
+Rational operator/(Rational lhs, const int& rhs) {
+    lhs /= Rational(rhs);
+    return lhs;
+}
+
 Rational sqr(Rational myRat) {
     myRat *= myRat;
     return myRat;
@@ -175,6 +209,25 @@ bool operator<=(const Rational& lhs, const Rational& rhs) {
 }
 bool operator>=(const Rational& lhs, const Rational& rhs) {
     return !operator<(lhs, rhs);
+}
+
+bool operator==(const Rational& lhs, const int& rhs) {
+    return lhs == Rational(rhs);
+}
+bool operator!=(const Rational& lhs, const int& rhs) {
+    return lhs != Rational(rhs);
+}
+bool operator<=(const Rational& lhs, const int& rhs) {
+    return lhs <= Rational(rhs);
+}
+bool operator>=(const Rational& lhs, const int& rhs) {
+    return lhs >= Rational(rhs);
+}
+bool operator<(const Rational& lhs, const int& rhs) {
+    return lhs < Rational(rhs);
+}
+bool operator>(const Rational& lhs, const int& rhs) {
+    return lhs > Rational(rhs);
 }
 
 int32_t Rational::gcd(int32_t a, int32_t b) const {

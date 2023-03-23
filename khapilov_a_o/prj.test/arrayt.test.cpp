@@ -162,7 +162,7 @@ TEST_CASE("[arrayd] - ArrayT<T> size & capacity") {
 typedef Rational T2;
 TEST_CASE("[arrayd] - ArrayT<T> ctor") {
     ArrayT<T2> a(3);
-    ArrayT<T2> b{ 0, 0, 0 };
+    ArrayT<T2> b{ Rational(0), Rational(0), Rational(0) };
     CHECK(a == b);
     a = ArrayT<T2>();
     b = ArrayT<T2>(0);
@@ -171,63 +171,63 @@ TEST_CASE("[arrayd] - ArrayT<T> ctor") {
 }
 
 TEST_CASE("[arrayd] - ArrayT<T> assignment arithmetic ops") {
-    ArrayT<T2> a(2, 4);
-    ArrayT<T2> b(2, 5);
-    CHECK((a += 1) == b);
+    ArrayT<T2> a(2, Rational(4));
+    ArrayT<T2> b(2, Rational(5));
+    CHECK((a += Rational(1)) == b);
     CHECK(a == b);
-    a = ArrayT<T2>(2, 4);
-    b = ArrayT<T2>(2, 3);
-    CHECK((a -= 1) == b);
+    a = ArrayT<T2>(2, Rational(4));
+    b = ArrayT<T2>(2, Rational(3));
+    CHECK((a -= Rational(1)) == b);
     CHECK(a == b);
-    a = ArrayT<T2>(2, 4);
-    b = ArrayT<T2>(2, 8);
-    CHECK((a *= 2) == b);
+    a = ArrayT<T2>(2, Rational(4));
+    b = ArrayT<T2>(2, Rational(8));
+    CHECK((a *= Rational(2)) == b);
     CHECK(a == b);
-    a = ArrayT<T2>(2, 4);
-    b = ArrayT<T2>(2, 2);
-    CHECK((a /= 2) == b);
+    a = ArrayT<T2>(2, Rational(4));
+    b = ArrayT<T2>(2, Rational(2));
+    CHECK((a /= Rational(2)) == b);
     CHECK(a == b);
-    a = ArrayT<T2>(2, 4);
+    a = ArrayT<T2>(2, Rational(4));
     b = ArrayT<T2>(0);
     CHECK((b = a) == a);
-    CHECK_THROWS(a /= 0);
+    CHECK_THROWS(a /= Rational(0));
 }
 
 TEST_CASE("[arrayd] - ArrayT<T> arithmetic ops") {
-    ArrayT<T2> a(2, 4);
-    ArrayT<T2> b(2, 5);
+    ArrayT<T2> a(2, Rational(4));
+    ArrayT<T2> b(2, Rational(5));
     a = a + Rational(1);
     CHECK(a == b);
-    b = ArrayT<T2>(2, 4);
+    b = ArrayT<T2>(2, Rational(4));
     a = a - Rational(1);
     CHECK(a == b);
-    b = ArrayT<T2>(2, 8);
+    b = ArrayT<T2>(2, Rational(8));
     a = a * Rational(2);
     CHECK(a == b);
-    b = ArrayT<T2>(2, 2);
+    b = ArrayT<T2>(2, Rational(2));
     a = a / Rational(4);
     CHECK(a == b);
     CHECK_THROWS(a / Rational(0));
 }
 
 TEST_CASE("[arrayd] - ArrayT<T> bool operators") {
-    ArrayT<T2> a(2, 4);
-    ArrayT<T2> b(2, 4);
+    ArrayT<T2> a(2, Rational(4));
+    ArrayT<T2> b(2, Rational(4));
     CHECK(a == b);
-    b = ArrayT<T2>(2, 3);
+    b = ArrayT<T2>(2, Rational(3));
     CHECK(a != b);
-    b = ArrayT<T2>(1, 4);
+    b = ArrayT<T2>(1, Rational(4));
     CHECK(a != b);
 }
 
 TEST_CASE("[arrayd] - ArrayT<T> size & capacity") {
-    ArrayT<T2> a(1, 0);
+    ArrayT<T2> a(1, Rational(0));
     CHECK(a[0] == 0);
-    a.push_back(1);
+    a.push_back(Rational(1));
     CHECK(a[1] == 1);
-    a.insert(2, 2);
+    a.insert(2, Rational(2));
     CHECK(a[2] == 2);
-    a.insert(1, 3);
+    a.insert(1, Rational(3));
     CHECK(a[1] == 3);
     CHECK(a[2] == 1);
     a.pop_back();

@@ -79,17 +79,17 @@ MatrixS::~MatrixS()
     delete[] data_;
 }
 
-const int& MatrixS::at(int row_, int col_) const{
-    if (row_ >= rows_ || data_[row_] + col_ >= len_) {
+const int& MatrixS::at(const MatrixS::size_type s) const{
+    if (s.first >= rows_ || data_[s.first] + s.second >= len_) {
         throw std::out_of_range("Wrong position");
     }
-    return data_[data_[row_] + col_];
+    return data_[data_[s.first] + s.second];
 }
-int& MatrixS::at(int row_, int col_) {
-    if (row_ >= rows_ || data_[row_] + col_ >= len_) {
+int& MatrixS::at(const MatrixS::size_type s) {
+    if (s.first >= rows_ || data_[s.first] + s.second >= len_) {
         throw std::out_of_range("Wrong position");
     }
-    return data_[data_[row_] + col_];
+    return data_[data_[s.first] + s.second];
 }
 
 int MatrixS::getNumRows() const
@@ -101,16 +101,16 @@ int MatrixS::getNumCols() const
     return cols_;
 }
 
-void MatrixS::resize(MatrixS::size_type s)
+void MatrixS::resize(size_type s)
 {
     MatrixS newMatrix(s.first, s.second);
     for (std::ptrdiff_t r = 0; r < s.first; ++r) {
         for (std::ptrdiff_t c = 0; c < s.second; ++c) {
             if (rows_ <= r || cols_ <= c) {
-                newMatrix.at(r, c) = 0;
+                newMatrix.at(size_type(r, c)) = 0;
             }
             else {
-                newMatrix.at(r, c) = at(r, c);
+                newMatrix.at(size_type(r, c)) = at(size_type(r, c));
             }
         }
     }
@@ -119,7 +119,7 @@ void MatrixS::resize(MatrixS::size_type s)
 
 MatrixS::size_type MatrixS::ssize() const noexcept
 {
-    return MatrixS::size_type(rows_, cols_);
+    return size_type(rows_, cols_);
 }
 
 MatrixS& MatrixS::operator=(MatrixS& rhs)
@@ -167,7 +167,7 @@ MatrixS operator-(MatrixS matrix)
 {
     for (int i = 0; i < matrix.getNumRows(); ++i) {
         for (int j = 0; j < matrix.getNumCols(); ++j) {
-            matrix.at(i, j) = -matrix.at(i, j);
+            matrix.at(MatrixS::size_type(i, j)) = -matrix.at(MatrixS::size_type(i, j));
         }
     }
     return matrix;
@@ -222,7 +222,7 @@ MatrixS& operator+=(MatrixS& lhs, MatrixS& rhs)
     }
     for (ptrdiff_t i = 0; i < lhs.getNumRows(); ++i) {
         for (ptrdiff_t j = 0; j < lhs.getNumCols(); ++j) {
-            lhs.at(i, j) += rhs.at(i, j);
+            lhs.at(MatrixS::size_type(i, j)) += rhs.at(MatrixS::size_type(i, j));
         }
     }
     return lhs;
@@ -235,7 +235,7 @@ MatrixS& operator-=(MatrixS& lhs, MatrixS& rhs)
     }
     for (ptrdiff_t i = 0; i < lhs.getNumRows(); ++i) {
         for (ptrdiff_t j = 0; j < lhs.getNumCols(); ++j) {
-            lhs.at(i, j) -= rhs.at(i, j);
+            lhs.at(MatrixS::size_type(i, j)) -= rhs.at(MatrixS::size_type(i, j));
         }
     }
     return lhs;
@@ -268,7 +268,7 @@ MatrixS operator*(MatrixS& lhs, MatrixS& rhs)
     for (ptrdiff_t i = 0; i < lhs.getNumRows(); ++i) {
         for (ptrdiff_t j = 0; j < lhs.getNumCols(); ++j) {
             for (ptrdiff_t k = 0; k < rhs.getNumCols(); ++k) {
-                ret.at(i, k) += lhs.at(i, j) * rhs.at(j, k);
+                ret.at(MatrixS::size_type(i, k)) += lhs.at(MatrixS::size_type(i, j)) * rhs.at(MatrixS::size_type(j, k));
             }
         }
     }
@@ -301,7 +301,7 @@ MatrixS IdentityMatrix(int n)
 {
     MatrixS ident = MatrixS(n, n);
     for (int i = 0; i < n; ++i) {
-        ident.at(i, i) = 1;
+        ident.at(MatrixS::size_type(i, i)) = 1;
     }
     return ident;
 }
@@ -313,7 +313,7 @@ bool operator==(MatrixS& lhs, MatrixS& rhs) {
     bool equal = true;
     for (int i = 0; i < lhs.getNumRows(); ++i) {
         for (int j = 0; j < lhs.getNumCols(); ++j) {
-            equal &= (lhs.at(i, j) == rhs.at(i, j));
+            equal &= (lhs.at(MatrixS::size_type(i, j)) == rhs.at(MatrixS::size_type(i, j)));
         }
     }
     return equal;

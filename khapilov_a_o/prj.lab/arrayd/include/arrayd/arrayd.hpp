@@ -11,24 +11,24 @@ public:
     ArrayD();
     explicit ArrayD(const std::ptrdiff_t len);
     ArrayD(const ArrayD&);
-    ArrayD(const ArrayD&&) noexcept;
-    ArrayD(std::ptrdiff_t sizeInp, double number);
-    ArrayD(std::initializer_list<int> initList);   //not explicit
+    //ArrayD(const ArrayD&&) noexcept;
+    ArrayD(const std::ptrdiff_t sizeInp, double number);
+    ArrayD(const std::initializer_list<int> initList);   //not explicit
 
     ~ArrayD();
 
-    std::ptrdiff_t ssize() const;
+    std::ptrdiff_t ssize() const noexcept;
 
-    double& operator[](std::ptrdiff_t index);
-    const double& operator[](std::ptrdiff_t index) const;
+    double& operator[](const std::ptrdiff_t index);
+    const double& operator[](const std::ptrdiff_t index) const;
 
-    void reserve(std::ptrdiff_t newCapacity_);
-    void resize(std::ptrdiff_t newSsize_);
+    void reserve(const std::ptrdiff_t newCapacity_);
+    void resize(const std::ptrdiff_t newSsize_);
 
-    void insert(std::ptrdiff_t, double num);
-    void remove(std::ptrdiff_t);
+    void insert(const std::ptrdiff_t, const double num);
+    void remove(const std::ptrdiff_t);
 
-    void push_back(double newElement);
+    void push_back(const double newElement);
     double pop_back();
 
     ArrayD& operator=(const ArrayD& rhs);

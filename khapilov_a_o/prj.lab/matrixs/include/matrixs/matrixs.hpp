@@ -7,6 +7,7 @@
 #include <utility>
 
 class MatrixS {
+public:
     using size_type = std::pair<std::ptrdiff_t, std::ptrdiff_t>;
 public:
     MatrixS();
@@ -18,8 +19,8 @@ public:
 
     ~MatrixS();
 
-    const int& at(int, int) const;
-    int& at(int, int);
+    const int& at(const size_type) const;
+    int& at(const size_type);
 
     int getNumRows() const;
     int getNumCols() const;
