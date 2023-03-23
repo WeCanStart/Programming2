@@ -281,8 +281,8 @@ std::istream& Rational::ReadFrom(std::istream& istrm)
         istrm.setstate(std::ios_base::failbit);
         return istrm;
     }
-
     sym = istrm.get();
+
     while (std::isdigit(istrm.peek())) {
         sym = istrm.get();
         denomInp_ *= 10;
@@ -294,12 +294,11 @@ std::istream& Rational::ReadFrom(std::istream& istrm)
     }
     
     if (istrm.good()) {
-        if (denomInp_ == 0) {
-            istrm.setstate(std::ios_base::failbit);
-            return istrm;
-        }
         num_ = numInp_;
         denom_ = denomInp_;
+        if (denom_ == 0) {
+            throw std::invalid_argument("Divide by zero exception");
+        }
         if (isNeg) {
             num_ *= -1;
         }
