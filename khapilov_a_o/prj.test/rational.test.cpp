@@ -196,7 +196,9 @@ TEST_CASE("Streams")
     CHECK(a == 0);
     strm.str("");
     strm << "1/0\n";
-    CHECK_THROWS(strm >> a);
+    strm >> a;
+    CHECK(strm.fail());
+    strm.clear(strm.rdstate() & ~std::ios::failbit);
     strm.str("");
     strm << "k/1\n";
     strm >> a;
