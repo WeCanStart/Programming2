@@ -65,6 +65,11 @@ Rational operator-(Rational lhs, const int32_t& rhs);
 Rational operator*(Rational lhs, const int32_t& rhs);
 Rational operator/(Rational lhs, const int32_t& rhs);
 
+Rational operator+(const int32_t& lhs, Rational rhs);
+Rational operator-(const int32_t& lhs, Rational rhs);
+Rational operator*(const int32_t& lhs, Rational rhs);
+Rational operator/(const int32_t& lhs, Rational rhs);
+
 Rational sqr(Rational myRat);
 Rational pow(Rational myRat, const int32_t power);
 
@@ -77,11 +82,18 @@ bool operator!=(const Rational& lhs, const Rational& rhs);
 bool operator<=(const Rational& lhs, const Rational& rhs);
 bool operator>=(const Rational& lhs, const Rational& rhs);
 
-bool operator==(const Rational& lhs, const int& rhs);
-bool operator>(const Rational& lhs, const int& rhs);
-bool operator<(const Rational& lhs, const int& rhs);
-bool operator!=(const Rational& lhs, const int& rhs);
-bool operator<=(const Rational& lhs, const int& rhs);
-bool operator>=(const Rational& lhs, const int& rhs);
+bool operator==(const Rational& lhs, const int32_t& rhs);
+bool operator>(const Rational& lhs, const int32_t& rhs);
+bool operator<(const Rational& lhs, const int32_t& rhs);
+bool operator!=(const Rational& lhs, const int32_t& rhs);
+bool operator<=(const Rational& lhs, const int32_t& rhs);
+bool operator>=(const Rational& lhs, const int32_t& rhs);
+
+bool operator==(const int32_t& lhs, const Rational& rhs);
+bool operator>(const int32_t& lhs, const Rational& rhs);
+bool operator<(const int32_t& lhs, const Rational& rhs);
+bool operator!=(const int32_t& lhs, const Rational& rhs);
+bool operator<=(const int32_t& lhs, const Rational& rhs);
+bool operator>=(const int32_t& lhs, const Rational& rhs);
 
 #endif

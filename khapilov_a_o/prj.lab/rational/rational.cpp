@@ -146,21 +146,38 @@ Rational operator/(Rational lhs, const Rational& rhs) {
     return lhs;
 }
 
-Rational operator+(Rational lhs, const int& rhs) {
+Rational operator+(Rational lhs, const int32_t& rhs) {
     lhs += Rational(rhs);
     return lhs;
 }
-Rational operator-(Rational lhs, const int& rhs) {
+Rational operator-(Rational lhs, const int32_t& rhs) {
     lhs -= Rational(rhs);
     return lhs;
 }
-Rational operator*(Rational lhs, const int& rhs) {
+Rational operator*(Rational lhs, const int32_t& rhs) {
     lhs *= Rational(rhs);
     return lhs;
 }
-Rational operator/(Rational lhs, const int& rhs) {
+Rational operator/(Rational lhs, const int32_t& rhs) {
     lhs /= Rational(rhs);
     return lhs;
+}
+
+Rational operator+(const int32_t& lhs, Rational rhs) {
+    rhs += lhs;
+    return rhs;
+}
+Rational operator-(const int32_t& lhs, Rational rhs) {
+    rhs -= lhs;
+    return -rhs;
+}
+Rational operator*(const int32_t& lhs, Rational rhs) {
+    rhs *= lhs;
+    return rhs;
+}
+Rational operator/(const int32_t& lhs, Rational rhs) {
+    rhs /= lhs;
+    return pow(rhs, -1);
 }
 
 Rational sqr(Rational myRat) {
@@ -211,23 +228,42 @@ bool operator>=(const Rational& lhs, const Rational& rhs) {
     return !operator<(lhs, rhs);
 }
 
-bool operator==(const Rational& lhs, const int& rhs) {
+bool operator==(const Rational& lhs, const int32_t& rhs) {
     return lhs == Rational(rhs);
 }
-bool operator!=(const Rational& lhs, const int& rhs) {
+bool operator!=(const Rational& lhs, const int32_t& rhs) {
     return lhs != Rational(rhs);
 }
-bool operator<=(const Rational& lhs, const int& rhs) {
+bool operator<=(const Rational& lhs, const int32_t& rhs) {
     return lhs <= Rational(rhs);
 }
-bool operator>=(const Rational& lhs, const int& rhs) {
+bool operator>=(const Rational& lhs, const int32_t& rhs) {
     return lhs >= Rational(rhs);
 }
-bool operator<(const Rational& lhs, const int& rhs) {
+bool operator<(const Rational& lhs, const int32_t& rhs) {
     return lhs < Rational(rhs);
 }
-bool operator>(const Rational& lhs, const int& rhs) {
+bool operator>(const Rational& lhs, const int32_t& rhs) {
     return lhs > Rational(rhs);
+}
+
+bool operator==(const int32_t& lhs, const Rational& rhs) {
+    return Rational(lhs) == rhs;
+}
+bool operator!=(const int32_t& lhs, const Rational& rhs) {
+    return Rational(lhs) != rhs;
+}
+bool operator<=(const int32_t& lhs, const Rational& rhs) {
+    return Rational(lhs) <= rhs;
+}
+bool operator>=(const int32_t& lhs, const Rational& rhs) {
+    return Rational(lhs) >= rhs;
+}
+bool operator<(const int32_t& lhs, const Rational& rhs) {
+    return Rational(lhs) < rhs;
+}
+bool operator>(const int32_t& lhs, const Rational& rhs) {
+    return Rational(lhs) > rhs;
 }
 
 int32_t Rational::gcd(int32_t a, int32_t b) const {
