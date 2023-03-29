@@ -8,27 +8,31 @@
 
 class MatrixS {
 public:
-    using size_type = std::pair<std::ptrdiff_t, std::ptrdiff_t>;
+    using SizeType = std::tuple<std::ptrdiff_t, std::ptrdiff_t>;
 public:
-    MatrixS();
+    explicit MatrixS(const SizeType& s = {0, 0});
     MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_);
     MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_, int num);
     MatrixS(std::initializer_list<std::initializer_list<int>> initList);
-    MatrixS(MatrixS&);
+    MatrixS(const MatrixS&);
     //MatrixS(MatrixS&&) noexcept;
 
     ~MatrixS();
 
-    const int& at(const size_type) const;
-    int& at(const size_type);
+    const int& at(const std::ptrdiff_t, const std::ptrdiff_t) const;
+    int& at(const std::ptrdiff_t, const std::ptrdiff_t);
+    const int& at(const SizeType) const;
+    int& at(const SizeType);
 
-    int getNumRows() const;
-    int getNumCols() const;
+    std::ptrdiff_t nRows() const noexcept;
+    std::ptrdiff_t nCols() const noexcept;
 
-    void resize(size_type);
-    size_type ssize() const noexcept;
+    void resize(const std::ptrdiff_t, const std::ptrdiff_t);
+    void resize(const SizeType&);
 
-    MatrixS& operator=(MatrixS&);
+    SizeType ssize() const noexcept;
+
+    MatrixS& operator=(const MatrixS&);
     MatrixS& operator=(MatrixS&&) noexcept;
 
     MatrixS& operator+=(int);
@@ -41,7 +45,7 @@ public:
     ptrdiff_t len_;
     int* data_;
 };
-MatrixS IdentityMatrix(int);
+MatrixS identityMatrix(int);
 
 MatrixS operator+(MatrixS);
 MatrixS operator-(MatrixS);

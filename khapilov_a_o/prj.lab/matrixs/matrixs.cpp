@@ -1,7 +1,20 @@
 #include <matrixs/matrixs.hpp>
 #include <iostream>
 
-MatrixS::MatrixS() : rows_(0), cols_(0), len_(0), data_(nullptr) {};
+MatrixS::MatrixS(const SizeType& s) : rows_(std::get<0>(s)), cols_(std::get<1>(s)), data_(nullptr)
+{
+    if (rows_ <= 0 || cols_ <= 0) {
+        throw std::invalid_argument("Sizes must be positive");
+    }
+    len_ = rows_ + rows_ * cols_;
+    data_ = new int[len_];
+    for (ptrdiff_t i = 0; i < rows_; ++i) {
+        data_[i] = rows_ + i * cols_;
+    }
+    for (ptrdiff_t i = rows_; i < len_; ++i) {
+        data_[i] = 0;
+    }
+}
 
 MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_) : rows_(rowsInp_), cols_(colsInp_), data_(nullptr){
     if (rows_ <= 0 || cols_ <= 0) {
@@ -58,7 +71,7 @@ MatrixS::MatrixS(std::initializer_list<std::initializer_list<int>> initList)
     }
 }
 
-MatrixS::MatrixS(MatrixS& prev) : rows_(prev.rows_), cols_(prev.cols_), len_(prev.len_), data_(nullptr){
+MatrixS::MatrixS(const MatrixS& prev) : rows_(prev.rows_), cols_(prev.cols_), len_(prev.len_), data_(nullptr){
     if (this == &prev) {
         return;
     }
@@ -79,50 +92,83 @@ MatrixS::~MatrixS()
     delete[] data_;
 }
 
-const int& MatrixS::at(const MatrixS::size_type s) const{
-    if (s.first >= rows_ || data_[s.first] + s.second >= len_) {
+const int& MatrixS::at(const std::ptrdiff_t row, const std::ptrdiff_t col) const {
+    if (row >= rows_ || data_[row] + col >= len_ || row < 0 || data_[row] + col < 0) {
         throw std::out_of_range("Wrong position");
     }
-    return data_[data_[s.first] + s.second];
+    return data_[data_[row] + col];
 }
-int& MatrixS::at(const MatrixS::size_type s) {
-    if (s.first >= rows_ || data_[s.first] + s.second >= len_) {
+int& MatrixS::at(const std::ptrdiff_t row, const std::ptrdiff_t col) {
+    if (row >= rows_ || data_[row] + col >= len_ || row < 0 || data_[row] + col < 0) {
         throw std::out_of_range("Wrong position");
     }
-    return data_[data_[s.first] + s.second];
+    return data_[data_[row] + col];
+}
+const int& MatrixS::at(const MatrixS::SizeType s) const{
+    if (std::get<0>(s) >= rows_ || data_[std::get<0>(s)] + std::get<1>(s) >= len_ || std::get<0>(s) < 0 || data_[std::get<0>(s)] + std::get<1>(s) < 0) {
+        throw std::out_of_range("Wrong position");
+    }
+    return data_[data_[std::get<0>(s)] + std::get<1>(s)];
+}
+int& MatrixS::at(const MatrixS::SizeType s) {
+    if (std::get<0>(s) >= rows_ || data_[std::get<0>(s)] + std::get<1>(s) >= len_ || std::get<0>(s) < 0 || data_[std::get<0>(s)] + std::get<1>(s) < 0) {
+        throw std::out_of_range("Wrong position");
+    }
+    return data_[data_[std::get<0>(s)] + std::get<1>(s)];
 }
 
-int MatrixS::getNumRows() const
+std::ptrdiff_t MatrixS::nRows() const
 {
     return rows_;
 }
-int MatrixS::getNumCols() const
+std::ptrdiff_t MatrixS::nCols() const
 {
     return cols_;
 }
 
-void MatrixS::resize(size_type s)
+void MatrixS::resize(const std::ptrdiff_t row, const std::ptrdiff_t col)
 {
-    MatrixS newMatrix(s.first, s.second);
-    for (std::ptrdiff_t r = 0; r < s.first; ++r) {
-        for (std::ptrdiff_t c = 0; c < s.second; ++c) {
+    if (row <= 0 || col <= 0) {
+        throw std::invalid_argument("Sizes must be positive");
+    }
+    MatrixS newMatrix(row, col);
+    for (std::ptrdiff_t r = 0; r < row; ++r) {
+        for (std::ptrdiff_t c = 0; c < col; ++c) {
             if (rows_ <= r || cols_ <= c) {
-                newMatrix.at(size_type(r, c)) = 0;
+                newMatrix.at(SizeType(r, c)) = 0;
             }
             else {
-                newMatrix.at(size_type(r, c)) = at(size_type(r, c));
+                newMatrix.at(SizeType(r, c)) = at(SizeType(r, c));
+            }
+        }
+    }
+    *this = newMatrix;
+}
+void MatrixS::resize(const SizeType& s)
+{
+    if (std::get<0>(s) <= 0 || std::get<1>(s) <= 0) {
+        throw std::invalid_argument("Sizes must be positive");
+    }
+    MatrixS newMatrix(std::get<0>(s), std::get<1>(s));
+    for (std::ptrdiff_t r = 0; r < std::get<0>(s); ++r) {
+        for (std::ptrdiff_t c = 0; c < std::get<1>(s); ++c) {
+            if (rows_ <= r || cols_ <= c) {
+                newMatrix.at(SizeType(r, c)) = 0;
+            }
+            else {
+                newMatrix.at(SizeType(r, c)) = at(SizeType(r, c));
             }
         }
     }
     *this = newMatrix;
 }
 
-MatrixS::size_type MatrixS::ssize() const noexcept
+MatrixS::SizeType MatrixS::ssize() const noexcept
 {
-    return size_type(rows_, cols_);
+    return SizeType(rows_, cols_);
 }
 
-MatrixS& MatrixS::operator=(MatrixS& rhs)
+MatrixS& MatrixS::operator=(const MatrixS& rhs)
 {
     if (this == &rhs) {
         return *this;
@@ -165,9 +211,9 @@ MatrixS operator+(MatrixS matrix)
 
 MatrixS operator-(MatrixS matrix)
 {
-    for (int i = 0; i < matrix.getNumRows(); ++i) {
-        for (int j = 0; j < matrix.getNumCols(); ++j) {
-            matrix.at(MatrixS::size_type(i, j)) = -matrix.at(MatrixS::size_type(i, j));
+    for (int i = 0; i < matrix.nRows(); ++i) {
+        for (int j = 0; j < matrix.nCols(); ++j) {
+            matrix.at(MatrixS::SizeType(i, j)) = -matrix.at(MatrixS::SizeType(i, j));
         }
     }
     return matrix;
@@ -217,12 +263,12 @@ MatrixS operator*(MatrixS lhs, int rhs)
 
 MatrixS& operator+=(MatrixS& lhs, MatrixS& rhs)
 {
-    if (lhs.getNumRows() != rhs.getNumRows() || lhs.getNumCols() != rhs.getNumCols()) {
+    if (lhs.nRows() != rhs.nRows() || lhs.nCols() != rhs.nCols()) {
         throw std::invalid_argument("Wrong shape");
     }
-    for (ptrdiff_t i = 0; i < lhs.getNumRows(); ++i) {
-        for (ptrdiff_t j = 0; j < lhs.getNumCols(); ++j) {
-            lhs.at(MatrixS::size_type(i, j)) += rhs.at(MatrixS::size_type(i, j));
+    for (ptrdiff_t i = 0; i < lhs.nRows(); ++i) {
+        for (ptrdiff_t j = 0; j < lhs.nCols(); ++j) {
+            lhs.at(MatrixS::SizeType(i, j)) += rhs.at(MatrixS::SizeType(i, j));
         }
     }
     return lhs;
@@ -230,12 +276,12 @@ MatrixS& operator+=(MatrixS& lhs, MatrixS& rhs)
 
 MatrixS& operator-=(MatrixS& lhs, MatrixS& rhs)
 {
-    if (lhs.getNumRows() != rhs.getNumRows() || lhs.getNumCols() != rhs.getNumCols()) {
+    if (lhs.nRows() != rhs.nRows() || lhs.nCols() != rhs.nCols()) {
         throw std::invalid_argument("Wrong shape");
     }
-    for (ptrdiff_t i = 0; i < lhs.getNumRows(); ++i) {
-        for (ptrdiff_t j = 0; j < lhs.getNumCols(); ++j) {
-            lhs.at(MatrixS::size_type(i, j)) -= rhs.at(MatrixS::size_type(i, j));
+    for (ptrdiff_t i = 0; i < lhs.nRows(); ++i) {
+        for (ptrdiff_t j = 0; j < lhs.nCols(); ++j) {
+            lhs.at(MatrixS::SizeType(i, j)) -= rhs.at(MatrixS::SizeType(i, j));
         }
     }
     return lhs;
@@ -261,14 +307,14 @@ MatrixS operator-(MatrixS lhs, MatrixS& rhs)
 
 MatrixS operator*(MatrixS& lhs, MatrixS& rhs)
 {
-    MatrixS ret(lhs.getNumRows(), rhs.getNumCols());
-    if (lhs.getNumCols() != rhs.getNumRows()) {
+    MatrixS ret(lhs.nRows(), rhs.nCols());
+    if (lhs.nCols() != rhs.nRows()) {
         throw std::invalid_argument("Wrong shape");
     }
-    for (ptrdiff_t i = 0; i < lhs.getNumRows(); ++i) {
-        for (ptrdiff_t j = 0; j < lhs.getNumCols(); ++j) {
-            for (ptrdiff_t k = 0; k < rhs.getNumCols(); ++k) {
-                ret.at(MatrixS::size_type(i, k)) += lhs.at(MatrixS::size_type(i, j)) * rhs.at(MatrixS::size_type(j, k));
+    for (ptrdiff_t i = 0; i < lhs.nRows(); ++i) {
+        for (ptrdiff_t j = 0; j < lhs.nCols(); ++j) {
+            for (ptrdiff_t k = 0; k < rhs.nCols(); ++k) {
+                ret.at(MatrixS::SizeType(i, k)) += lhs.at(MatrixS::SizeType(i, j)) * rhs.at(MatrixS::SizeType(j, k));
             }
         }
     }
@@ -281,11 +327,11 @@ MatrixS sqr(MatrixS& matrix) {
 
 MatrixS pow(MatrixS matrix, int power)
 {
-    if (matrix.getNumRows() != matrix.getNumCols()) {
+    if (matrix.nRows() != matrix.nCols()) {
         throw std::invalid_argument("Wrong shape");
     }
-    int r = matrix.getNumRows();
-    MatrixS ident = IdentityMatrix(r);
+    int r = matrix.nRows();
+    MatrixS ident = identityMatrix(r);
     MatrixS answer(ident);
     while (power) {
         if (power & 1) {
@@ -297,23 +343,23 @@ MatrixS pow(MatrixS matrix, int power)
     return answer;
 }
 
-MatrixS IdentityMatrix(int n)
+MatrixS identityMatrix(int n)
 {
     MatrixS ident = MatrixS(n, n);
     for (int i = 0; i < n; ++i) {
-        ident.at(MatrixS::size_type(i, i)) = 1;
+        ident.at(MatrixS::SizeType(i, i)) = 1;
     }
     return ident;
 }
 
 bool operator==(MatrixS& lhs, MatrixS& rhs) {
-    if (lhs.getNumRows() != rhs.getNumRows() || lhs.getNumCols() != rhs.getNumCols()) {
+    if (lhs.nRows() != rhs.nRows() || lhs.nCols() != rhs.nCols()) {
         return false;
     }
     bool equal = true;
-    for (int i = 0; i < lhs.getNumRows(); ++i) {
-        for (int j = 0; j < lhs.getNumCols(); ++j) {
-            equal &= (lhs.at(MatrixS::size_type(i, j)) == rhs.at(MatrixS::size_type(i, j)));
+    for (int i = 0; i < lhs.nRows(); ++i) {
+        for (int j = 0; j < lhs.nCols(); ++j) {
+            equal &= (lhs.at(MatrixS::SizeType(i, j)) == rhs.at(MatrixS::SizeType(i, j)));
         }
     }
     return equal;
