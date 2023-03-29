@@ -92,36 +92,36 @@ MatrixS::~MatrixS()
     delete[] data_;
 }
 
-const int& MatrixS::at(const std::ptrdiff_t row, const std::ptrdiff_t col) const {
+[[nodiscard]] const int& MatrixS::at(const std::ptrdiff_t row, const std::ptrdiff_t col) const {
     if (row >= rows_ || data_[row] + col >= len_ || row < 0 || data_[row] + col < 0) {
         throw std::out_of_range("Wrong position");
     }
     return data_[data_[row] + col];
 }
-int& MatrixS::at(const std::ptrdiff_t row, const std::ptrdiff_t col) {
+[[nodiscard]] int& MatrixS::at(const std::ptrdiff_t row, const std::ptrdiff_t col) {
     if (row >= rows_ || data_[row] + col >= len_ || row < 0 || data_[row] + col < 0) {
         throw std::out_of_range("Wrong position");
     }
     return data_[data_[row] + col];
 }
-const int& MatrixS::at(const MatrixS::SizeType s) const{
+[[nodiscard]] const int& MatrixS::at(const MatrixS::SizeType s) const{
     if (std::get<0>(s) >= rows_ || data_[std::get<0>(s)] + std::get<1>(s) >= len_ || std::get<0>(s) < 0 || data_[std::get<0>(s)] + std::get<1>(s) < 0) {
         throw std::out_of_range("Wrong position");
     }
     return data_[data_[std::get<0>(s)] + std::get<1>(s)];
 }
-int& MatrixS::at(const MatrixS::SizeType s) {
+[[nodiscard]] int& MatrixS::at(const MatrixS::SizeType s) {
     if (std::get<0>(s) >= rows_ || data_[std::get<0>(s)] + std::get<1>(s) >= len_ || std::get<0>(s) < 0 || data_[std::get<0>(s)] + std::get<1>(s) < 0) {
         throw std::out_of_range("Wrong position");
     }
     return data_[data_[std::get<0>(s)] + std::get<1>(s)];
 }
 
-std::ptrdiff_t MatrixS::nRows() const noexcept
+[[nodiscard]] std::ptrdiff_t MatrixS::nRows() const noexcept
 {
     return rows_;
 }
-std::ptrdiff_t MatrixS::nCols() const noexcept
+[[nodiscard]] std::ptrdiff_t MatrixS::nCols() const noexcept
 {
     return cols_;
 }
@@ -163,7 +163,7 @@ void MatrixS::resize(const SizeType& s)
     *this = newMatrix;
 }
 
-MatrixS::SizeType MatrixS::ssize() const noexcept
+[[nodiscard]] MatrixS::SizeType MatrixS::ssize() const noexcept
 {
     return SizeType(rows_, cols_);
 }

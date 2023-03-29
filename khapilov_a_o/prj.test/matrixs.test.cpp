@@ -69,4 +69,6 @@ TEST_CASE("[matrixs] - MatrixS size") {
     CHECK(a == b);
     s = a.ssize();
     CHECK(s == MatrixS::SizeType(2, 2));
+    a.resize(10, 10);
+    CHECK(a.at(0, 0) == 1);
 }

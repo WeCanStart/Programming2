@@ -20,18 +20,18 @@ public:
 
     ~MatrixS();
 
-    const int& at(const std::ptrdiff_t, const std::ptrdiff_t) const;
-    int& at(const std::ptrdiff_t, const std::ptrdiff_t);
-    const int& at(const SizeType) const;
-    int& at(const SizeType);
+    [[nodiscard]] const int& at(const std::ptrdiff_t, const std::ptrdiff_t) const;
+    [[nodiscard]] int& at(const std::ptrdiff_t, const std::ptrdiff_t);
+    [[nodiscard]] const int& at(const SizeType) const;
+    [[nodiscard]] int& at(const SizeType);
 
-    std::ptrdiff_t nRows() const noexcept;
-    std::ptrdiff_t nCols() const noexcept;
+    [[nodiscard]] std::ptrdiff_t nRows() const noexcept;
+    [[nodiscard]] std::ptrdiff_t nCols() const noexcept;
 
     void resize(const std::ptrdiff_t, const std::ptrdiff_t);
     void resize(const SizeType&);
 
-    SizeType ssize() const noexcept;
+    [[nodiscard]] SizeType ssize() const noexcept;
 
     MatrixS& operator=(const MatrixS&);
     MatrixS& operator=(MatrixS&&) noexcept;
