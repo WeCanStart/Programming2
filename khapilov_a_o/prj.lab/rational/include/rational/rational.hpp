@@ -36,7 +36,7 @@ class Rational{
       bool IsZero() const;
       bool IsNegative() const;
 
-      std::ostream& WriteTo(std::ostream& ostrm) const;
+      std::ostream& WriteTo(std::ostream& ostrm) const noexcept;
       std::istream& ReadFrom(std::istream& istrm);
 
 private:

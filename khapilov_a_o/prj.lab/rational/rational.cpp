@@ -282,7 +282,7 @@ void Rational::redusing() {
     denom_ /= dev;
 }
 
-std::ostream& Rational::WriteTo(std::ostream& ostrm) const
+std::ostream& Rational::WriteTo(std::ostream& ostrm) const noexcept
 {
     ostrm << num_ << slash << denom_;
     return ostrm;
