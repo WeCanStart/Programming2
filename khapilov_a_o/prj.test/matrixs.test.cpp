@@ -54,19 +54,19 @@ TEST_CASE("[matrixs] - MatrixS custom operators") {
 
 TEST_CASE("[matrixs] - MatrixS size") {
     MatrixS a{ {1, 2}, {3, 4} };
-    a.resize(std::pair<std::ptrdiff_t, std::ptrdiff_t>(2, 1));
+    a.resize(MatrixS::SizeType(2, 1));
     MatrixS b{ {1}, {3} };
     CHECK(a == b);
     auto s = a.ssize();
-    CHECK(s == std::pair<std::ptrdiff_t, std::ptrdiff_t>(2, 1));
-    a.resize(std::pair<std::ptrdiff_t, std::ptrdiff_t>(1, 1));
+    CHECK(s == MatrixS::SizeType(2, 1));
+    a.resize(MatrixS::SizeType(1, 1));
     b = { {1} };
     CHECK(a == b);
     s = a.ssize();
-    CHECK(s == std::pair<std::ptrdiff_t, std::ptrdiff_t>(1, 1));
-    a.resize(std::pair<std::ptrdiff_t, std::ptrdiff_t>(2, 2));
+    CHECK(s == MatrixS::SizeType(1, 1));
+    a.resize(MatrixS::SizeType(2, 2));
     b = { {1, 0}, {0, 0} };
     CHECK(a == b);
     s = a.ssize();
-    CHECK(s == std::pair<std::ptrdiff_t, std::ptrdiff_t>(2, 2));
+    CHECK(s == MatrixS::SizeType(2, 2));
 }
