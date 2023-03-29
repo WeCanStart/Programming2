@@ -8,58 +8,58 @@ MatrixS::MatrixS(const SizeType& s) : rows_(std::get<0>(s)), cols_(std::get<1>(s
     }
     len_ = rows_ + rows_ * cols_;
     data_ = new int[len_];
-    for (ptrdiff_t i = 0; i < rows_; ++i) {
+    for (std::ptrdiff_t i = 0; i < rows_; ++i) {
         data_[i] = rows_ + i * cols_;
     }
-    for (ptrdiff_t i = rows_; i < len_; ++i) {
+    for (std::ptrdiff_t i = rows_; i < len_; ++i) {
         data_[i] = 0;
     }
 }
 
-MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_) : rows_(rowsInp_), cols_(colsInp_), data_(nullptr){
+MatrixS::MatrixS(std::ptrdiff_t rowsInp_, std::ptrdiff_t colsInp_) : rows_(rowsInp_), cols_(colsInp_), data_(nullptr){
     if (rows_ <= 0 || cols_ <= 0) {
         throw std::invalid_argument("Sizes must be positive");
     }
     len_ = rows_ + rows_ * cols_;
     data_ = new int[len_];
-    for (ptrdiff_t i = 0; i < rows_; ++i) {
+    for (std::ptrdiff_t i = 0; i < rows_; ++i) {
         data_[i] = rows_ + i * cols_;
     }
-    for (ptrdiff_t i = rows_; i < len_; ++i) {
+    for (std::ptrdiff_t i = rows_; i < len_; ++i) {
         data_[i] = 0;
     }
 }
 
-MatrixS::MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_, int num) : rows_(rowsInp_), cols_(colsInp_), len_(rowsInp_ + rowsInp_ * colsInp_), data_(nullptr){
+MatrixS::MatrixS(std::ptrdiff_t rowsInp_, std::ptrdiff_t colsInp_, int num) : rows_(rowsInp_), cols_(colsInp_), len_(rowsInp_ + rowsInp_ * colsInp_), data_(nullptr){
     if (rows_ <= 0 || cols_ <= 0) {
         throw std::invalid_argument("Sizes must be positive");
     }
     //len_ = rows_ + rows_ * cols_;
     data_ = new int[len_];
-    for (ptrdiff_t i = 0; i < rows_; ++i) {
+    for (std::ptrdiff_t i = 0; i < rows_; ++i) {
         data_[i] = rows_ + i * cols_;
     }
-    for (ptrdiff_t i = rows_; i < len_; ++i) {
+    for (std::ptrdiff_t i = rows_; i < len_; ++i) {
         data_[i] = num;
     }
 }
 
 MatrixS::MatrixS(std::initializer_list<std::initializer_list<int>> initList)
 {
-    ptrdiff_t rowsNew_ = initList.size();
+    std::ptrdiff_t rowsNew_ = initList.size();
     if (rowsNew_ == 0) {
         throw std::invalid_argument("Number of rows cannot be 0");
     }
     rows_ = rowsNew_;
-    ptrdiff_t colsNew_ = initList.begin()->size();
+    std::ptrdiff_t colsNew_ = initList.begin()->size();
     if (colsNew_ == 0) {
         throw std::invalid_argument("Number of columns cannot be 0");
     }
     cols_ = colsNew_;
     len_ = rows_ + rows_ * cols_;
     data_ = new int[len_];
-    ptrdiff_t i = 0;
-    for (ptrdiff_t i = 0; i < rows_; ++i) {
+    std::ptrdiff_t i = 0;
+    for (std::ptrdiff_t i = 0; i < rows_; ++i) {
         data_[i] = rows_ + i * cols_;
     }
     for (auto subList: initList) {
@@ -117,11 +117,11 @@ int& MatrixS::at(const MatrixS::SizeType s) {
     return data_[data_[std::get<0>(s)] + std::get<1>(s)];
 }
 
-std::ptrdiff_t MatrixS::nRows() const
+std::ptrdiff_t MatrixS::nRows() const noexcept
 {
     return rows_;
 }
-std::ptrdiff_t MatrixS::nCols() const
+std::ptrdiff_t MatrixS::nCols() const noexcept
 {
     return cols_;
 }
@@ -180,7 +180,7 @@ MatrixS& MatrixS::operator=(const MatrixS& rhs)
         delete[] data_;
     }
     data_ = new int[len_];
-    for (ptrdiff_t i = 0; i < len_; ++i) {
+    for (std::ptrdiff_t i = 0; i < len_; ++i) {
         data_[i] = rhs.data_[i];
     }
     return *this;
@@ -198,7 +198,7 @@ MatrixS& MatrixS::operator=(MatrixS&& rhs) noexcept
         delete[] data_;
     }
     data_ = new int[len_];
-    for (ptrdiff_t i = 0; i < len_; ++i) {
+    for (std::ptrdiff_t i = 0; i < len_; ++i) {
         data_[i] = rhs.data_[i];
     }
     return *this;
@@ -221,7 +221,7 @@ MatrixS operator-(MatrixS matrix)
 
 MatrixS& MatrixS::operator+=(int rhs)
 {
-    for (ptrdiff_t i = rows_; i < len_; ++i) {
+    for (std::ptrdiff_t i = rows_; i < len_; ++i) {
         data_[i] += rhs;
     }
     return *this;
@@ -229,7 +229,7 @@ MatrixS& MatrixS::operator+=(int rhs)
 
 MatrixS& MatrixS::operator-=(int rhs)
 {
-    for (ptrdiff_t i = rows_; i < len_; ++i) {
+    for (std::ptrdiff_t i = rows_; i < len_; ++i) {
         data_[i] -= rhs;
     }
     return *this;
@@ -237,7 +237,7 @@ MatrixS& MatrixS::operator-=(int rhs)
 
 MatrixS& MatrixS::operator*=(int rhs)
 {
-    for (ptrdiff_t i = rows_; i < len_; ++i) {
+    for (std::ptrdiff_t i = rows_; i < len_; ++i) {
         data_[i] *= rhs;
     }
     return *this;
@@ -266,8 +266,8 @@ MatrixS& operator+=(MatrixS& lhs, MatrixS& rhs)
     if (lhs.nRows() != rhs.nRows() || lhs.nCols() != rhs.nCols()) {
         throw std::invalid_argument("Wrong shape");
     }
-    for (ptrdiff_t i = 0; i < lhs.nRows(); ++i) {
-        for (ptrdiff_t j = 0; j < lhs.nCols(); ++j) {
+    for (std::ptrdiff_t i = 0; i < lhs.nRows(); ++i) {
+        for (std::ptrdiff_t j = 0; j < lhs.nCols(); ++j) {
             lhs.at(MatrixS::SizeType(i, j)) += rhs.at(MatrixS::SizeType(i, j));
         }
     }
@@ -279,8 +279,8 @@ MatrixS& operator-=(MatrixS& lhs, MatrixS& rhs)
     if (lhs.nRows() != rhs.nRows() || lhs.nCols() != rhs.nCols()) {
         throw std::invalid_argument("Wrong shape");
     }
-    for (ptrdiff_t i = 0; i < lhs.nRows(); ++i) {
-        for (ptrdiff_t j = 0; j < lhs.nCols(); ++j) {
+    for (std::ptrdiff_t i = 0; i < lhs.nRows(); ++i) {
+        for (std::ptrdiff_t j = 0; j < lhs.nCols(); ++j) {
             lhs.at(MatrixS::SizeType(i, j)) -= rhs.at(MatrixS::SizeType(i, j));
         }
     }
@@ -311,9 +311,9 @@ MatrixS operator*(MatrixS& lhs, MatrixS& rhs)
     if (lhs.nCols() != rhs.nRows()) {
         throw std::invalid_argument("Wrong shape");
     }
-    for (ptrdiff_t i = 0; i < lhs.nRows(); ++i) {
-        for (ptrdiff_t j = 0; j < lhs.nCols(); ++j) {
-            for (ptrdiff_t k = 0; k < rhs.nCols(); ++k) {
+    for (std::ptrdiff_t i = 0; i < lhs.nRows(); ++i) {
+        for (std::ptrdiff_t j = 0; j < lhs.nCols(); ++j) {
+            for (std::ptrdiff_t k = 0; k < rhs.nCols(); ++k) {
                 ret.at(MatrixS::SizeType(i, k)) += lhs.at(MatrixS::SizeType(i, j)) * rhs.at(MatrixS::SizeType(j, k));
             }
         }
