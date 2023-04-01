@@ -59,22 +59,6 @@ Rational& Rational::operator/=(const Rational& rhs) {
     return *this;
 }
 
-Rational& Rational::operator=(const int& rhs) {
-    return *this = Rational(rhs);
-}
-Rational& Rational::operator+=(const int& rhs) {
-    return *this += Rational(rhs);
-}
-Rational& Rational::operator-=(const int& rhs) {
-    return *this -= Rational(rhs);
-}
-Rational& Rational::operator*=(const int& rhs) {
-    return *this *= Rational(rhs);
-}
-Rational& Rational::operator/=(const int& rhs) {
-    return *this /= Rational(rhs);
-}
-
 Rational& Rational::operator++() {
     *this += 1;
     return *this;
@@ -120,10 +104,10 @@ std::istream& operator>>(std::istream& istrm, Rational& rhs) {
     return rhs.ReadFrom(istrm);
 }
 
-Rational operator+(Rational& rhs) {
+Rational operator+(const Rational& rhs) {
     return rhs;
 }
-Rational operator-(Rational& rhs) {
+Rational operator-(const Rational& rhs) {
     Rational tmp;
     tmp -= rhs;
     return tmp;
@@ -200,21 +184,22 @@ Rational pow(Rational myRat, int32_t power) {
     return answer;
 }
 
-Rational operator%(Rational lhs, const Rational& rhs)
+Rational operator%(const Rational& lhs, const Rational& rhs)
 {
-    lhs %= rhs;
+    Rational diff(lhs);
+    diff %= rhs;
     return lhs;
 }
 
-bool operator==(Rational lhs, const Rational& rhs) {
-    lhs -= rhs;
-    return lhs.IsZero();
+bool operator==(const Rational& lhs, const Rational& rhs) {
+    Rational diff = lhs - rhs;
+    return diff.IsZero();
 }
-bool operator>(Rational lhs, const Rational& rhs) {
+bool operator>(const Rational& lhs, const Rational& rhs) {
     Rational diff = lhs - rhs;
     return diff.Rational::IsPositive();
 }
-bool operator<(Rational lhs, const Rational& rhs) {
+bool operator<(const Rational& lhs, const Rational& rhs) {
     Rational diff = lhs - rhs;
     return diff.Rational::IsNegative();
 }
@@ -226,44 +211,6 @@ bool operator<=(const Rational& lhs, const Rational& rhs) {
 }
 bool operator>=(const Rational& lhs, const Rational& rhs) {
     return !operator<(lhs, rhs);
-}
-
-bool operator==(const Rational& lhs, const int32_t& rhs) {
-    return lhs == Rational(rhs);
-}
-bool operator!=(const Rational& lhs, const int32_t& rhs) {
-    return lhs != Rational(rhs);
-}
-bool operator<=(const Rational& lhs, const int32_t& rhs) {
-    return lhs <= Rational(rhs);
-}
-bool operator>=(const Rational& lhs, const int32_t& rhs) {
-    return lhs >= Rational(rhs);
-}
-bool operator<(const Rational& lhs, const int32_t& rhs) {
-    return lhs < Rational(rhs);
-}
-bool operator>(const Rational& lhs, const int32_t& rhs) {
-    return lhs > Rational(rhs);
-}
-
-bool operator==(const int32_t& lhs, const Rational& rhs) {
-    return Rational(lhs) == rhs;
-}
-bool operator!=(const int32_t& lhs, const Rational& rhs) {
-    return Rational(lhs) != rhs;
-}
-bool operator<=(const int32_t& lhs, const Rational& rhs) {
-    return Rational(lhs) <= rhs;
-}
-bool operator>=(const int32_t& lhs, const Rational& rhs) {
-    return Rational(lhs) >= rhs;
-}
-bool operator<(const int32_t& lhs, const Rational& rhs) {
-    return Rational(lhs) < rhs;
-}
-bool operator>(const int32_t& lhs, const Rational& rhs) {
-    return Rational(lhs) > rhs;
 }
 
 int32_t Rational::gcd(int32_t a, int32_t b) const {
@@ -329,7 +276,7 @@ std::istream& Rational::ReadFrom(std::istream& istrm)
         return istrm;
     }
     
-    if (istrm.good()) {
+    if (istrm.good() || istrm.eof()) {
         if (denomInp_ == 0) {
             istrm.setstate(std::ios_base::failbit);
             return istrm;
