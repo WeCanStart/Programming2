@@ -186,23 +186,23 @@ MatrixS& MatrixS::operator=(const MatrixS& rhs)
     return *this;
 }
 
-MatrixS& MatrixS::operator=(MatrixS&& rhs) noexcept
-{
-    if (this == &rhs) {
-        return *this;
-    }
-    rows_ = rhs.rows_;
-    cols_ = rhs.cols_;
-    len_ = rhs.len_;
-    if (data_ != nullptr) {
-        delete[] data_;
-    }
-    data_ = new int[len_];
-    for (std::ptrdiff_t i = 0; i < len_; ++i) {
-        data_[i] = rhs.data_[i];
-    }
-    return *this;
-}
+//MatrixS& MatrixS::operator=(MatrixS&& rhs) noexcept
+//{
+//    if (this == &rhs) {
+//        return *this;
+//    }
+//    rows_ = rhs.rows_;
+//    cols_ = rhs.cols_;
+//    len_ = rhs.len_;
+//    if (data_ != nullptr) {
+//        delete[] data_;
+//    }
+//    data_ = new int[len_];
+//    for (std::ptrdiff_t i = 0; i < len_; ++i) {
+//        data_[i] = rhs.data_[i];
+//    }
+//    return *this;
+//}
 
 MatrixS operator+(MatrixS matrix)
 {

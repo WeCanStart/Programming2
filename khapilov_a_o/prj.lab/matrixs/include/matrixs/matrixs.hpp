@@ -34,7 +34,7 @@ public:
     [[nodiscard]] SizeType ssize() const noexcept;
 
     MatrixS& operator=(const MatrixS&);
-    MatrixS& operator=(MatrixS&&) noexcept;
+    //MatrixS& operator=(MatrixS&&) noexcept;
 
     MatrixS& operator+=(int);
     MatrixS& operator-=(int);
