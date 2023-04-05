@@ -85,43 +85,43 @@ MatrixS::MatrixS(const MatrixS& prev) : rows_(prev.rows_), cols_(prev.cols_), le
 //    }
 //    data_ = new int[len_];
 //    std::copy(prev.data_, prev.data_ + len_, data_);
-//}
+//} 
 
 MatrixS::~MatrixS()
 {
     delete[] data_;
 }
 
-[[nodiscard]] const int& MatrixS::at(const std::ptrdiff_t row, const std::ptrdiff_t col) const {
+const int& MatrixS::at(const std::ptrdiff_t row, const std::ptrdiff_t col) const {
     if (row >= rows_ || data_[row] + col >= len_ || row < 0 || data_[row] + col < 0) {
         throw std::out_of_range("Wrong position");
     }
     return data_[data_[row] + col];
 }
-[[nodiscard]] int& MatrixS::at(const std::ptrdiff_t row, const std::ptrdiff_t col) {
+int& MatrixS::at(const std::ptrdiff_t row, const std::ptrdiff_t col) {
     if (row >= rows_ || data_[row] + col >= len_ || row < 0 || data_[row] + col < 0) {
         throw std::out_of_range("Wrong position");
     }
     return data_[data_[row] + col];
 }
-[[nodiscard]] const int& MatrixS::at(const MatrixS::SizeType s) const{
+const int& MatrixS::at(const MatrixS::SizeType s) const{
     if (std::get<0>(s) >= rows_ || data_[std::get<0>(s)] + std::get<1>(s) >= len_ || std::get<0>(s) < 0 || data_[std::get<0>(s)] + std::get<1>(s) < 0) {
         throw std::out_of_range("Wrong position");
     }
     return data_[data_[std::get<0>(s)] + std::get<1>(s)];
 }
-[[nodiscard]] int& MatrixS::at(const MatrixS::SizeType s) {
+int& MatrixS::at(const MatrixS::SizeType s) {
     if (std::get<0>(s) >= rows_ || data_[std::get<0>(s)] + std::get<1>(s) >= len_ || std::get<0>(s) < 0 || data_[std::get<0>(s)] + std::get<1>(s) < 0) {
         throw std::out_of_range("Wrong position");
     }
     return data_[data_[std::get<0>(s)] + std::get<1>(s)];
 }
 
-[[nodiscard]] std::ptrdiff_t MatrixS::nRows() const noexcept
+std::ptrdiff_t MatrixS::nRows() const noexcept
 {
     return rows_;
 }
-[[nodiscard]] std::ptrdiff_t MatrixS::nCols() const noexcept
+std::ptrdiff_t MatrixS::nCols() const noexcept
 {
     return cols_;
 }
@@ -163,7 +163,7 @@ void MatrixS::resize(const SizeType& s)
     *this = newMatrix;
 }
 
-[[nodiscard]] MatrixS::SizeType MatrixS::ssize() const noexcept
+MatrixS::SizeType MatrixS::ssize() const noexcept
 {
     return SizeType(rows_, cols_);
 }

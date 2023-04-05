@@ -167,6 +167,9 @@ void ArrayT<T>::reserve(std::ptrdiff_t newCapacity_) {
 
 template<typename T>
 void ArrayT<T>::resize(std::ptrdiff_t newSsize_) {
+    if (newSsize_ <= 0) {
+        throw std::invalid_argument("Expected positive");
+    }
     if (newSsize_ > capacity_) {
         reserve(newSsize_);
     }
@@ -194,7 +197,7 @@ void ArrayT<T>::insert(std::ptrdiff_t pos, T num)
 template<typename T>
 void ArrayT<T>::remove(std::ptrdiff_t pos)
 {
-    if (pos < 0 || pos > ssize()) {
+    if (pos < 0 || pos >= ssize()) {
         throw std::out_of_range("Wrong position");
     }
     for (std::ptrdiff_t i = pos + 1; i < ssize(); ++i) {

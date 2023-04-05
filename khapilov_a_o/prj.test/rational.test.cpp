@@ -173,6 +173,10 @@ TEST_CASE("Operator ...")
         CHECK_THROWS(A / C);
         CHECK((A / D) == A);
     }
+    Rational a(1);
+    Rational b(a);
+    b = 2;
+    CHECK(a == 1);
 }
 
 TEST_CASE("Streams")

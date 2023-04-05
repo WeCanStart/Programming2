@@ -1,18 +1,71 @@
-#include <arrayd/arrayd.hpp>
+#pragma once
+#ifndef ARRAYT_ARRAYT_HPP_20230322
+#define ARRAYT_ARRAYT_HPP_20230322
+
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <cstdint>
+#include <initializer_list>
 
-ArrayD::ArrayD() {
+template<typename T>
+class ArrayT{
+public:
+    ArrayT();
+    explicit ArrayT(const std::ptrdiff_t len);
+    ArrayT(const ArrayT<T>&);
+    //ArrayT(const ArrayT<T>&&) noexcept;
+    ArrayT(std::ptrdiff_t sizeInp, T number);
+    ArrayT(std::initializer_list<T> initList);   //not explicit
+
+    ~ArrayT();
+
+    std::ptrdiff_t ssize() const;
+
+    T& operator[](std::ptrdiff_t index);
+    const T& operator[](std::ptrdiff_t index) const;
+
+    void reserve(std::ptrdiff_t newCapacity_);
+    void resize(std::ptrdiff_t newSsize_);
+
+    void insert(std::ptrdiff_t, T num);
+    void remove(std::ptrdiff_t);
+
+    void push_back(T newElement);
+    T pop_back();
+
+    ArrayT<T>& operator=(const ArrayT<T>& rhs);
+    ArrayT<T>& operator+=(const T rhs);
+    ArrayT<T>& operator-=(const T rhs);
+    ArrayT<T>& operator*=(const T rhs);
+    ArrayT<T>& operator/=(const T rhs);
+
+    ArrayT<T>& operator+();
+    ArrayT<T>& operator-();
+
+    std::ostream& writeTo(std::ostream& ostrm) const;
+    /*std::istream& readFrom(std::istream& istrm);*/
+
+public:
+    std::ptrdiff_t ssize_;
+    std::ptrdiff_t capacity_;
+    T* memory_;
+
+    static const char cmm{ ',' };
+};
+
+template<typename T>
+ArrayT<T>::ArrayT() {
     memory_ = nullptr;
     ssize_ = 0;
     capacity_ = 0;
 }
-ArrayD::ArrayD(const ArrayD& prev) : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr){
+template<typename T>
+ArrayT<T>::ArrayT(const ArrayT<T>& prev) : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr) {
     if (this == &prev) {
         return;
     }
-    memory_ = new double[capacity_];
+    memory_ = new T[capacity_];
     if (prev.memory_ == nullptr) {
         memory_ = nullptr;
     }
@@ -20,11 +73,12 @@ ArrayD::ArrayD(const ArrayD& prev) : ssize_(prev.ssize_), capacity_(prev.capacit
         std::copy(prev.memory_, prev.memory_ + prev.ssize_, memory_);
     }
 }
-//ArrayD::ArrayD(const ArrayD&& prev) noexcept : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr){
+//template<typename T>
+//ArrayT<T>::ArrayT(const ArrayT<T>&& prev) noexcept : ssize_(prev.ssize_), capacity_(prev.capacity_), memory_(nullptr) {
 //    if (this == &prev) {
 //        return;
 //    }
-//    memory_ = new double[capacity_];
+//    memory_ = new T[capacity_];
 //    if (prev.memory_ == nullptr) {
 //        memory_ = nullptr;
 //    }
@@ -32,66 +86,72 @@ ArrayD::ArrayD(const ArrayD& prev) : ssize_(prev.ssize_), capacity_(prev.capacit
 //        std::copy(prev.memory_, prev.memory_ + prev.ssize_, memory_);
 //    }
 //}
-ArrayD::ArrayD(const std::ptrdiff_t sizeInp) {
+template<typename T>
+ArrayT<T>::ArrayT(std::ptrdiff_t sizeInp) {
     if (sizeInp < 0) {
         throw std::out_of_range("Index out of range");
     }
     ssize_ = sizeInp;
     capacity_ = sizeInp;
-    memory_ = new double[capacity_];
+    memory_ = new T[capacity_];
     for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] = 0;
     }
 }
-ArrayD::ArrayD(const std::ptrdiff_t sizeInp, const double num) {
+template<typename T>
+ArrayT<T>::ArrayT(std::ptrdiff_t sizeInp, T num) {
     if (sizeInp < 0) {
         throw std::out_of_range("Index out of range");
     }
     ssize_ = sizeInp;
     capacity_ = sizeInp;
-    memory_ = new double[capacity_];
+    memory_ = new T[capacity_];
     for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] = num;
     }
 }
-
-ArrayD::ArrayD(const std::initializer_list<int> initList) : ssize_(initList.size()), capacity_(initList.size()), memory_(nullptr)
+template<typename T>
+ArrayT<T>::ArrayT(std::initializer_list<T> initList) : ssize_(initList.size()), capacity_(initList.size()), memory_(nullptr)
 {
-    memory_ = new double[ssize_];
+    memory_ = new T[ssize_];
     std::copy(initList.begin(), initList.end(), memory_);
 }
-
-ArrayD::~ArrayD()
+template<typename T>
+ArrayT<T>::~ArrayT()
 {
     delete[] memory_;
 }
 
-std::ptrdiff_t ArrayD::ssize() const noexcept
+template<typename T>
+std::ptrdiff_t ArrayT<T>::ssize() const
 {
     return ssize_;
 }
 
-double& ArrayD::operator[](const std::ptrdiff_t index) {
+template<typename T>
+T& ArrayT<T>::operator[](std::ptrdiff_t index) {
     if (index < 0 || index >= ssize()) {
         throw std::out_of_range("Index out of range");
     }
     return memory_[index];
 }
 
-const double& ArrayD::operator[](const std::ptrdiff_t index) const{
+template<typename T>
+const T& ArrayT<T>::operator[](std::ptrdiff_t index) const {
     if (index < 0 || index >= ssize()) {
         throw std::out_of_range("Index out of range");
     }
     return memory_[index];
 }
 
-void ArrayD::reserve(const std::ptrdiff_t newCapacity_) {
+template<typename T>
+void ArrayT<T>::reserve(std::ptrdiff_t newCapacity_) {
     capacity_ = newCapacity_;
     if (capacity_ < ssize()) {
         ssize_ = capacity_;
         return;
     }
-    double* newMemory_ = new double[capacity_];
+    T* newMemory_ = new T[capacity_];
     if (memory_ == nullptr) {
         memory_ = nullptr;
     }
@@ -105,10 +165,8 @@ void ArrayD::reserve(const std::ptrdiff_t newCapacity_) {
     memory_ = newMemory_;
 }
 
-void ArrayD::resize(const std::ptrdiff_t newSsize_) {
-    if (newSsize_ <= 0) {
-        throw std::invalid_argument("Expected positive");
-    }
+template<typename T>
+void ArrayT<T>::resize(std::ptrdiff_t newSsize_) {
     if (newSsize_ > capacity_) {
         reserve(newSsize_);
     }
@@ -120,7 +178,8 @@ void ArrayD::resize(const std::ptrdiff_t newSsize_) {
     ssize_ = newSsize_;
 }
 
-void ArrayD::insert(const std::ptrdiff_t pos, const double num)
+template<typename T>
+void ArrayT<T>::insert(std::ptrdiff_t pos, T num)
 {
     if (pos < 0 || pos > ssize()) {
         throw std::out_of_range("Wrong position");
@@ -132,9 +191,10 @@ void ArrayD::insert(const std::ptrdiff_t pos, const double num)
     memory_[pos] = num;
 }
 
-void ArrayD::remove(const std::ptrdiff_t pos)
+template<typename T>
+void ArrayT<T>::remove(std::ptrdiff_t pos)
 {
-    if (pos < 0 || pos >= ssize()) {
+    if (pos < 0 || pos > ssize()) {
         throw std::out_of_range("Wrong position");
     }
     for (std::ptrdiff_t i = pos + 1; i < ssize(); ++i) {
@@ -143,51 +203,58 @@ void ArrayD::remove(const std::ptrdiff_t pos)
     resize(ssize() - 1);
 }
 
-void ArrayD::push_back(const double newElement) {
+template<typename T>
+void ArrayT<T>::push_back(T newElement) {
     if (ssize() == capacity_) {
         resize(static_cast<std::ptrdiff_t>(ssize() + 1));
     }
     memory_[ssize_ - 1] = newElement;
 }
 
-double ArrayD::pop_back() {
-    double tmp = memory_[ssize() - 1];
+template<typename T>
+T ArrayT<T>::pop_back() {
+    T tmp = memory_[ssize() - 1];
     resize(ssize() - 1);
     return tmp;
 }
 
-ArrayD& ArrayD::operator=(const ArrayD& rhs) {
+template<typename T>
+ArrayT<T>& ArrayT<T>::operator=(const ArrayT<T>& rhs) {
     if (this == &rhs) {
         return *this;
     }
     ssize_ = rhs.ssize_;
     capacity_ = rhs.capacity_;
     delete[] memory_;
-    memory_ = new double[capacity_];
+    memory_ = new T[capacity_];
     for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
-        new (memory_ + i) double (rhs.memory_[i]);
+        new (memory_ + i) T(rhs.memory_[i]);
     }
     return *this;
 }
-ArrayD& ArrayD::operator+=(const double rhs) {
+template<typename T>
+ArrayT<T>& ArrayT<T>::operator+=(const T rhs) {
     for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] += rhs;
     }
     return *this;
 }
-ArrayD& ArrayD::operator-=(const double rhs) {
+template<typename T>
+ArrayT<T>& ArrayT<T>::operator-=(const T rhs) {
     for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] -= rhs;
     }
     return *this;
 }
-ArrayD& ArrayD::operator*=(const double rhs) {
+template<typename T>
+ArrayT<T>& ArrayT<T>::operator*=(const T rhs) {
     for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] *= rhs;
     }
     return *this;
 }
-ArrayD& ArrayD::operator/=(const double rhs) {
+template<typename T>
+ArrayT<T>& ArrayT<T>::operator/=(const T rhs) {
     if (rhs == 0) {
         throw std::invalid_argument("Divide by zero exception");
     }
@@ -197,56 +264,66 @@ ArrayD& ArrayD::operator/=(const double rhs) {
     return *this;
 }
 
-ArrayD& ArrayD::operator+() {
+template<typename T>
+ArrayT<T>& ArrayT<T>::operator+() {
     return *this;
 }
-ArrayD& ArrayD::operator-() {
+template<typename T>
+ArrayT<T>& ArrayT<T>::operator-() {
     for (std::ptrdiff_t i = 0; i < ssize(); ++i) {
         memory_[i] = -memory_[i];
     }
     return *this;
 }
 
-std::ostream& operator<<(std::ostream& ostrm, const ArrayD& rhs) {
+template<typename T>
+std::ostream& operator<<(std::ostream& ostrm, const ArrayT<T>& rhs) {
     return rhs.writeTo(ostrm);
 }
-//std::istream& operator>>(std::istream& istrm, ArrayD& rhs) {
+//std::istream& operator>>(std::istream& istrm, ArrayT<T>& rhs) {
 //    return rhs.readFrom(istrm);
 //}
 
-ArrayD operator+(ArrayD lhs, const double rhs) {
+template<typename T>
+ArrayT<T> operator+(ArrayT<T> lhs, const T rhs) {
     lhs += rhs;
     return lhs;
 }
-ArrayD operator-(ArrayD lhs, const double rhs) {
+template<typename T>
+ArrayT<T> operator-(ArrayT<T> lhs, const T rhs) {
     lhs -= rhs;
     return lhs;
 }
-ArrayD operator*(ArrayD lhs, const double rhs) {
+template<typename T>
+ArrayT<T> operator*(ArrayT<T> lhs, const T rhs) {
     lhs *= rhs;
     return lhs;
 }
-ArrayD operator/(ArrayD lhs, const double rhs) {
+template<typename T>
+ArrayT<T> operator/(ArrayT<T> lhs, const T rhs) {
     lhs /= rhs;
     return lhs;
 }
 
-bool operator==(const ArrayD& lhs, const ArrayD& rhs) {
+template<typename T>
+bool operator==(const ArrayT<T>& lhs, const ArrayT<T>& rhs) {
     if (lhs.ssize_ != rhs.ssize_) {
         return false;
     }
     bool isEqual = true;
     for (std::ptrdiff_t i = 0; i < lhs.ssize_; ++i) {
-        isEqual &= (std::abs(lhs[i] - rhs[i]) < FLT_EPSILON);
+        isEqual &= (lhs[i] == rhs[i]);
     }
     return isEqual;
 }
 
-bool operator!=(const ArrayD& lhs, const ArrayD& rhs) {
+template<typename T>
+bool operator!=(const ArrayT<T>& lhs, const ArrayT<T>& rhs) {
     return !(lhs == rhs);
 }
 
-std::ostream& ArrayD::writeTo(std::ostream& ostrm) const
+template<typename T>
+std::ostream& ArrayT<T>::writeTo(std::ostream& ostrm) const
 {
     ostrm << '[';
     for (std::ptrdiff_t i = 0; i < ssize() - 1; ++i) {
@@ -256,9 +333,9 @@ std::ostream& ArrayD::writeTo(std::ostream& ostrm) const
     return ostrm;
 }
 
-//std::istream& ArrayD::readFrom(std::istream& istrm)
+//std::istream& ArrayT<T>::readFrom(std::istream& istrm)
 //{
-//    double numInp(0);
+//    T numInp(0);
 //    char sym(0);
 //    istrm >> sym;
 //    std::istringstream input;
@@ -267,7 +344,7 @@ std::ostream& ArrayD::writeTo(std::ostream& ostrm) const
 //    }
 //    
 //    if (istrm.good()) {
-//        if (ArrayD::cmm == sym) {
+//        if (ArrayT<T>::cmm == sym) {
 //            if (denomInp <= 0) {
 //                throw std::invalid_argument("Expected positive denomerator");
 //            }
@@ -281,3 +358,7 @@ std::ostream& ArrayD::writeTo(std::ostream& ostrm) const
 //    }
 //    return istrm;
 //}
+
+//std::istream& operator>>(std::istream& istrm, ArrayT<T>& rhs);
+
+#endif

@@ -17,10 +17,10 @@ public:
 
     ~ArrayD();
 
-    std::ptrdiff_t ssize() const noexcept;
+    [[nodiscard]] std::ptrdiff_t ssize() const noexcept;
 
-    double& operator[](const std::ptrdiff_t index);
-    const double& operator[](const std::ptrdiff_t index) const;
+    [[nodiscard]] double& operator[](const std::ptrdiff_t index);
+    [[nodiscard]] const double& operator[](const std::ptrdiff_t index) const;
 
     void reserve(const std::ptrdiff_t newCapacity_);
     void resize(const std::ptrdiff_t newSsize_);

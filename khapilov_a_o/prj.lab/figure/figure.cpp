@@ -106,9 +106,6 @@ void ArrayD::reserve(const std::ptrdiff_t newCapacity_) {
 }
 
 void ArrayD::resize(const std::ptrdiff_t newSsize_) {
-    if (newSsize_ <= 0) {
-        throw std::invalid_argument("Expected positive");
-    }
     if (newSsize_ > capacity_) {
         reserve(newSsize_);
     }
@@ -134,7 +131,7 @@ void ArrayD::insert(const std::ptrdiff_t pos, const double num)
 
 void ArrayD::remove(const std::ptrdiff_t pos)
 {
-    if (pos < 0 || pos >= ssize()) {
+    if (pos < 0 || pos > ssize()) {
         throw std::out_of_range("Wrong position");
     }
     for (std::ptrdiff_t i = pos + 1; i < ssize(); ++i) {
