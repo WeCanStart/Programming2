@@ -11,7 +11,8 @@ class MatrixS {
 public:
     using SizeType = std::tuple<std::ptrdiff_t, std::ptrdiff_t>;
 public:
-    explicit MatrixS(const SizeType& s = { 0, 0 });
+    MatrixS();
+    explicit MatrixS(const SizeType& s);
     MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_);
     MatrixS(ptrdiff_t rowsInp_, ptrdiff_t colsInp_, int num);
     MatrixS(std::initializer_list<std::initializer_list<int>> initList);

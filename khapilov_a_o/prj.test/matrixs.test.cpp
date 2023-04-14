@@ -77,3 +77,19 @@ TEST_CASE("[matrixs] - MatrixS size") {
     c.resize(101, 101);
     CHECK(c.at(100, 100) == 0);
 }
+
+TEST_CASE("[matrixs] - MatrixS throws") {
+    MatrixS a;
+    CHECK_THROWS(a = MatrixS(0, 0));
+    CHECK_THROWS(a = MatrixS(std::tuple(0, 0)));
+    CHECK_NOTHROW(a = MatrixS());
+    CHECK_THROWS(a.resize(0, 0));
+    CHECK_THROWS(a.resize(0, 1));
+    CHECK_THROWS(a.resize(1, 0));
+    a = MatrixS(2, 2, 1);
+    int b = 0;
+    CHECK_THROWS(b = a.at(-1, 0));
+    CHECK_THROWS(b = a.at(2, 0));
+    CHECK_THROWS(a.at(-1, 0) = 1);
+    CHECK_THROWS(a.at(2, 0) = 1);
+}

@@ -1,9 +1,17 @@
 #include <matrixs/matrixs.hpp>
 #include <iostream>
 
+MatrixS::MatrixS()
+{
+    rows_ = 0;
+    len_ = 0;
+    cols_ = 0;
+    data_ = nullptr;
+}
+
 MatrixS::MatrixS(const SizeType& s) : rows_(std::get<0>(s)), cols_(std::get<1>(s)), data_(nullptr)
 {
-    if (rows_ < 0 || cols_ < 0) {
+    if (rows_ <= 0 || cols_ <= 0) {
         throw std::invalid_argument("Sizes must be positive");
     }
     len_ = rows_ + rows_ * cols_;
@@ -17,7 +25,7 @@ MatrixS::MatrixS(const SizeType& s) : rows_(std::get<0>(s)), cols_(std::get<1>(s
 }
 
 MatrixS::MatrixS(std::ptrdiff_t rowsInp_, std::ptrdiff_t colsInp_) : rows_(rowsInp_), cols_(colsInp_), data_(nullptr){
-    if (rows_ < 0 || cols_ < 0) {
+    if (rows_ <= 0 || cols_ <= 0) {
         throw std::invalid_argument("Sizes must be positive");
     }
     len_ = rows_ + rows_ * cols_;
@@ -31,7 +39,7 @@ MatrixS::MatrixS(std::ptrdiff_t rowsInp_, std::ptrdiff_t colsInp_) : rows_(rowsI
 }
 
 MatrixS::MatrixS(std::ptrdiff_t rowsInp_, std::ptrdiff_t colsInp_, int num) : rows_(rowsInp_), cols_(colsInp_), len_(rowsInp_ + rowsInp_ * colsInp_), data_(nullptr){
-    if (rows_ < 0 || cols_ < 0) {
+    if (rows_ <= 0 || cols_ <= 0) {
         throw std::invalid_argument("Sizes must be positive");
     }
     //len_ = rows_ + rows_ * cols_;
