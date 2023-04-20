@@ -1,95 +1,170 @@
 #define DOCTEST_CONFIG_IMPLEMENT_WITH_MAIN
-#include <doctest/doctest.h>
+#include "matrixs/matrixs.hpp"
+#include "doctest/doctest.h"
 
-#include <matrixs/matrixs.hpp>
-#include <iostream>
-
-
-TEST_CASE("[matrixs] - MatrixS ctor") {
-    MatrixS a(3, 3);
-    MatrixS b(3, 3, 0);
-    CHECK(a == b);
-    CHECK_THROWS(b = MatrixS(1, -1));
+TEST_CASE("Test of constructors") {
+    SUBCASE("Test construct with <tuple> and relevant size") {
+        CHECK_NOTHROW(MatrixS(MatrixS::SizeType{ 2,2 }));
+    }
+    SUBCASE("Test construct with <tuple> and nonrelevant size") {
+        CHECK_THROWS(MatrixS(MatrixS::SizeType{ -1,0 }));
+    }
+    SUBCASE("Test construct with two term and relevant size") {
+        CHECK_NOTHROW(MatrixS(1, 1));
+    }
+    SUBCASE("Test construct with two term and nonrelevant size") {
+        CHECK_THROWS(MatrixS(-1, -1));
+    }
+    MatrixS test(2, 2);
+    SUBCASE("Test construct with another MatrixS with ()") {
+        test.at(0, 0) = 1;
+        MatrixS another(test);
+        another.at(0, 0) = 2;
+        CHECK((test.at(0, 0) != another.at(0, 0)));
+    }
+    SUBCASE("Test construct with another MatrixS with operator=") {
+        test.at(0, 0) = 1;
+        MatrixS another = test;
+        another.at(0, 0) = 2;
+        CHECK((test.at(0, 0) != another.at(0, 0)));
+    }
+    SUBCASE("Test construct with another MatrixS with operator= and same MatrixS") {
+        MatrixS x(1, 2);
+        x.at(0, 0) = 404;
+        x.at(0, 1) = 404;
+        x = x;
+        CHECK((x.at(0, 0) == 404 && x.at(0, 1) == 404));
+    }
 }
 
-TEST_CASE("[matrixs] - MatrixS assignment arithmetic ops") {
-    MatrixS a(2, 4, 1);
-    MatrixS b(2, 4, 2);
-    CHECK((a += 1) == b);
-    a = MatrixS(2, 4, 1);
-    b = MatrixS(2, 4, 0);
-    CHECK((a -= 1) == b);
+TEST_CASE("Test of .at() function") {
+    MatrixS test(3, 3);
+    SUBCASE("middle index") {
+        CHECK_NOTHROW(test.at(1, 1) = 404);
+        CHECK((test.at(1, 1) == 404));
+    }
+    SUBCASE("middle index (but index is SizeType)") {
+        CHECK_NOTHROW(test.at(MatrixS::SizeType{ 1,1 }) = 404);
+        CHECK((test.at(MatrixS::SizeType{ 1,1 }) == 404));
+    }
+    SUBCASE("begin index") {
+        CHECK_NOTHROW(test.at(0, 0) = 404);
+        CHECK((test.at(0, 0) == 404));
+    }
+    SUBCASE("begin index (but index is SizeType)") {
+        CHECK_NOTHROW(test.at(MatrixS::SizeType{ 0,0 }) = 404);
+        CHECK((test.at(MatrixS::SizeType{ 0,0 }) == 404));
+    }
+    SUBCASE("end index") {
+        CHECK_NOTHROW(test.at(2, 2) = 404);
+        CHECK((test.at(2, 2) == 404));
+    }
+    SUBCASE("end index (but index is SizeType)") {
+        CHECK_NOTHROW(test.at(MatrixS::SizeType{ 2,2 }) = 404);
+        CHECK((test.at(MatrixS::SizeType{ 2,2 }) == 404));
+    }
+    SUBCASE("out of range index == size") {
+        CHECK_THROWS(test.at(3, 0));
+        CHECK_THROWS(test.at(0, 3));
+        CHECK_THROWS(test.at(3, 3));
+    }
+    SUBCASE("out of range index == size (but index is SizeType)") {
+        CHECK_THROWS(test.at(MatrixS::SizeType{ 3,0 }));
+        CHECK_THROWS(test.at(MatrixS::SizeType{ 0,3 }));
+        CHECK_THROWS(test.at(MatrixS::SizeType{ 3,3 }));
+    }
+    SUBCASE("out of range index > size") {
+        CHECK_THROWS(test.at(4, 0));
+        CHECK_THROWS(test.at(0, 4));
+        CHECK_THROWS(test.at(4, 4));
+    }
+    SUBCASE("out of range index > size (but index is SizeType)") {
+        CHECK_THROWS(test.at(MatrixS::SizeType{ 4,0 }));
+        CHECK_THROWS(test.at(MatrixS::SizeType{ 0,4 }));
+        CHECK_THROWS(test.at(MatrixS::SizeType{ 4,4 }));
+    }
+    SUBCASE("out of range index < 0") {
+        CHECK_THROWS(test.at(-1, 0));
+        CHECK_THROWS(test.at(0, -1));
+        CHECK_THROWS(test.at(-1, -1));
+    }
+    SUBCASE("out of range index < 0 (but index is SizeType)") {
+        CHECK_THROWS(test.at(MatrixS::SizeType{ -1,1 }));
+        CHECK_THROWS(test.at(MatrixS::SizeType{ 1,-1 }));
+        CHECK_THROWS(test.at(MatrixS::SizeType{ -1,-1 }));
+    }
 }
 
-TEST_CASE("[matrixs] - MatrixS arithmetic ops") {
-    MatrixS a(2, 4, 1);
-    a = a + 1;
-    MatrixS b(2, 4, 2);
-    CHECK(a == b);
-    a = a - 2;
-    b = MatrixS(2, 4, 0);
-    CHECK(a == b);
+TEST_CASE("Return shape funcions") {
+    MatrixS test(3, 4);
+    SUBCASE("test ssize") {
+        CHECK((test.ssize() == MatrixS::SizeType{ 3,4 }));
+    }
+    SUBCASE("test nRows") {
+        CHECK((test.nRows() == 3));
+    }
+    SUBCASE("test nCols") {
+        CHECK((test.nCols() == 4));
+    }
 }
 
-TEST_CASE("[matrixs] - MatrixS bool operators") {
-    MatrixS a(2, 4, 1);
-    MatrixS b(2, 4, 1);
-    CHECK(a == b);
-    b = MatrixS(2, 3, 1);
-    CHECK(a != b);
-    b = MatrixS(2, 4, 2);
-    CHECK(a != b);
-}
-
-TEST_CASE("[matrixs] - MatrixS custom operators") {
-    MatrixS a{ {1, 2}, {3, 4} };
-    MatrixS b{ {37, 54}, {81, 118} };
-    a = pow(a, 3);
-    CHECK(a == b);
-    a = { {1, 2}, {3, 4} };
-    b = { {7, 10}, {15, 22} };
-    a = sqr(a);
-    CHECK(a == b);
-}
-
-TEST_CASE("[matrixs] - MatrixS size") {
-    MatrixS a{ {1, 2}, {3, 4} };
-    a.resize(MatrixS::SizeType(2, 1));
-    MatrixS b{ {1}, {3} };
-    CHECK(a == b);
-    auto s = a.ssize();
-    CHECK(s == MatrixS::SizeType(2, 1));
-    a.resize(MatrixS::SizeType(1, 1));
-    b = { {1} };
-    CHECK(a == b);
-    s = a.ssize();
-    CHECK(s == MatrixS::SizeType(1, 1));
-    a.resize(MatrixS::SizeType(2, 2));
-    b = { {1, 0}, {0, 0} };
-    CHECK(a == b);
-    s = a.ssize();
-    CHECK(s == MatrixS::SizeType(2, 2));
-    a.resize(10, 10);
-    CHECK(a.at(0, 0) == 1);
-    MatrixS c(100, 100, 2);
-    CHECK(c.at(0, 0) == 2);
-    CHECK(c.at(99, 99) == 2);
-    c.resize(101, 101);
-    CHECK(c.at(100, 100) == 0);
-}
-
-TEST_CASE("[matrixs] - MatrixS throws") {
-    MatrixS a;
-    CHECK_THROWS(a = MatrixS(0, 0));
-    CHECK_THROWS(a = MatrixS(std::tuple(0, 0)));
-    CHECK_NOTHROW(a = MatrixS());
-    CHECK_THROWS(a.resize(0, 0));
-    CHECK_THROWS(a.resize(0, 1));
-    CHECK_THROWS(a.resize(1, 0));
-    a = MatrixS(2, 2, 1);
-    int b = 0;
-    CHECK_THROWS(b = a.at(-1, 0));
-    CHECK_THROWS(b = a.at(2, 0));
-    CHECK_THROWS(a.at(-1, 0) = 1);
-    CHECK_THROWS(a.at(2, 0) = 1);
+TEST_CASE("Test resize fuction") {
+    SUBCASE("resize from n,m with relevant terms") {
+        MatrixS test(2, 1);
+        CHECK_NOTHROW(test.resize(1, 3));
+        CHECK((test.ssize() == MatrixS::SizeType{ 1,3 }));
+    }
+    SUBCASE("resize from n,m with nonrelevant terms of rows") {
+        MatrixS test(2, 1);
+        CHECK_THROWS(test.resize(-1, 3));
+    }
+    SUBCASE("resize from n,m with nonrelevant terms of cols") {
+        MatrixS test(2, 1);
+        CHECK_THROWS(test.resize(1, -3));
+    }
+    SUBCASE("resize from n,m with nonrelevant terms of rows and cols") {
+        MatrixS test(2, 1);
+        CHECK_THROWS(test.resize(-1, -3));
+    }
+    SUBCASE("resize from n,m with zero terms of rows") {
+        MatrixS test(2, 1);
+        CHECK_THROWS(test.resize(0, 3));
+    }
+    SUBCASE("resize from n,m with zero terms of cols") {
+        MatrixS test(2, 1);
+        CHECK_THROWS(test.resize(1, 0));
+    }
+    SUBCASE("resize from n,m with zero terms of rows and cols") {
+        MatrixS test(2, 1);
+        CHECK_THROWS(test.resize(0, 0));
+    }
+    SUBCASE("resize from SizeType with relevant terms") {
+        MatrixS test(2, 1);
+        CHECK_NOTHROW(test.resize(MatrixS::SizeType{ 1,3 }));
+        CHECK((test.ssize() == MatrixS::SizeType{ 1,3 }));
+    }
+    SUBCASE("resize from SizeType with nonrelevant terms of rows") {
+        MatrixS test(2, 1);
+        CHECK_THROWS(test.resize(MatrixS::SizeType{ -1,3 }));
+    }
+    SUBCASE("resize from SizeType with nonrelevant terms of cols") {
+        MatrixS test(2, 1);
+        CHECK_THROWS(test.resize(MatrixS::SizeType{ 1,-3 }));
+    }
+    SUBCASE("resize from SizeType with nonrelevant terms of rows and cols") {
+        MatrixS test(2, 1);
+        CHECK_THROWS(test.resize(MatrixS::SizeType{ -1,-3 }));
+    }
+    SUBCASE("resize from SizeType with zero terms of rows") {
+        MatrixS test(2, 1);
+        CHECK_THROWS(test.resize(MatrixS::SizeType{ 0,3 }));
+    }
+    SUBCASE("resize from SizeType with zero terms of cols") {
+        MatrixS test(2, 1);
+        CHECK_THROWS(test.resize(MatrixS::SizeType{ 1,0 }));
+    }
+    SUBCASE("resize from SizeType with zero terms of rows and cols") {
+        MatrixS test(2, 1);
+        CHECK_THROWS(test.resize(MatrixS::SizeType{ 0,0 }));
+    }
 }
