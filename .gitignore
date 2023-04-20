@@ -355,3 +355,5 @@ bin.relwithdbg/
 
 out/
 
+CMakeSettings.json
+
