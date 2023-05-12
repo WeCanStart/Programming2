@@ -9,7 +9,7 @@
 #include <initializer_list>
 
 template<typename T>
-class ArrayT{
+class ArrayT {
 public:
     ArrayT();
     explicit ArrayT(const std::ptrdiff_t len);
