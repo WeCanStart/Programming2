@@ -49,10 +49,10 @@ namespace ds {
     /// @tparam T Type to check belonging to the list
     /// @tparam Head First element of the list
     /// @tparam Tail... Other elements of the list
-    /// @param TList Object which first element is T, and others are Head and Tail...
+    /// @param list TList Object which first element is T, and others are Head and Tail...
     /// @return True if TList contains T
     template<class T, class Head, class... Tail>
-    bool inTList(TList<T, Head, Tail...>) {
+    bool inTList(TList<T, Head, Tail...> list) {
         return (std::is_same<T, Head>::value || inTList(TList<T, Tail...>{}));
     }
 
@@ -68,10 +68,10 @@ namespace ds {
     /// @tparam T Type which index we are looking for
     /// @tparam Head First type in list
     /// @tparam Tail... Other types in list
-    /// @param TList Object which first element is T, and others are Head and Tail...
+    /// @param list TList Object which first element is T, and others are Head and Tail...
     /// @return Index of type T in list
     template<class T, class Head, class... Tail>
-    int indexTList(TList<T, Head, Tail...>) {
+    int indexTList(TList<T, Head, Tail...> list) {
         return std::is_same<T, Head>::value ? 0 : 1 + indexTList(TList<T, Tail...>{});
     }
 
@@ -379,6 +379,7 @@ namespace ds {
     template<ParC... Types>
     class DarwinSimulator {
     public:
+        /// @brief Number of organism types
         constexpr static int simulDim = tSize(TList<Types...>{});
 
         /// @brief Empty ctor
@@ -400,6 +401,17 @@ namespace ds {
         template<ParC T>
         void addAlive(const T& inp);
 
+        /// @brief Getter of organisms by type
+        /// @tparam T Type which user wants to get organisms of
+        /// @return Vector of organisms
+        template<ParC T>
+        std::vector<T*> get();
+
+        /// @return Width of scene
+        double getWidth();
+
+        /// @return Height of scene
+        double getHeight();
 
         /// @brief Method that updates simulation for dt seconds
         void update();
@@ -408,46 +420,13 @@ namespace ds {
         /// @param times Number of times simulation updates
         void update(int times);
 
-        /// @brief Getter of organisms by type
-        /// @tparam T Type which user wants to get organisms of
-        /// @return Vector of organisms
-        template<ParC T>
-        std::vector<T*> get() {
-            std::vector<T*> tmp;
-            for (auto al = alives[indexTList(TList<T, Types...>{})].begin(); al != alives[indexTList(TList<T, Types...>{})].end(); ++al) {
-                tmp.push_back(reinterpret_cast<T*>(*al));
-            }
-            return tmp;
-        }
-
         /// @brief Function that writes simulation's state to output stream
         /// @param ostrm Output stream
-        void writeTo(std::ostream& ostrm) {
-            ostrm << dt << ' ' << w << ' ' << h << ' ' << totalMass << std::endl;
-            writeArrOfMultisetTo(alives_upd, TList<Types...>{}, ostrm);
-        }
+        void writeTo(std::ostream& ostrm);
 
         /// @brief Read simulation's state from input stream
         /// @param istrm Input stream
-        void readFrom(std::istream& istrm) {
-            istrm >> dt >> w >> h >> totalMass;
-            for (int i = 0; i != alives.size(); ++i) {
-                for (auto j = alives[i].begin(); j != alives[i].end(); ++j) {
-                    delete* j;
-                }
-            }
-            readArrOfMultisetFrom(alives_upd, TList<Types...>{}, istrm);
-        }
-
-        /// @return Width of scene
-        double getWidth() {
-            return w;
-        }
-
-        /// @return Height of scene
-        double getHeight() {
-            return h;
-        }
+        void readFrom(std::istream& istrm);
 
     private:
 
@@ -623,7 +602,7 @@ namespace ds {
         /// @brief Array with reproduction functions
         std::array < std::function<void(Par*, std::vector<Par*>&)>, simulDim> reproduction_fs;
         /// @brief Array with spawn functions
-        std::function<void(TArray<Types...>&, double massLeft, double wid, double high, double dt)> spawn_f;
+        std::function<void(TArray<Types...>&, double, double, double, double)> spawn_f;
     };
 
     template<ParC... Types>
@@ -666,6 +645,16 @@ namespace ds {
         }
         alives[indexTList(TList<T, Types...>{})].insert(reinterpret_cast<Par*>(myOrg)); //спорно
         alives_upd[indexTList(TList<T, Types...>{})].insert(reinterpret_cast<Par*>(myOrg));
+    }
+
+    template<ParC... Types>
+    template<ParC T>
+    std::vector<T*> DarwinSimulator<Types...>::get() {
+        std::vector<T*> tmp;
+        for (auto al = alives[indexTList(TList<T, Types...>{})].begin(); al != alives[indexTList(TList<T, Types...>{})].end(); ++al) {
+            tmp.push_back(reinterpret_cast<T*>(*al));
+        }
+        return tmp;
     }
 
     template<ParC... Types>
@@ -842,6 +831,33 @@ namespace ds {
         for (int i = 0; i < times; ++i) {
             update();
         }
+    }
+
+    template<ParC... Types>
+    void DarwinSimulator<Types...>::writeTo(std::ostream& ostrm) {
+        ostrm << dt << ' ' << w << ' ' << h << ' ' << totalMass << std::endl;
+        writeArrOfMultisetTo(alives_upd, TList<Types...>{}, ostrm);
+    }
+
+    template<ParC... Types>
+    void DarwinSimulator<Types...>::readFrom(std::istream& istrm) {
+        istrm >> dt >> w >> h >> totalMass;
+        for (int i = 0; i != alives.size(); ++i) {
+            for (auto j = alives[i].begin(); j != alives[i].end(); ++j) {
+                delete* j;
+            }
+        }
+        readArrOfMultisetFrom(alives_upd, TList<Types...>{}, istrm);
+    }
+
+    template<ParC... Types>
+    double DarwinSimulator<Types...>::getWidth() {
+        return w;
+    }
+
+    template<ParC... Types>
+    double DarwinSimulator<Types...>::getHeight() {
+        return h;
     }
 
     /// @brief Operator which writes simulation to ostrm
