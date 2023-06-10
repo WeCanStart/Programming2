@@ -1,6 +1,3 @@
-find_package(SFML COMPONENTS window graphics system REQUIRED)
-find_package(doctest REQUIRED)
-
 add_subdirectory(examples)
 add_subdirectory(test)
 
@@ -12,3 +9,18 @@ target_include_directories(darwinsimul PUBLIC INTERFACE
 )
 
 install(TARGETS darwinsimul)
+
+option(BUILD_DOC "Build documentation" ON)
+
+set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/./docs/Doxyfile.in)
+set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
+
+find_package(Doxygen REQUIRED)
+
+configure_file(${DOXYGEN_IN} ${DOXYGEN_OUT} @ONLY)
+
+add_custom_target(doc_doxygen ALL
+        COMMAND ${DOXYGEN_EXECUTABLE} ${DOXYGEN_OUT}
+        WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+        VERBATIM
+)
