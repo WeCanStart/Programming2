@@ -3,12 +3,13 @@
 #define DARWIN_SIMUL_HPP_20230503
 
 #include <iostream>
+#include <exception>
+#include <cmath>
 #include <array>
 #include <vector>
+#include <set>
 #include <functional>
 #include <algorithm>
-#include <set>
-#include <vector>
 #include <type_traits>
 #include <thread>
 
@@ -432,7 +433,7 @@ namespace ds {
 
         /// @brief Base case for set method
         template<ParC Head>
-        void set(TList<Head>, int i = 0) {
+        inline void set(TList<Head>, int i = 0) {
             calculations_fs[i] = [this](Par* p, const TArray<Types...>& arr, double dt_) {
                 calculations(reinterpret_cast<Head*>(p), arr, dt_);
             };
@@ -454,7 +455,7 @@ namespace ds {
         /// @tparam Tail... Types that will be added later
         /// @param i Index of type we are working with to add functions to arrays
         template<ParC Head, ParC... Tail>
-        void set(TList<Head, Tail...> list, int i = 0) {
+        inline void set(TList<Head, Tail...> list, int i = 0) {
             calculations_fs[i] = [this](Par* p, const TArray<Types...>& arr, double dt_) {
                 calculations(reinterpret_cast<Head*>(p), arr, dt_);
             };
@@ -478,7 +479,7 @@ namespace ds {
         /// @param i First type's index
         /// @param j Second type's index
         template<ParC T, ParC Head>
-        void set1d(TList<T>, TList<Head>, int i = 0, int j = 0) {
+        inline void set1d(TList<T>, TList<Head>, int i = 0, int j = 0) {
             collision_fs[i][j] = reinterpret_cast<void(*)(Par*, Par*)>(&collision<T, Head>);
             collision_fs[j][i] = reinterpret_cast<void(*)(Par*, Par*)>(&collision<Head, T>);
         }
@@ -490,7 +491,7 @@ namespace ds {
         /// @param i First type's index
         /// @param j Second type's index
         template<ParC T, ParC Head, ParC... Tail>
-        void set1d(TList<T>, TList<Head, Tail...>, int i = 0, int j = 0) {
+        inline void set1d(TList<T>, TList<Head, Tail...>, int i = 0, int j = 0) {
             collision_fs[i][j] = reinterpret_cast<void(*)(Par*, Par*)>(&collision<T, Head>);
             collision_fs[j][i] = reinterpret_cast<void(*)(Par*, Par*)>(&collision<Head, T>);
             set1d(TList<T>{}, TList<Tail...>{}, i, j + 1);
@@ -500,7 +501,7 @@ namespace ds {
         /// @tparam Head Start type to use for first organism
         /// @param i Index for arrays, which is simmetrical in this case for two organisms
         template<ParC Head>
-        void set2d(TList<Head>, int i = 0) {
+        inline void set2d(TList<Head>, int i = 0) {
             collision_fs[i][i] = reinterpret_cast<void(*)(Par*, Par*)>(&collision<Head, Head>);
         }
 
@@ -521,7 +522,7 @@ namespace ds {
         /// now 4x4 part of table is unfilled.
         /// This process continues until right-bottom element fills
         template<ParC Head, ParC... Tail>
-        void set2d(TList<Head, Tail...>, int i = 0) {
+        inline void set2d(TList<Head, Tail...>, int i = 0) {
             collision_fs[i][i] = reinterpret_cast<void(*)(Par*, Par*)>(&collision<Head, Head>);
             set1d(TList<Head>{}, TList<Tail...>{}, i, i + 1);
             set2d(TList<Tail...>{}, i + 1);

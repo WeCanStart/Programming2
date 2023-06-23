@@ -8,11 +8,13 @@ target_include_directories(darwinsimul PUBLIC INTERFACE
   $<INSTALL_INTERFACE:include>
 )
 
-install(TARGETS darwinsimul)
+install(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/include DESTINATION .)
+
+install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/doc_doxygen/ DESTINATION ./doc)
 
 option(BUILD_DOC "Build documentation" ON)
 
-set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/./docs/Doxyfile.in)
+set(DOXYGEN_IN ${CMAKE_CURRENT_SOURCE_DIR}/./doc/Doxyfile.in)
 set(DOXYGEN_OUT ${CMAKE_CURRENT_BINARY_DIR}/Doxyfile)
 
 find_package(Doxygen REQUIRED)

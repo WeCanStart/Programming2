@@ -1,0 +1,200 @@
+\doxysubsection{ds\+::Darwin\+Simulator$<$ Types $>$ Class Template Reference}
+\label{classds_1_1_darwin_simulator}\index{ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}}
+
+
+Main class which represents simulation.  
+
+
+
+
+{\ttfamily \#include $<$darwin\+\_\+simul.\+hpp$>$}
+
+\doxysubsubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\label{classds_1_1_darwin_simulator_a79c24796b2deba288a6aafea6acb2503} 
+{\bfseries Darwin\+Simulator} ()
+\begin{DoxyCompactList}\small\item\em Empty ctor. \end{DoxyCompactList}\item 
+\textbf{ Darwin\+Simulator} (double dt\+\_\+, double w\+\_\+, double h\+\_\+, double total\+Mass\+\_\+)
+\begin{DoxyCompactList}\small\item\em Main ctor. \end{DoxyCompactList}\item 
+\label{classds_1_1_darwin_simulator_a5488295f33d262ee31232cac7f456460} 
+{\bfseries $\sim$\+Darwin\+Simulator} ()
+\begin{DoxyCompactList}\small\item\em Empty dtor. \end{DoxyCompactList}\item 
+{\footnotesize template$<$ParC T$>$ }\\void \textbf{ add\+Alive} (const T \&inp)
+\begin{DoxyCompactList}\small\item\em Method, which adds organism to simulation. \end{DoxyCompactList}\item 
+{\footnotesize template$<$ParC T$>$ }\\std\+::vector$<$ T $\ast$ $>$ \textbf{ get} ()
+\begin{DoxyCompactList}\small\item\em Getter of organisms by type. \end{DoxyCompactList}\item 
+double \textbf{ get\+Width} ()
+\item 
+double \textbf{ get\+Height} ()
+\item 
+\label{classds_1_1_darwin_simulator_a5435ae9918fe9d1c38cb634c44ba4df6} 
+void {\bfseries update} ()
+\begin{DoxyCompactList}\small\item\em Method that updates simulation for dt seconds. \end{DoxyCompactList}\item 
+void \textbf{ update} (int times)
+\begin{DoxyCompactList}\small\item\em Method that updates simulation some times. \end{DoxyCompactList}\item 
+void \textbf{ write\+To} (std\+::ostream \&ostrm)
+\begin{DoxyCompactList}\small\item\em Function that writes simulation\textquotesingle{}s state to output stream. \end{DoxyCompactList}\item 
+void \textbf{ read\+From} (std\+::istream \&istrm)
+\begin{DoxyCompactList}\small\item\em Read simulation\textquotesingle{}s state from input stream. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsubsection*{Static Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\label{classds_1_1_darwin_simulator_a7ab528999859a379fc98330c6a34ffc7} 
+static constexpr int {\bfseries simul\+Dim} = t\+Size(\textbf{ TList}$<$Types...$>$\{\})
+\begin{DoxyCompactList}\small\item\em Number of organism types. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+\subsubsection*{template$<$Par\+C... Types$>$\newline
+class ds\+::\+Darwin\+Simulator$<$ Types $>$}
+Main class which represents simulation. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Types...} & Types of organisms that can be added to simulation \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsubsection{Constructor \& Destructor Documentation}
+\label{classds_1_1_darwin_simulator_a61843448629ff1fb41574cd252a8e812} 
+\index{ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}!DarwinSimulator@{DarwinSimulator}}
+\index{DarwinSimulator@{DarwinSimulator}!ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}}
+\doxyparagraph{DarwinSimulator()}
+{\footnotesize\ttfamily template$<$Par\+C... Types$>$ \\
+\textbf{ ds\+::\+Darwin\+Simulator}$<$ Types $>$\+::\+Darwin\+Simulator (\begin{DoxyParamCaption}\item[{double}]{dt\+\_\+,  }\item[{double}]{w\+\_\+,  }\item[{double}]{h\+\_\+,  }\item[{double}]{total\+Mass\+\_\+ }\end{DoxyParamCaption})}
+
+
+
+Main ctor. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em dt\+\_\+} & Simulation\textquotesingle{}s time step \\
+\hline
+{\em w\+\_\+} & Width of the simulation\textquotesingle{}s scene \\
+\hline
+{\em h\+\_\+} & Height of the simulation\textquotesingle{}s scene \\
+\hline
+{\em total\+Mass\+\_\+} & Maximal mass of simulation\textquotesingle{}s organisms\textquotesingle{} \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsubsection{Member Function Documentation}
+\label{classds_1_1_darwin_simulator_aa91b85cebb23ab4349ccdb2ecd58c13d} 
+\index{ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}!addAlive@{addAlive}}
+\index{addAlive@{addAlive}!ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}}
+\doxyparagraph{addAlive()}
+{\footnotesize\ttfamily template$<$Par\+C... Types$>$ \\
+template$<$ParC T$>$ \\
+void \textbf{ ds\+::\+Darwin\+Simulator}$<$ Types $>$\+::add\+Alive (\begin{DoxyParamCaption}\item[{const T \&}]{inp }\end{DoxyParamCaption})}
+
+
+
+Method, which adds organism to simulation. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Type of organism \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em inp} & Input organism \\
+\hline
+\end{DoxyParams}
+\label{classds_1_1_darwin_simulator_a6c0aa0b4531f67e1da7da8b2ea537f47} 
+\index{ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}!get@{get}}
+\index{get@{get}!ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}}
+\doxyparagraph{get()}
+{\footnotesize\ttfamily template$<$Par\+C... Types$>$ \\
+template$<$ParC T$>$ \\
+std\+::vector$<$ T $\ast$ $>$ \textbf{ ds\+::\+Darwin\+Simulator}$<$ Types $>$\+::get}
+
+
+
+Getter of organisms by type. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Type which user wants to get organisms of \\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+Vector of organisms 
+\end{DoxyReturn}
+\label{classds_1_1_darwin_simulator_a38527d18b145d781b22fce25accb29cc} 
+\index{ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}!getHeight@{getHeight}}
+\index{getHeight@{getHeight}!ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}}
+\doxyparagraph{getHeight()}
+{\footnotesize\ttfamily template$<$Par\+C... Types$>$ \\
+double \textbf{ ds\+::\+Darwin\+Simulator}$<$ Types $>$\+::get\+Height}
+
+\begin{DoxyReturn}{Returns}
+Height of scene 
+\end{DoxyReturn}
+\label{classds_1_1_darwin_simulator_a18e2adae3b2bf31e40857b73bbd760a8} 
+\index{ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}!getWidth@{getWidth}}
+\index{getWidth@{getWidth}!ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}}
+\doxyparagraph{getWidth()}
+{\footnotesize\ttfamily template$<$Par\+C... Types$>$ \\
+double \textbf{ ds\+::\+Darwin\+Simulator}$<$ Types $>$\+::get\+Width}
+
+\begin{DoxyReturn}{Returns}
+Width of scene 
+\end{DoxyReturn}
+\label{classds_1_1_darwin_simulator_ac07df94792ddc88fc9b462365a3f3f8b} 
+\index{ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}!readFrom@{readFrom}}
+\index{readFrom@{readFrom}!ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}}
+\doxyparagraph{readFrom()}
+{\footnotesize\ttfamily template$<$Par\+C... Types$>$ \\
+void \textbf{ ds\+::\+Darwin\+Simulator}$<$ Types $>$\+::read\+From (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{istrm }\end{DoxyParamCaption})}
+
+
+
+Read simulation\textquotesingle{}s state from input stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em istrm} & Input stream \\
+\hline
+\end{DoxyParams}
+\label{classds_1_1_darwin_simulator_a08efbfd1372b9f2b0d91917c490f0ae3} 
+\index{ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}!update@{update}}
+\index{update@{update}!ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}}
+\doxyparagraph{update()}
+{\footnotesize\ttfamily template$<$Par\+C... Types$>$ \\
+void \textbf{ ds\+::\+Darwin\+Simulator}$<$ Types $>$\+::update (\begin{DoxyParamCaption}\item[{int}]{times }\end{DoxyParamCaption})}
+
+
+
+Method that updates simulation some times. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em times} & Number of times simulation updates \\
+\hline
+\end{DoxyParams}
+\label{classds_1_1_darwin_simulator_afb501bfbba4a63370b63140372267a8a} 
+\index{ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}!writeTo@{writeTo}}
+\index{writeTo@{writeTo}!ds::DarwinSimulator$<$ Types $>$@{ds::DarwinSimulator$<$ Types $>$}}
+\doxyparagraph{writeTo()}
+{\footnotesize\ttfamily template$<$Par\+C... Types$>$ \\
+void \textbf{ ds\+::\+Darwin\+Simulator}$<$ Types $>$\+::write\+To (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{ostrm }\end{DoxyParamCaption})}
+
+
+
+Function that writes simulation\textquotesingle{}s state to output stream. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ostrm} & Output stream \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/artem/\+Programming2/khapilov\+\_\+a\+\_\+o/prj.\+cw/darwin\+\_\+simul/include/darwin\+\_\+simul/darwin\+\_\+simul.\+hpp\end{DoxyCompactItemize}

@@ -1,0 +1,9 @@
+# CMake generation dependency list for this directory.
+C:/Users/artem/Programming2/khapilov_a_o/prj.cw/darwin_simul/examples/CMakeLists.txt
+D:/CMake/share/cmake-3.26/Modules/CMakeFindDependencyMacro.cmake
+D:/src/vcpkg/installed/x64-windows/share/sfml/SFMLConfig.cmake
+D:/src/vcpkg/installed/x64-windows/share/sfml/SFMLConfigDependencies.cmake
+D:/src/vcpkg/installed/x64-windows/share/sfml/SFMLConfigVersion.cmake
+D:/src/vcpkg/installed/x64-windows/share/sfml/SFMLSharedTargets-debug.cmake
+D:/src/vcpkg/installed/x64-windows/share/sfml/SFMLSharedTargets-release.cmake
+D:/src/vcpkg/installed/x64-windows/share/sfml/SFMLSharedTargets.cmake

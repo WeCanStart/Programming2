@@ -1,0 +1,12 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_annotated" xml:lang="en-US">
+<title>Class List</title>
+Here are the classes, structs, unions and interfaces with brief descriptions:<link linkend="_classds_1_1_darwin_simulator">ds::DarwinSimulator&lt; Types &gt;</link>
+<para>Main class which represents simulation </para>
+<link linkend="_classds_1_1_par">ds::Par</link>
+<para>Class which represents form of live, which library works with </para>
+<link linkend="_classds_1_1_t_array">ds::TArray&lt; Types &gt;</link>
+<para>Class which is used to give user more or less comfortable form of data, which is used in <link linkend="_classds_1_1_darwin_simulator">DarwinSimulator</link> class </para>
+<link linkend="_classds_1_1_t_list">ds::TList&lt; Types &gt;</link>
+<para>Class which represents list of types </para>
+</section>

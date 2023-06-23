@@ -47,8 +47,11 @@ int main(int argc, char* argv[]) {
             for (Plant* plnt : plnts) {
                 cir.setPosition(sf::Vector2f(plnt->getX(), plnt->getY()));
                 cir.setRadius(plnt->radius());
+                cir.setOutlineColor(sf::Color::Magenta);
+                cir.setOutlineThickness(1);
                 w.draw(cir);
             }
+            cir.setOutlineThickness(0);
 
             const std::vector<Herbivore*> hrbvrs = s.get<Herbivore>();
             for (Herbivore* hrbvr : hrbvrs) {

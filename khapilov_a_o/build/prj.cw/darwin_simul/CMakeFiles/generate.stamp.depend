@@ -1,0 +1,6 @@
+# CMake generation dependency list for this directory.
+C:/Users/artem/Programming2/khapilov_a_o/prj.cw/darwin_simul/CMakeLists.txt
+C:/Users/artem/Programming2/khapilov_a_o/prj.cw/darwin_simul/doc/Doxyfile.in
+D:/CMake/share/cmake-3.26/Modules/FindDoxygen.cmake
+D:/CMake/share/cmake-3.26/Modules/FindPackageHandleStandardArgs.cmake
+D:/CMake/share/cmake-3.26/Modules/FindPackageMessage.cmake

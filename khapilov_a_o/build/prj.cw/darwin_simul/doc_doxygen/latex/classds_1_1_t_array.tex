@@ -1,0 +1,93 @@
+\doxysubsection{ds\+::TArray$<$ Types $>$ Class Template Reference}
+\label{classds_1_1_t_array}\index{ds::TArray$<$ Types $>$@{ds::TArray$<$ Types $>$}}
+
+
+Class which is used to give user more or less comfortable form of data, which is used in \doxyref{Darwin\+Simulator}{p.}{classds_1_1_darwin_simulator} class.  
+
+
+
+
+{\ttfamily \#include $<$darwin\+\_\+simul.\+hpp$>$}
+
+\doxysubsubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\textbf{ TArray} (std\+::array$<$ std\+::vector$<$ \textbf{ Par} $\ast$ $>$, t\+Size(\textbf{ TList}$<$ Types... $>$\{\}) $>$ \&inp\+Arr)
+\begin{DoxyCompactList}\small\item\em Ctor, which converts class-\/data to user-\/data. \end{DoxyCompactList}\item 
+{\footnotesize template$<$ParC T$>$ }\\const std\+::vector$<$ T $\ast$ $>$ \textbf{ get\+By\+Type} () const
+\item 
+{\footnotesize template$<$ParC T$>$ }\\void \textbf{ put\+By\+Type} (const std\+::vector$<$ T $>$ \&new\+Vec)
+\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+\subsubsection*{template$<$Par\+C... Types$>$\newline
+class ds\+::\+TArray$<$ Types $>$}
+Class which is used to give user more or less comfortable form of data, which is used in \doxyref{Darwin\+Simulator}{p.}{classds_1_1_darwin_simulator} class. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Types...} & Types of organisms which simulation works with \\
+\hline
+\end{DoxyTemplParams}
+
+
+\doxysubsubsection{Constructor \& Destructor Documentation}
+\label{classds_1_1_t_array_ae388efd24aaa3f126f9b45e8cdf15c9d} 
+\index{ds::TArray$<$ Types $>$@{ds::TArray$<$ Types $>$}!TArray@{TArray}}
+\index{TArray@{TArray}!ds::TArray$<$ Types $>$@{ds::TArray$<$ Types $>$}}
+\doxyparagraph{TArray()}
+{\footnotesize\ttfamily template$<$Par\+C... Types$>$ \\
+\textbf{ ds\+::\+TArray}$<$ Types $>$\+::\+TArray (\begin{DoxyParamCaption}\item[{std\+::array$<$ std\+::vector$<$ \textbf{ Par} $\ast$ $>$, t\+Size(\textbf{ TList}$<$ Types... $>$\{\}) $>$ \&}]{inp\+Arr }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Ctor, which converts class-\/data to user-\/data. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em inp\+Arr} & Class-\/used data \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsubsection{Member Function Documentation}
+\label{classds_1_1_t_array_a04694d0c734abe84c34eb94fc10930a8} 
+\index{ds::TArray$<$ Types $>$@{ds::TArray$<$ Types $>$}!getByType@{getByType}}
+\index{getByType@{getByType}!ds::TArray$<$ Types $>$@{ds::TArray$<$ Types $>$}}
+\doxyparagraph{getByType()}
+{\footnotesize\ttfamily template$<$Par\+C... Types$>$ \\
+template$<$ParC T$>$ \\
+const std\+::vector$<$ T $\ast$ $>$ \textbf{ ds\+::\+TArray}$<$ Types $>$\+::get\+By\+Type (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Type of organisms user wants to use \\
+\hline
+\end{DoxyTemplParams}
+\begin{DoxyReturn}{Returns}
+Vector of T$\ast$ 
+\end{DoxyReturn}
+\label{classds_1_1_t_array_a5676bd1fdae08475c9cc8fc3f0deca92} 
+\index{ds::TArray$<$ Types $>$@{ds::TArray$<$ Types $>$}!putByType@{putByType}}
+\index{putByType@{putByType}!ds::TArray$<$ Types $>$@{ds::TArray$<$ Types $>$}}
+\doxyparagraph{putByType()}
+{\footnotesize\ttfamily template$<$Par\+C... Types$>$ \\
+template$<$ParC T$>$ \\
+void \textbf{ ds\+::\+TArray}$<$ Types $>$\+::put\+By\+Type (\begin{DoxyParamCaption}\item[{const std\+::vector$<$ T $>$ \&}]{new\+Vec }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em T} & Type of organisms user wants to add to object \\
+\hline
+\end{DoxyTemplParams}
+
+\begin{DoxyParams}{Parameters}
+{\em new\+Vec} & Vector of T \\
+\hline
+\end{DoxyParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/artem/\+Programming2/khapilov\+\_\+a\+\_\+o/prj.\+cw/darwin\+\_\+simul/include/darwin\+\_\+simul/darwin\+\_\+simul.\+hpp\end{DoxyCompactItemize}
