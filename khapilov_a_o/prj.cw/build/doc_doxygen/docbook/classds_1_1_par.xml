@@ -1,0 +1,339 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_classds_1_1_par" xml:lang="en-US">
+<title>ds::Par Class Reference</title>
+<indexterm><primary>ds::Par</primary></indexterm>
+<para>
+
+<para>Class which represents form of live, which library works with. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;darwin_simul.hpp&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_classds_1_1_par_1aebe5a80460bd202baf43f4d8d4bfc89c"/><emphasis role="strong">Par</emphasis> ()=default</para>
+
+<para>Default ctor. </para>
+</listitem>
+            <listitem><para><link linkend="_classds_1_1_par_1a100289f8c65da828047f3ea0ce50b39c">Par</link> (double mass_, double x_, double y_, double viewRange_)</para>
+
+<para>Ctor with common <link linkend="_classds_1_1_par">Par</link> params. </para>
+</listitem>
+            <listitem><para><anchor xml:id="_classds_1_1_par_1aecba4caa107a0581db6ea09afdcba6ee"/>virtual <emphasis role="strong">~Par</emphasis> ()=default</para>
+
+<para>Default dtor. </para>
+</listitem>
+            <listitem><para>double <link linkend="_classds_1_1_par_1a3bf512de7544ace59502913263c29849">radius</link> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_classds_1_1_par_1af8f76d6a3c6702bc25e3e98a8c3ebcb6"/>void <emphasis role="strong">looseMass</emphasis> (double loose)</para>
+
+<para>Decrease mass. </para>
+</listitem>
+            <listitem><para>double <link linkend="_classds_1_1_par_1ab7eb81ec9dced9b7fef4be32339931b9">getMass</link> () const</para>
+</listitem>
+            <listitem><para>double <link linkend="_classds_1_1_par_1a55f25407fefa1d950f6203177127d2aa">getStartMass</link> () const</para>
+</listitem>
+            <listitem><para>double <link linkend="_classds_1_1_par_1a53c1c6a03e1921b7a73c4c2ef08dca2e">getX</link> () const</para>
+</listitem>
+            <listitem><para>double <link linkend="_classds_1_1_par_1af96ed9f921c7f4316021d71091fa6b8e">getY</link> () const</para>
+</listitem>
+            <listitem><para><anchor xml:id="_classds_1_1_par_1aa7c92b1b8f7f4f5b0ec7bc470685a0f5"/>void <emphasis role="strong">moveX</emphasis> (double dx)</para>
+
+<para>Change organism&apos;s x coordinate by dx. </para>
+</listitem>
+            <listitem><para><anchor xml:id="_classds_1_1_par_1a6a563ea592772a82d55b9bddcbf355a7"/>void <emphasis role="strong">moveY</emphasis> (double dy)</para>
+
+<para>Change organism&apos;s y coordinate by dy. </para>
+</listitem>
+            <listitem><para><anchor xml:id="_classds_1_1_par_1a81522e78c819ae8d2adac5d415faaa84"/>void <emphasis role="strong">setX</emphasis> (double x_)</para>
+
+<para>Change organism&apos;s x coordinate to x_. </para>
+</listitem>
+            <listitem><para><anchor xml:id="_classds_1_1_par_1a5a4f5767cb6e78ce4f303d8dba8f23c2"/>void <emphasis role="strong">setY</emphasis> (double y_)</para>
+
+<para>Change organism&apos;s y coordinate to y_. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classds_1_1_par_1a265f620b41b17671e6bc10bf629b3fc5">isDead</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classds_1_1_par_1a92ccc639a35470a3efc7ebd4d096a634">eat</link> (<link linkend="_classds_1_1_par">Par</link> *rhs)</para>
+
+<para>Lhs organism makes rhs organism dead and gain mass by the end of the turn. </para>
+</listitem>
+            <listitem><para><anchor xml:id="_classds_1_1_par_1a106aba866c7f8472064af1a51ab79f48"/>void <emphasis role="strong">die</emphasis> ()</para>
+
+<para>Makes organism look dead for user. </para>
+</listitem>
+            <listitem><para>bool <link linkend="_classds_1_1_par_1aca304c60df0360a25afb6ad176868798">hasVictim</link> ()</para>
+</listitem>
+            <listitem><para>void <link linkend="_classds_1_1_par_1a920633108dc009fff9923cd8da128d63">writeTo</link> (std::ostream &amp;ostrm) const</para>
+
+<para>Write main params of an organism to ostrm. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classds_1_1_par_1a21b78ef2249fdea5e1059692664fd860">readFrom</link> (std::istream &amp;istrm)</para>
+
+<para>Read main params of an organism from istrm. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_classds_1_1_par_1a03669a6c7f5b6bfd56fb853c4fe25f9c"/>double <emphasis role="strong">viewRange</emphasis> = 10</para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Friends    </title>
+        <itemizedlist>
+            <listitem><para>template&lt;ParC... Types&gt; </para><para>class <link linkend="_classds_1_1_par_1abf86b2c44e4f445319d5d2214af9ed7e">DarwinSimulator</link></para>
+
+<para>Main class which represents simulation. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+
+<para>Class which represents form of live, which library works with. </para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_classds_1_1_par_1a100289f8c65da828047f3ea0ce50b39c"/><section>
+    <title>Par()</title>
+<indexterm><primary>Par</primary><secondary>ds::Par</secondary></indexterm>
+<indexterm><primary>ds::Par</primary><secondary>Par</secondary></indexterm>
+<para><computeroutput>ds::Par::Par (double mass_, double x_, double y_, double viewRange_)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+
+<para>Ctor with common <link linkend="_classds_1_1_par">Par</link> params. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>mass_</entry><entry>
+<para>Start mass </para>
+</entry>
+                            </row>
+                            <row>
+<entry>x_</entry><entry>
+<para>Start x coordinate </para>
+</entry>
+                            </row>
+                            <row>
+<entry>y_</entry><entry>
+<para>Start y coordinate </para>
+</entry>
+                            </row>
+                            <row>
+<entry>viewRange_</entry><entry>
+<para>start distance organism can see other organisms for </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_classds_1_1_par_1a92ccc639a35470a3efc7ebd4d096a634"/><section>
+    <title>eat()</title>
+<indexterm><primary>eat</primary><secondary>ds::Par</secondary></indexterm>
+<indexterm><primary>ds::Par</primary><secondary>eat</secondary></indexterm>
+<para><computeroutput>void ds::Par::eat (<link linkend="_classds_1_1_par">Par</link> * rhs)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+
+<para>Lhs organism makes rhs organism dead and gain mass by the end of the turn. </para>
+</para>
+
+<para>Lhs organism makes rhs organism dead and gain mass by the end of the turn in inverse proportion to number of killers of this organism </para>
+</section>
+<anchor xml:id="_classds_1_1_par_1ab7eb81ec9dced9b7fef4be32339931b9"/><section>
+    <title>getMass()</title>
+<indexterm><primary>getMass</primary><secondary>ds::Par</secondary></indexterm>
+<indexterm><primary>ds::Par</primary><secondary>getMass</secondary></indexterm>
+<para><computeroutput>double ds::Par::getMass ( ) const<computeroutput>[inline]</computeroutput></computeroutput></para>
+<para><formalpara><title>Returns</title>
+
+<para>Current mass of the organism </para>
+</formalpara>
+</para>
+</section>
+<anchor xml:id="_classds_1_1_par_1a55f25407fefa1d950f6203177127d2aa"/><section>
+    <title>getStartMass()</title>
+<indexterm><primary>getStartMass</primary><secondary>ds::Par</secondary></indexterm>
+<indexterm><primary>ds::Par</primary><secondary>getStartMass</secondary></indexterm>
+<para><computeroutput>double ds::Par::getStartMass ( ) const<computeroutput>[inline]</computeroutput></computeroutput></para>
+<para><formalpara><title>Returns</title>
+
+<para>Start mass of the organism </para>
+</formalpara>
+</para>
+</section>
+<anchor xml:id="_classds_1_1_par_1a53c1c6a03e1921b7a73c4c2ef08dca2e"/><section>
+    <title>getX()</title>
+<indexterm><primary>getX</primary><secondary>ds::Par</secondary></indexterm>
+<indexterm><primary>ds::Par</primary><secondary>getX</secondary></indexterm>
+<para><computeroutput>double ds::Par::getX ( ) const<computeroutput>[inline]</computeroutput></computeroutput></para>
+<para><formalpara><title>Returns</title>
+
+<para>Current x coordinate </para>
+</formalpara>
+</para>
+</section>
+<anchor xml:id="_classds_1_1_par_1af96ed9f921c7f4316021d71091fa6b8e"/><section>
+    <title>getY()</title>
+<indexterm><primary>getY</primary><secondary>ds::Par</secondary></indexterm>
+<indexterm><primary>ds::Par</primary><secondary>getY</secondary></indexterm>
+<para><computeroutput>double ds::Par::getY ( ) const<computeroutput>[inline]</computeroutput></computeroutput></para>
+<para><formalpara><title>Returns</title>
+
+<para>Current y coordinate </para>
+</formalpara>
+</para>
+</section>
+<anchor xml:id="_classds_1_1_par_1aca304c60df0360a25afb6ad176868798"/><section>
+    <title>hasVictim()</title>
+<indexterm><primary>hasVictim</primary><secondary>ds::Par</secondary></indexterm>
+<indexterm><primary>ds::Par</primary><secondary>hasVictim</secondary></indexterm>
+<para><computeroutput>bool ds::Par::hasVictim ( )<computeroutput>[inline]</computeroutput></computeroutput></para>
+<para><formalpara><title>Returns</title>
+
+<para>True is organism has victim </para>
+</formalpara>
+</para>
+</section>
+<anchor xml:id="_classds_1_1_par_1a265f620b41b17671e6bc10bf629b3fc5"/><section>
+    <title>isDead()</title>
+<indexterm><primary>isDead</primary><secondary>ds::Par</secondary></indexterm>
+<indexterm><primary>ds::Par</primary><secondary>isDead</secondary></indexterm>
+<para><computeroutput>bool ds::Par::isDead ( )<computeroutput>[inline]</computeroutput></computeroutput></para>
+<para><formalpara><title>Returns</title>
+
+<para>True if organism is going to die </para>
+</formalpara>
+</para>
+</section>
+<anchor xml:id="_classds_1_1_par_1a3bf512de7544ace59502913263c29849"/><section>
+    <title>radius()</title>
+<indexterm><primary>radius</primary><secondary>ds::Par</secondary></indexterm>
+<indexterm><primary>ds::Par</primary><secondary>radius</secondary></indexterm>
+<para><computeroutput>double ds::Par::radius ( ) const<computeroutput>[inline]</computeroutput></computeroutput></para>
+<para><formalpara><title>Returns</title>
+
+<para>Radius of the cell based on its mass </para>
+</formalpara>
+</para>
+</section>
+<anchor xml:id="_classds_1_1_par_1a21b78ef2249fdea5e1059692664fd860"/><section>
+    <title>readFrom()</title>
+<indexterm><primary>readFrom</primary><secondary>ds::Par</secondary></indexterm>
+<indexterm><primary>ds::Par</primary><secondary>readFrom</secondary></indexterm>
+<para><computeroutput>void ds::Par::readFrom (std::istream &amp; istrm)<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+
+<para>Read main params of an organism from istrm. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>istrm</entry><entry>
+<para>Input stream </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+</section>
+<anchor xml:id="_classds_1_1_par_1a920633108dc009fff9923cd8da128d63"/><section>
+    <title>writeTo()</title>
+<indexterm><primary>writeTo</primary><secondary>ds::Par</secondary></indexterm>
+<indexterm><primary>ds::Par</primary><secondary>writeTo</secondary></indexterm>
+<para><computeroutput>void ds::Par::writeTo (std::ostream &amp; ostrm) const<computeroutput>[inline]</computeroutput></computeroutput></para><para>
+
+<para>Write main params of an organism to ostrm. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>ostrm</entry><entry>
+<para>Output stream </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+</section>
+</section>
+<section>
+<title>Friends And Related Symbol Documentation</title>
+<anchor xml:id="_classds_1_1_par_1abf86b2c44e4f445319d5d2214af9ed7e"/><section>
+    <title>DarwinSimulator</title>
+<indexterm><primary>DarwinSimulator</primary><secondary>ds::Par</secondary></indexterm>
+<indexterm><primary>ds::Par</primary><secondary>DarwinSimulator</secondary></indexterm>
+<computeroutput>template&lt;ParC... Types&gt; </computeroutput><para><computeroutput>friend class <link linkend="_classds_1_1_darwin_simulator">DarwinSimulator</link><computeroutput>[friend]</computeroutput></computeroutput></para><para>
+
+<para>Main class which represents simulation. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Template Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>Types...</entry><entry>
+<para>Types of organisms that can be added to simulation </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+</section>
+<para>
+The documentation for this class was generated from the following file:</para>
+C:/Users/artem/Programming2/khapilov_a_o/prj.cw/include/darwin_simul/darwin_simul.hpp</section>
+</section>

@@ -1,0 +1,690 @@
+\doxysubsection{darwin\+\_\+simul.\+hpp}
+\label{darwin__simul_8hpp_source}\index{C:/Users/artem/Programming2/khapilov\_a\_o/prj.cw/include/darwin\_simul/darwin\_simul.hpp@{C:/Users/artem/Programming2/khapilov\_a\_o/prj.cw/include/darwin\_simul/darwin\_simul.hpp}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ DARWIN\_SIMUL\_HPP\_20230503}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ DARWIN\_SIMUL\_HPP\_20230503}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <iostream>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <exception>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <array>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#include\ <set>}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ <functional>}}
+\DoxyCodeLine{00012\ \textcolor{preprocessor}{\#include\ <algorithm>}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#include\ <type\_traits>}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#include\ <thread>}}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ }
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{keyword}{namespace\ }ds\ \{}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}...\ Types>}
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keyword}{class\ }TList\ \{\};}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00027\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ tSize(TList<>)\ \{}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00029\ \ \ \ \ \}}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class\ }Head,\ \textcolor{keyword}{class}...\ Tail>}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keywordtype}{int}\ tSize(TList<Head,\ Tail...>\ list)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 1\ +\ tSize(TList<Tail...>\{\});}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ }
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ Head>}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{bool}\ inTList(TList<T,\ Head>)\ \{}
+\DoxyCodeLine{00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::is\_same<T,\ Head>::value;}
+\DoxyCodeLine{00047\ \ \ \ \ \}}
+\DoxyCodeLine{00048\ }
+\DoxyCodeLine{00055\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class\ }T,\ \textcolor{keyword}{class\ }Head,\ \textcolor{keyword}{class}...\ Tail>}
+\DoxyCodeLine{00056\ \ \ \ \ \textcolor{keywordtype}{bool}\ inTList(TList<T,\ Head,\ Tail...>\ list)\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (std::is\_same<T,\ Head>::value\ ||\ inTList(TList<T,\ Tail...>\{\}));}
+\DoxyCodeLine{00058\ \ \ \ \ \}}
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00063\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}\ T,\ \textcolor{keyword}{class}\ Head>}
+\DoxyCodeLine{00064\ \ \ \ \ \textcolor{keywordtype}{int}\ indexTList(TList<T,\ Head>)\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 0;}
+\DoxyCodeLine{00066\ \ \ \ \ \}}
+\DoxyCodeLine{00067\ }
+\DoxyCodeLine{00074\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class\ }T,\ \textcolor{keyword}{class\ }Head,\ \textcolor{keyword}{class}...\ Tail>}
+\DoxyCodeLine{00075\ \ \ \ \ \textcolor{keywordtype}{int}\ indexTList(TList<T,\ Head,\ Tail...>\ list)\ \{}
+\DoxyCodeLine{00076\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ std::is\_same<T,\ Head>::value\ ?\ 0\ :\ 1\ +\ indexTList(TList<T,\ Tail...>\{\});}
+\DoxyCodeLine{00077\ \ \ \ \ \}}
+\DoxyCodeLine{00078\ }
+\DoxyCodeLine{00079\ }
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00082\ \ \ \ \ \textcolor{keyword}{class\ }Par;}
+\DoxyCodeLine{00083\ }
+\DoxyCodeLine{00085\ \ \ \ \ \textcolor{keyword}{template}\ <\textcolor{keyword}{class}\ T>}
+\DoxyCodeLine{00086\ \ \ \ \ \textcolor{keyword}{concept\ }ParC\ =\ std::is\_base\_of<Par,\ T>::value;}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00089\ \ \ \ \ \textcolor{keyword}{class\ }Par\ \{}
+\DoxyCodeLine{00090\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00091\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00093\ \ \ \ \ \ \ \ \ Par()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00100\ \ \ \ \ \ \ \ \ Par(\textcolor{keywordtype}{double}\ mass\_,\ \textcolor{keywordtype}{double}\ x\_,\ \textcolor{keywordtype}{double}\ y\_,\ \textcolor{keywordtype}{double}\ viewRange\_)\ :\ startMass(mass\_),\ mass(mass\_),\ x(x\_),\ y(y\_),\ viewRange(viewRange\_)\ \{\};}
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00103\ \ \ \ \ \ \ \ \ \textcolor{keyword}{virtual}\ \string~Par()\ =\ \textcolor{keywordflow}{default};}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00106\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ radius()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00107\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ 5\ *\ std::pow(mass,\ 0.3333);}
+\DoxyCodeLine{00108\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00111\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ looseMass(\textcolor{keywordtype}{double}\ loose)\ \{}
+\DoxyCodeLine{00112\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (loose\ <\ 0)\ \textcolor{keywordflow}{throw}\ std::exception(\textcolor{stringliteral}{"{}bad\ loose"{}});}
+\DoxyCodeLine{00113\ \ \ \ \ \ \ \ \ \ \ \ \ mass\ -\/=\ loose;}
+\DoxyCodeLine{00114\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00117\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ getMass()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00118\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ mass;}
+\DoxyCodeLine{00119\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00120\ }
+\DoxyCodeLine{00122\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ getStartMass()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00123\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ startMass;}
+\DoxyCodeLine{00124\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00127\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ getX()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00128\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ x;}
+\DoxyCodeLine{00129\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00130\ }
+\DoxyCodeLine{00132\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ getY()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00133\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ y;}
+\DoxyCodeLine{00134\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00137\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ moveX(\textcolor{keywordtype}{double}\ dx)\ \{}
+\DoxyCodeLine{00138\ \ \ \ \ \ \ \ \ \ \ \ \ x\ +=\ dx;}
+\DoxyCodeLine{00139\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00142\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ moveY(\textcolor{keywordtype}{double}\ dy)\ \{}
+\DoxyCodeLine{00143\ \ \ \ \ \ \ \ \ \ \ \ \ y\ +=\ dy;}
+\DoxyCodeLine{00144\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00145\ }
+\DoxyCodeLine{00147\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ setX(\textcolor{keywordtype}{double}\ x\_)\ \{}
+\DoxyCodeLine{00148\ \ \ \ \ \ \ \ \ \ \ \ \ x\ =\ x\_;}
+\DoxyCodeLine{00149\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00152\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ setY(\textcolor{keywordtype}{double}\ y\_)\ \{}
+\DoxyCodeLine{00153\ \ \ \ \ \ \ \ \ \ \ \ \ y\ =\ y\_;}
+\DoxyCodeLine{00154\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00155\ }
+\DoxyCodeLine{00157\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ isDead()\ \{}
+\DoxyCodeLine{00158\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ killerNumber;}
+\DoxyCodeLine{00159\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00165\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ eat(Par*\ rhs)\ \{}
+\DoxyCodeLine{00166\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (\textcolor{keyword}{this}\ ==\ rhs)\ \textcolor{keywordflow}{throw}\ std::exception(\textcolor{stringliteral}{"{}Form\ of\ live\ cannot\ eat\ itself"{}});}
+\DoxyCodeLine{00167\ \ \ \ \ \ \ \ \ \ \ \ \ victim\ =\ rhs;}
+\DoxyCodeLine{00168\ \ \ \ \ \ \ \ \ \ \ \ \ ++rhs-\/>killerNumber;}
+\DoxyCodeLine{00169\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00172\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ die()\ \{}
+\DoxyCodeLine{00173\ \ \ \ \ \ \ \ \ \ \ \ \ ++killerNumber;}
+\DoxyCodeLine{00174\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00177\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ hasVictim()\ \{}
+\DoxyCodeLine{00178\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ victim;}
+\DoxyCodeLine{00179\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00180\ }
+\DoxyCodeLine{00183\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ writeTo(std::ostream\&\ ostrm)\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00184\ \ \ \ \ \ \ \ \ \ \ \ \ ostrm\ <<\ startMass\ <<\ \textcolor{charliteral}{'\ '}\ <<\ mass\ <<\ \textcolor{charliteral}{'\ '}\ <<\ x\ <<\ \textcolor{charliteral}{'\ '}\ <<\ y\ <<\ \textcolor{charliteral}{'\ '}\ <<\ viewRange\ <<\ \textcolor{charliteral}{'\ '};}
+\DoxyCodeLine{00185\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00186\ }
+\DoxyCodeLine{00189\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ readFrom(std::istream\&\ istrm)\ \{}
+\DoxyCodeLine{00190\ \ \ \ \ \ \ \ \ \ \ \ \ istrm\ >>\ startMass\ >>\ mass\ >>\ x\ >>\ y\ >>\ viewRange;}
+\DoxyCodeLine{00191\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00195\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00196\ \ \ \ \ \ \ \ \ \textcolor{keyword}{friend}\ \textcolor{keyword}{class\ }DarwinSimulator;}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00198\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ viewRange\ =\ 10;}
+\DoxyCodeLine{00199\ }
+\DoxyCodeLine{00200\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ startMass\ =\ 0;}
+\DoxyCodeLine{00203\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ mass\ =\ 1;}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ x\ =\ 0,\ y\ =\ 0;}
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \ \ \ \ \ \ \ \ Par*\ victim\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00208\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ killerNumber\ =\ 0;}
+\DoxyCodeLine{00209\ \ \ \ \ \};}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00215\ \ \ \ \ std::ostream\&\ operator<<(std::ostream\&\ ostrm,\ \textcolor{keyword}{const}\ Par\&\ p)\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ \ \ \ \ p.writeTo(ostrm);}
+\DoxyCodeLine{00217\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ostrm;}
+\DoxyCodeLine{00218\ \ \ \ \ \}}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00224\ \ \ \ \ std::istream\&\ operator>>(std::istream\&\ istrm,\ Par\&\ p)\ \{}
+\DoxyCodeLine{00225\ \ \ \ \ \ \ \ \ p.readFrom(istrm);}
+\DoxyCodeLine{00226\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ istrm;}
+\DoxyCodeLine{00227\ \ \ \ \ \}}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00229\ }
+\DoxyCodeLine{00230\ }
+\DoxyCodeLine{00232\ \ \ \ \ \textcolor{keyword}{auto}\ cmp\ =\ [](\textcolor{keyword}{const}\ Par*\ lhs,\ \textcolor{keyword}{const}\ Par*\ rhs)\ \{\ \textcolor{keywordflow}{return}\ (lhs-\/>getX()\ ==\ rhs-\/>getX())\ ?\ (lhs-\/>getY()\ <\ rhs-\/>getY())\ :\ (lhs-\/>getX()\ <\ rhs-\/>getX());\ \};}
+\DoxyCodeLine{00233\ }
+\DoxyCodeLine{00235\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ dim,\ ParC\ Head>}
+\DoxyCodeLine{00236\ \ \ \ \ \textcolor{keywordtype}{void}\ writeArrOfMultisetTo(std::array<std::multiset<Par*,\ \textcolor{keyword}{decltype}(cmp)>,\ dim>\&\ arr,\ TList<Head>,\ std::ostream\&\ ostrm,\ \textcolor{keywordtype}{int}\ i\ =\ 0)\ \{}
+\DoxyCodeLine{00237\ \ \ \ \ \ \ \ \ ostrm\ <<\ arr[i].size()\ <<\ std::endl;}
+\DoxyCodeLine{00238\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ el\ :\ arr[i])\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ \ \ \ \ \ \ \ \ ostrm\ <<\ *reinterpret\_cast<Head*>(el)\ <<\ std::endl;}
+\DoxyCodeLine{00240\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00241\ \ \ \ \ \}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00251\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ dim,\ ParC\ Head,\ ParC...\ Tail>}
+\DoxyCodeLine{00252\ \ \ \ \ \textcolor{keywordtype}{void}\ writeArrOfMultisetTo(std::array<std::multiset<Par*,\ \textcolor{keyword}{decltype}(cmp)>,\ dim>\&\ arr,\ TList<Head,\ Tail...>\ list,\ std::ostream\&\ ostrm,\ \textcolor{keywordtype}{int}\ i\ =\ 0)\ \{}
+\DoxyCodeLine{00253\ \ \ \ \ \ \ \ \ ostrm\ <<\ arr[i].size()\ <<\ std::endl;}
+\DoxyCodeLine{00254\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ el\ :\ arr[i])\ \{}
+\DoxyCodeLine{00255\ \ \ \ \ \ \ \ \ \ \ \ \ ostrm\ <<\ *reinterpret\_cast<Head*>(el)\ <<\ std::endl;}
+\DoxyCodeLine{00256\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00257\ \ \ \ \ \ \ \ \ writeArrOfMultisetTo(arr,\ TList<Tail...>\{\},\ ostrm,\ i\ +\ 1);}
+\DoxyCodeLine{00258\ \ \ \ \ \}}
+\DoxyCodeLine{00259\ }
+\DoxyCodeLine{00260\ }
+\DoxyCodeLine{00262\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ dim,\ ParC\ Head>}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{keywordtype}{void}\ readArrOfMultisetFrom(std::array<std::multiset<Par*,\ \textcolor{keyword}{decltype}(cmp)>,\ dim>\&\ arr,\ TList<Head>,\ std::istream\&\ istrm,\ \textcolor{keywordtype}{int}\ i\ =\ 0)\ \{}
+\DoxyCodeLine{00264\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ size\ =\ 0;}
+\DoxyCodeLine{00265\ \ \ \ \ \ \ \ \ istrm\ >>\ size;}
+\DoxyCodeLine{00266\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ size;\ ++j)\ \{}
+\DoxyCodeLine{00267\ \ \ \ \ \ \ \ \ \ \ \ \ Head\ var\ =\ Head();}
+\DoxyCodeLine{00268\ \ \ \ \ \ \ \ \ \ \ \ \ istrm\ >>\ var;}
+\DoxyCodeLine{00269\ \ \ \ \ \ \ \ \ \ \ \ \ arr[i].insert(\textcolor{keyword}{reinterpret\_cast<}Par*\textcolor{keyword}{>}(\textcolor{keyword}{new}\ Head(var)));}
+\DoxyCodeLine{00270\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00271\ \ \ \ \ \}}
+\DoxyCodeLine{00272\ }
+\DoxyCodeLine{00281\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keywordtype}{int}\ dim,\ ParC\ Head,\ ParC...\ Tail>}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{keywordtype}{void}\ readArrOfMultisetFrom(std::array<std::multiset<Par*,\ \textcolor{keyword}{decltype}(cmp)>,\ dim>\&\ arr,\ TList<Head,\ Tail...>,\ std::istream\&\ istrm,\ \textcolor{keywordtype}{int}\ i\ =\ 0)\ \{}
+\DoxyCodeLine{00283\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ size\ =\ 0;}
+\DoxyCodeLine{00284\ \ \ \ \ \ \ \ \ istrm\ >>\ size;}
+\DoxyCodeLine{00285\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ size;\ ++j)\ \{}
+\DoxyCodeLine{00286\ \ \ \ \ \ \ \ \ \ \ \ \ Head\ var\ =\ Head();}
+\DoxyCodeLine{00287\ \ \ \ \ \ \ \ \ \ \ \ \ istrm\ >>\ var;}
+\DoxyCodeLine{00288\ \ \ \ \ \ \ \ \ \ \ \ \ arr[i].insert(\textcolor{keyword}{reinterpret\_cast<}Par*\textcolor{keyword}{>}(\textcolor{keyword}{new}\ Head(var)));}
+\DoxyCodeLine{00289\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00290\ \ \ \ \ \ \ \ \ readArrOfMultisetFrom(arr,\ TList<Tail...>\{\},\ istrm,\ i\ +\ 1);}
+\DoxyCodeLine{00291\ \ \ \ \ \}}
+\DoxyCodeLine{00292\ }
+\DoxyCodeLine{00295\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00296\ \ \ \ \ \textcolor{keyword}{class\ }TArray\ \{}
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00300\ \ \ \ \ \ \ \ \ TArray(std::array\ <\ std::vector<Par*>,\ tSize(TList<Types...>\{\})\ >\&\ inpArr)\ :\ data(inpArr)\ \{\};}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00304\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<ParC\ T>}
+\DoxyCodeLine{00305\ \ \ \ \ \ \ \ \ \textcolor{keyword}{const}\ std::vector<T*>\ getByType()\textcolor{keyword}{\ const\ }\{}
+\DoxyCodeLine{00306\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ ind\ =\ indexTList(TList<T,\ Types...>\{\});}
+\DoxyCodeLine{00307\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ size\ =\ data[ind].size();}
+\DoxyCodeLine{00308\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<T*>\ retVec(size);}
+\DoxyCodeLine{00309\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ size;\ ++i)\ \{}
+\DoxyCodeLine{00310\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ retVec[i]\ =\ \textcolor{keyword}{reinterpret\_cast<}T*\textcolor{keyword}{>}(data[ind][i]);}
+\DoxyCodeLine{00311\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00312\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ retVec;}
+\DoxyCodeLine{00313\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00314\ }
+\DoxyCodeLine{00317\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<ParC\ T>}
+\DoxyCodeLine{00318\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ putByType(\textcolor{keyword}{const}\ std::vector<T>\&\ newVec)\ \{}
+\DoxyCodeLine{00319\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ size\ =\ data[indexTList(TList<T,\ Types...>\{\})].size();}
+\DoxyCodeLine{00320\ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Par*>\&\ vecToChange\ =\ data[size];}
+\DoxyCodeLine{00321\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ el\ :\ vecToChange)\ \textcolor{keyword}{delete}\ el;}
+\DoxyCodeLine{00322\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{int}\ newSize\ =\ newVec.size();}
+\DoxyCodeLine{00323\ \ \ \ \ \ \ \ \ \ \ \ \ vecToChange.resize(newSize);}
+\DoxyCodeLine{00324\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ newSize;\ ++i)\ \{}
+\DoxyCodeLine{00325\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ vecToChange[i]\ =\ \textcolor{keyword}{new}\ Par(newVec[i]);}
+\DoxyCodeLine{00326\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00327\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00328\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00329\ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{static}\ TList<Types...>\ list;}
+\DoxyCodeLine{00330\ \ \ \ \ \ \ \ \ std::array\ <\ std::vector<Par*>,\ tSize(list)\ >\&\ data;}
+\DoxyCodeLine{00331\ \ \ \ \ \};}
+\DoxyCodeLine{00332\ }
+\DoxyCodeLine{00333\ }
+\DoxyCodeLine{00340\ \ \ \ \ \textcolor{keyword}{template}<ParC\ T,\ ParC...\ Types>}
+\DoxyCodeLine{00341\ \ \ \ \ \textcolor{keywordtype}{void}\ calculations(T*\ myOrg,\ \textcolor{keyword}{const}\ TArray<Types...>\&\ visible,\ \textcolor{keywordtype}{double}\ dt\_)\ \{\};}
+\DoxyCodeLine{00342\ }
+\DoxyCodeLine{00347\ \ \ \ \ \textcolor{keyword}{template}<ParC\ T>}
+\DoxyCodeLine{00348\ \ \ \ \ \textcolor{keywordtype}{void}\ move(T*\ myOrg,\ \textcolor{keywordtype}{double}\ dt\_)\ \{\};}
+\DoxyCodeLine{00349\ }
+\DoxyCodeLine{00355\ \ \ \ \ \textcolor{keyword}{template}<ParC\ T1,\ ParC\ T2>}
+\DoxyCodeLine{00356\ \ \ \ \ \textcolor{keywordtype}{void}\ collision(T1*\ lhs,\ T2*\ rhs)\ \{\};}
+\DoxyCodeLine{00357\ }
+\DoxyCodeLine{00362\ \ \ \ \ \textcolor{keyword}{template}<ParC\ T>}
+\DoxyCodeLine{00363\ \ \ \ \ \textcolor{keywordtype}{void}\ reproduction(T*\ myOrg,\ std::vector<T>\&\ childs)\ \{\};}
+\DoxyCodeLine{00364\ }
+\DoxyCodeLine{00373\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00374\ \ \ \ \ \textcolor{keywordtype}{void}\ spawn(TArray<Types...>\&\ organisms,\ \textcolor{keywordtype}{double}\ massLeft,\ \textcolor{keywordtype}{double}\ wid,\ \textcolor{keywordtype}{double}\ high,\ \textcolor{keywordtype}{double}\ dt\_)\ \{\};}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00376\ }
+\DoxyCodeLine{00377\ }
+\DoxyCodeLine{00380\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00381\ \ \ \ \ \textcolor{keyword}{class\ }DarwinSimulator\ \{}
+\DoxyCodeLine{00382\ \ \ \ \ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00384\ \ \ \ \ \ \ \ \ \textcolor{keyword}{constexpr}\ \textcolor{keyword}{static}\ \textcolor{keywordtype}{int}\ simulDim\ =\ tSize(TList<Types...>\{\});}
+\DoxyCodeLine{00385\ }
+\DoxyCodeLine{00387\ \ \ \ \ \ \ \ \ DarwinSimulator();}
+\DoxyCodeLine{00388\ }
+\DoxyCodeLine{00394\ \ \ \ \ \ \ \ \ DarwinSimulator(\textcolor{keywordtype}{double}\ dt\_,\ \textcolor{keywordtype}{double}\ w\_,\ \textcolor{keywordtype}{double}\ h\_,\ \textcolor{keywordtype}{double}\ totalMass\_);}
+\DoxyCodeLine{00395\ }
+\DoxyCodeLine{00397\ \ \ \ \ \ \ \ \ \string~DarwinSimulator();}
+\DoxyCodeLine{00398\ }
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<ParC\ T>}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ addAlive(\textcolor{keyword}{const}\ T\&\ inp);}
+\DoxyCodeLine{00404\ }
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<ParC\ T>}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \ \ std::vector<T*>\ get();}
+\DoxyCodeLine{00410\ }
+\DoxyCodeLine{00412\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ getWidth();}
+\DoxyCodeLine{00413\ }
+\DoxyCodeLine{00415\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ getHeight();}
+\DoxyCodeLine{00416\ }
+\DoxyCodeLine{00418\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ update();}
+\DoxyCodeLine{00419\ }
+\DoxyCodeLine{00422\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ update(\textcolor{keywordtype}{int}\ times);}
+\DoxyCodeLine{00423\ }
+\DoxyCodeLine{00426\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ writeTo(std::ostream\&\ ostrm);}
+\DoxyCodeLine{00427\ }
+\DoxyCodeLine{00430\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ readFrom(std::istream\&\ istrm);}
+\DoxyCodeLine{00431\ }
+\DoxyCodeLine{00432\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00433\ }
+\DoxyCodeLine{00435\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<ParC\ Head>}
+\DoxyCodeLine{00436\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ set(TList<Head>,\ \textcolor{keywordtype}{int}\ i\ =\ 0)\ \{}
+\DoxyCodeLine{00437\ \ \ \ \ \ \ \ \ \ \ \ \ calculations\_fs[i]\ =\ [\textcolor{keyword}{this}](Par*\ p,\ \textcolor{keyword}{const}\ TArray<Types...>\&\ arr,\ \textcolor{keywordtype}{double}\ dt\_)\ \{}
+\DoxyCodeLine{00438\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ calculations(\textcolor{keyword}{reinterpret\_cast<}Head*\textcolor{keyword}{>}(p),\ arr,\ dt\_);}
+\DoxyCodeLine{00439\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00440\ \ \ \ \ \ \ \ \ \ \ \ \ move\_fs[i]\ =\ [](Par*\ p,\ \textcolor{keywordtype}{double}\ dt\_)\ \{}
+\DoxyCodeLine{00441\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ move(\textcolor{keyword}{reinterpret\_cast<}Head*\textcolor{keyword}{>}(p),\ dt\_);}
+\DoxyCodeLine{00442\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00443\ \ \ \ \ \ \ \ \ \ \ \ \ reproduction\_fs[i]\ =\ [](Par*\ p,\ std::vector<Par*>\&\ readyChildren)\ \{}
+\DoxyCodeLine{00444\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Head>\ children;}
+\DoxyCodeLine{00445\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reproduction(\textcolor{keyword}{reinterpret\_cast<}Head*\textcolor{keyword}{>}(p),\ children);}
+\DoxyCodeLine{00446\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ readyChildren.resize(children.size());}
+\DoxyCodeLine{00447\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ children.size();\ ++j)\ \{}
+\DoxyCodeLine{00448\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ readyChildren[j]\ =\ \textcolor{keyword}{reinterpret\_cast<}Par*\textcolor{keyword}{>}(\textcolor{keyword}{new}\ Head(children[j]));}
+\DoxyCodeLine{00449\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00450\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00451\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00452\ }
+\DoxyCodeLine{00457\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<ParC\ Head,\ ParC...\ Tail>}
+\DoxyCodeLine{00458\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ set(TList<Head,\ Tail...>\ list,\ \textcolor{keywordtype}{int}\ i\ =\ 0)\ \{}
+\DoxyCodeLine{00459\ \ \ \ \ \ \ \ \ \ \ \ \ calculations\_fs[i]\ =\ [\textcolor{keyword}{this}](Par*\ p,\ \textcolor{keyword}{const}\ TArray<Types...>\&\ arr,\ \textcolor{keywordtype}{double}\ dt\_)\ \{}
+\DoxyCodeLine{00460\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ calculations(\textcolor{keyword}{reinterpret\_cast<}Head*\textcolor{keyword}{>}(p),\ arr,\ dt\_);}
+\DoxyCodeLine{00461\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00462\ \ \ \ \ \ \ \ \ \ \ \ \ move\_fs[i]\ =\ [](Par*\ p,\ \textcolor{keywordtype}{double}\ dt\_)\ \{}
+\DoxyCodeLine{00463\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ move(\textcolor{keyword}{reinterpret\_cast<}Head*\textcolor{keyword}{>}(p),\ dt\_);}
+\DoxyCodeLine{00464\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00465\ \ \ \ \ \ \ \ \ \ \ \ \ reproduction\_fs[i]\ =\ [](Par*\ p,\ std::vector<Par*>\&\ readyChildren)\ \{}
+\DoxyCodeLine{00466\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Head>\ children;}
+\DoxyCodeLine{00467\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reproduction(\textcolor{keyword}{reinterpret\_cast<}Head*\textcolor{keyword}{>}(p),\ children);}
+\DoxyCodeLine{00468\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ readyChildren.resize(children.size());}
+\DoxyCodeLine{00469\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ children.size();\ ++j)\ \{}
+\DoxyCodeLine{00470\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ readyChildren[j]\ =\ \textcolor{keyword}{reinterpret\_cast<}Par*\textcolor{keyword}{>}(\textcolor{keyword}{new}\ Head(children[j]));}
+\DoxyCodeLine{00471\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00472\ \ \ \ \ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00473\ \ \ \ \ \ \ \ \ \ \ \ \ set(TList<Tail...>\{\},\ i\ +\ 1);}
+\DoxyCodeLine{00474\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00475\ }
+\DoxyCodeLine{00481\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<ParC\ T,\ ParC\ Head>}
+\DoxyCodeLine{00482\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ set1d(TList<T>,\ TList<Head>,\ \textcolor{keywordtype}{int}\ i\ =\ 0,\ \textcolor{keywordtype}{int}\ j\ =\ 0)\ \{}
+\DoxyCodeLine{00483\ \ \ \ \ \ \ \ \ \ \ \ \ collision\_fs[i][j]\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{void}(*)(Par*,\ Par*)\textcolor{keyword}{>}(\&collision<T,\ Head>);}
+\DoxyCodeLine{00484\ \ \ \ \ \ \ \ \ \ \ \ \ collision\_fs[j][i]\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{void}(*)(Par*,\ Par*)\textcolor{keyword}{>}(\&collision<Head,\ T>);}
+\DoxyCodeLine{00485\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00486\ }
+\DoxyCodeLine{00493\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<ParC\ T,\ ParC\ Head,\ ParC...\ Tail>}
+\DoxyCodeLine{00494\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ set1d(TList<T>,\ TList<Head,\ Tail...>,\ \textcolor{keywordtype}{int}\ i\ =\ 0,\ \textcolor{keywordtype}{int}\ j\ =\ 0)\ \{}
+\DoxyCodeLine{00495\ \ \ \ \ \ \ \ \ \ \ \ \ collision\_fs[i][j]\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{void}(*)(Par*,\ Par*)\textcolor{keyword}{>}(\&collision<T,\ Head>);}
+\DoxyCodeLine{00496\ \ \ \ \ \ \ \ \ \ \ \ \ collision\_fs[j][i]\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{void}(*)(Par*,\ Par*)\textcolor{keyword}{>}(\&collision<Head,\ T>);}
+\DoxyCodeLine{00497\ \ \ \ \ \ \ \ \ \ \ \ \ set1d(TList<T>\{\},\ TList<Tail...>\{\},\ i,\ j\ +\ 1);}
+\DoxyCodeLine{00498\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00499\ }
+\DoxyCodeLine{00503\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<ParC\ Head>}
+\DoxyCodeLine{00504\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ set2d(TList<Head>,\ \textcolor{keywordtype}{int}\ i\ =\ 0)\ \{}
+\DoxyCodeLine{00505\ \ \ \ \ \ \ \ \ \ \ \ \ collision\_fs[i][i]\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{void}(*)(Par*,\ Par*)\textcolor{keyword}{>}(\&collision<Head,\ Head>);}
+\DoxyCodeLine{00506\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00507\ }
+\DoxyCodeLine{00524\ \ \ \ \ \ \ \ \ \textcolor{keyword}{template}<ParC\ Head,\ ParC...\ Tail>}
+\DoxyCodeLine{00525\ \ \ \ \ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{void}\ set2d(TList<Head,\ Tail...>,\ \textcolor{keywordtype}{int}\ i\ =\ 0)\ \{}
+\DoxyCodeLine{00526\ \ \ \ \ \ \ \ \ \ \ \ \ collision\_fs[i][i]\ =\ \textcolor{keyword}{reinterpret\_cast<}\textcolor{keywordtype}{void}(*)(Par*,\ Par*)\textcolor{keyword}{>}(\&collision<Head,\ Head>);}
+\DoxyCodeLine{00527\ \ \ \ \ \ \ \ \ \ \ \ \ set1d(TList<Head>\{\},\ TList<Tail...>\{\},\ i,\ i\ +\ 1);}
+\DoxyCodeLine{00528\ \ \ \ \ \ \ \ \ \ \ \ \ set2d(TList<Tail...>\{\},\ i\ +\ 1);}
+\DoxyCodeLine{00529\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00530\ }
+\DoxyCodeLine{00535\ \ \ \ \ \ \ \ \ std::array\ <\ std::vector<Par*>,\ tSize(TList<Types...>\{\})\ >\ getVisible(\textcolor{keyword}{const}\ std::multiset<Par*,\ \textcolor{keyword}{decltype}(cmp)>::iterator\&\ myOrg)\ \{}
+\DoxyCodeLine{00536\ \ \ \ \ \ \ \ \ \ \ \ \ std::array\ <\ std::vector<Par*>,\ tSize(TList<Types...>\{\})\ >\ retArr;}
+\DoxyCodeLine{00537\ }
+\DoxyCodeLine{00538\ \ \ \ \ \ \ \ \ \ \ \ \ Par*\ leftAl\ =\ \textcolor{keyword}{new}\ Par;}
+\DoxyCodeLine{00539\ \ \ \ \ \ \ \ \ \ \ \ \ Par*\ rightAl\ =\ \textcolor{keyword}{new}\ Par;}
+\DoxyCodeLine{00540\ }
+\DoxyCodeLine{00541\ \ \ \ \ \ \ \ \ \ \ \ \ leftAl-\/>setX((*myOrg)-\/>getX()\ -\/\ (*myOrg)-\/>viewRange);}
+\DoxyCodeLine{00542\ \ \ \ \ \ \ \ \ \ \ \ \ rightAl-\/>setX((*myOrg)-\/>getX()\ +\ (*myOrg)-\/>viewRange);}
+\DoxyCodeLine{00543\ }
+\DoxyCodeLine{00544\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ retArr.size();\ ++i)\ \{}
+\DoxyCodeLine{00545\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ retArr[i].clear();}
+\DoxyCodeLine{00546\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ first\ =\ alives[i].lower\_bound(leftAl);\ \textcolor{comment}{//not\ sure}}
+\DoxyCodeLine{00547\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ last\ =\ alives[i].upper\_bound(rightAl);\ \textcolor{comment}{//not\ sure}}
+\DoxyCodeLine{00548\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ iter\ =\ first;\ iter\ !=\ last;\ ++iter)\ \{}
+\DoxyCodeLine{00549\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (*iter\ ==\ *myOrg)\ \{}
+\DoxyCodeLine{00550\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00551\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00552\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (((*iter)-\/>getX()\ -\/\ (*myOrg)-\/>getX())\ *\ ((*iter)-\/>getX()\ -\/\ (*myOrg)-\/>getX())\ +\ ((*iter)-\/>getY()\ -\/\ (*myOrg)-\/>getY())\ *\ ((*iter)-\/>getY()\ -\/\ (*myOrg)-\/>getY())\ <=\ (*myOrg)-\/>viewRange\ *\ (*myOrg)-\/>viewRange)\ \{}
+\DoxyCodeLine{00553\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ retArr[i].push\_back(*iter);}
+\DoxyCodeLine{00554\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00555\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00556\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00557\ }
+\DoxyCodeLine{00558\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ leftAl;}
+\DoxyCodeLine{00559\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ rightAl;}
+\DoxyCodeLine{00560\ }
+\DoxyCodeLine{00561\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ retArr;}
+\DoxyCodeLine{00562\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00563\ }
+\DoxyCodeLine{00567\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ die(\textcolor{keywordtype}{int}\ i,\ std::multiset<Par*,\ \textcolor{keyword}{decltype}(cmp)>::iterator\&\ it)\ \{}
+\DoxyCodeLine{00568\ \ \ \ \ \ \ \ \ \ \ \ \ std::multiset<Par*,\ \textcolor{keyword}{decltype}(cmp)>::iterator\ tmp\ =\ it;}
+\DoxyCodeLine{00569\ \ \ \ \ \ \ \ \ \ \ \ \ tmp\ =\ it;}
+\DoxyCodeLine{00570\ \ \ \ \ \ \ \ \ \ \ \ \ ++tmp;}
+\DoxyCodeLine{00571\ \ \ \ \ \ \ \ \ \ \ \ \ deathNote.push\_back(*it);}
+\DoxyCodeLine{00572\ \ \ \ \ \ \ \ \ \ \ \ \ alives\_upd[i].erase(it);}
+\DoxyCodeLine{00573\ \ \ \ \ \ \ \ \ \ \ \ \ it\ =\ tmp;}
+\DoxyCodeLine{00574\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00575\ }
+\DoxyCodeLine{00578\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{void}\ kill(Par*\ par)\ \{}
+\DoxyCodeLine{00579\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!par-\/>victim)\ \textcolor{keywordflow}{throw}\ std::exception(\textcolor{stringliteral}{"{}This\ form\ of\ live\ has\ no\ victim"{}});}
+\DoxyCodeLine{00580\ \ \ \ \ \ \ \ \ \ \ \ \ par-\/>mass\ +=\ 0.5\ *\ par-\/>victim-\/>getMass()\ /\ par-\/>victim-\/>killerNumber;}
+\DoxyCodeLine{00581\ \ \ \ \ \ \ \ \ \ \ \ \ par-\/>victim\ =\ \textcolor{keyword}{nullptr};}
+\DoxyCodeLine{00582\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00583\ }
+\DoxyCodeLine{00584\ \ \ \ \ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00585\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ dt\ =\ 0.01;}
+\DoxyCodeLine{00586\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ w\ =\ 100;}
+\DoxyCodeLine{00587\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ h\ =\ 100;}
+\DoxyCodeLine{00588\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ totalMass\ =\ 0;}
+\DoxyCodeLine{00589\ }
+\DoxyCodeLine{00590\ \ \ \ \ \ \ \ \ std::array<std::thread,\ simulDim>\ threads;}
+\DoxyCodeLine{00591\ }
+\DoxyCodeLine{00592\ \ \ \ \ \ \ \ \ std::array\ <\ std::multiset<Par*,\ \textcolor{keyword}{decltype}(cmp)>,\ simulDim\ >\ alives;}
+\DoxyCodeLine{00593\ \ \ \ \ \ \ \ \ std::array\ <\ std::multiset<Par*,\ \textcolor{keyword}{decltype}(cmp)>,\ simulDim\ >\ alives\_upd;}
+\DoxyCodeLine{00594\ }
+\DoxyCodeLine{00595\ \ \ \ \ \ \ \ \ std::vector<Par*>\ deathNote;}
+\DoxyCodeLine{00596\ }
+\DoxyCodeLine{00598\ \ \ \ \ \ \ \ \ std::array\ <\ std::function<void(Par*,\ \textcolor{keyword}{const}\ TArray<Types...>\&,\ \textcolor{keywordtype}{double})>,\ simulDim>\ calculations\_fs;}
+\DoxyCodeLine{00600\ \ \ \ \ \ \ \ \ std::array\ <\ std::function<void(Par*,\ \textcolor{keywordtype}{double})>,\ simulDim>\ move\_fs;}
+\DoxyCodeLine{00602\ \ \ \ \ \ \ \ \ std::array\ <\ std::array\ <\ std::function<void(Par*,\ Par*)>,\ simulDim>,\ simulDim>\ collision\_fs;}
+\DoxyCodeLine{00604\ \ \ \ \ \ \ \ \ std::array\ <\ std::function<void(Par*,\ std::vector<Par*>\&)>,\ simulDim>\ reproduction\_fs;}
+\DoxyCodeLine{00606\ \ \ \ \ \ \ \ \ std::function<void(TArray<Types...>\&,\ \textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double},\ \textcolor{keywordtype}{double})>\ spawn\_f;}
+\DoxyCodeLine{00607\ \ \ \ \ \};}
+\DoxyCodeLine{00608\ }
+\DoxyCodeLine{00609\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00610\ \ \ \ \ DarwinSimulator<Types...>::DarwinSimulator()\ \{}
+\DoxyCodeLine{00611\ \ \ \ \ \ \ \ \ spawn\_f\ =\ [](TArray<Types...>\&\ alives,\ \textcolor{keywordtype}{double}\ massLeft,\ \textcolor{keywordtype}{double}\ wid,\ \textcolor{keywordtype}{double}\ high,\ \textcolor{keywordtype}{double}\ dt)\ \{}
+\DoxyCodeLine{00612\ \ \ \ \ \ \ \ \ \ \ \ \ spawn(alives,\ massLeft,\ wid,\ high,\ dt);}
+\DoxyCodeLine{00613\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00614\ \ \ \ \ \ \ \ \ set(TList<Types...>\{\});}
+\DoxyCodeLine{00615\ \ \ \ \ \ \ \ \ set2d(TList<Types...>\{\});}
+\DoxyCodeLine{00616\ \ \ \ \ \}}
+\DoxyCodeLine{00617\ }
+\DoxyCodeLine{00618\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00619\ \ \ \ \ DarwinSimulator<Types...>::DarwinSimulator(}
+\DoxyCodeLine{00620\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ dt\_,\ \textcolor{keywordtype}{double}\ w\_,\ \textcolor{keywordtype}{double}\ h\_,\ \textcolor{keywordtype}{double}\ totalMass\_)\ :}
+\DoxyCodeLine{00621\ \ \ \ \ \ \ \ \ dt(dt\_),\ w(w\_),\ h(h\_),\ totalMass(totalMass\_)\ \{}
+\DoxyCodeLine{00622\ \ \ \ \ \ \ \ \ spawn\_f\ =\ [](TArray<Types...>\&\ alives,\ \textcolor{keywordtype}{double}\ massLeft,\ \textcolor{keywordtype}{double}\ wid,\ \textcolor{keywordtype}{double}\ high,\ \textcolor{keywordtype}{double}\ dt)\ \{}
+\DoxyCodeLine{00623\ \ \ \ \ \ \ \ \ \ \ \ \ spawn(alives,\ massLeft,\ wid,\ high,\ dt);}
+\DoxyCodeLine{00624\ \ \ \ \ \ \ \ \ \};}
+\DoxyCodeLine{00625\ \ \ \ \ \ \ \ \ set(TList<Types...>\{\});}
+\DoxyCodeLine{00626\ \ \ \ \ \ \ \ \ set2d(TList<Types...>\{\});}
+\DoxyCodeLine{00627\ \ \ \ \ \}}
+\DoxyCodeLine{00628\ }
+\DoxyCodeLine{00629\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00630\ \ \ \ \ DarwinSimulator<Types...>::\string~DarwinSimulator()\ \{}
+\DoxyCodeLine{00631\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ !=\ alives.size();\ ++i)\ \{}
+\DoxyCodeLine{00632\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ j\ =\ alives[i].begin();\ j\ !=\ alives[i].end();\ ++j)\ \{}
+\DoxyCodeLine{00633\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}*\ j;}
+\DoxyCodeLine{00634\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00635\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00636\ \ \ \ \ \}}
+\DoxyCodeLine{00637\ }
+\DoxyCodeLine{00638\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00639\ \ \ \ \ \textcolor{keyword}{template}<ParC\ T>}
+\DoxyCodeLine{00640\ \ \ \ \ \textcolor{keywordtype}{void}\ DarwinSimulator<Types...>::addAlive(\textcolor{keyword}{const}\ T\&\ inp)\ \{}
+\DoxyCodeLine{00641\ \ \ \ \ \ \ \ \ T*\ myOrg\ =\ \textcolor{keyword}{new}\ T;}
+\DoxyCodeLine{00642\ \ \ \ \ \ \ \ \ *myOrg\ =\ inp;}
+\DoxyCodeLine{00643\ \ \ \ \ \ \ \ \ totalMass\ +=\ inp.getMass();}
+\DoxyCodeLine{00644\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (!inTList(TList<T,\ Types...>\{\}))\ \{}
+\DoxyCodeLine{00645\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{throw}\ std::invalid\_argument(\textcolor{stringliteral}{"{}Imposible\ to\ add\ this\ form\ of\ live"{}});}
+\DoxyCodeLine{00646\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00647\ \ \ \ \ \ \ \ \ alives[indexTList(TList<T,\ Types...>\{\})].insert(\textcolor{keyword}{reinterpret\_cast<}Par*\textcolor{keyword}{>}(myOrg));\ \textcolor{comment}{//спорно}}
+\DoxyCodeLine{00648\ \ \ \ \ \ \ \ \ alives\_upd[indexTList(TList<T,\ Types...>\{\})].insert(\textcolor{keyword}{reinterpret\_cast<}Par*\textcolor{keyword}{>}(myOrg));}
+\DoxyCodeLine{00649\ \ \ \ \ \}}
+\DoxyCodeLine{00650\ }
+\DoxyCodeLine{00651\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00652\ \ \ \ \ \textcolor{keyword}{template}<ParC\ T>}
+\DoxyCodeLine{00653\ \ \ \ \ std::vector<T*>\ DarwinSimulator<Types...>::get()\ \{}
+\DoxyCodeLine{00654\ \ \ \ \ \ \ \ \ std::vector<T*>\ tmp;}
+\DoxyCodeLine{00655\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ al\ =\ alives[indexTList(TList<T,\ Types...>\{\})].begin();\ al\ !=\ alives[indexTList(TList<T,\ Types...>\{\})].end();\ ++al)\ \{}
+\DoxyCodeLine{00656\ \ \ \ \ \ \ \ \ \ \ \ \ tmp.push\_back(\textcolor{keyword}{reinterpret\_cast<}T*\textcolor{keyword}{>}(*al));}
+\DoxyCodeLine{00657\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00658\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ tmp;}
+\DoxyCodeLine{00659\ \ \ \ \ \}}
+\DoxyCodeLine{00660\ }
+\DoxyCodeLine{00661\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00662\ \ \ \ \ \textcolor{keywordtype}{void}\ DarwinSimulator<Types...>::update()\ \{}
+\DoxyCodeLine{00663\ }
+\DoxyCodeLine{00664\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ !=\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00665\ \ \ \ \ \ \ \ \ \ \ \ \ threads[i]\ =\ std::thread([\textcolor{keyword}{this},\ i]\ \{}
+\DoxyCodeLine{00666\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ prev\_it\ =\ alives[i].begin();\ prev\_it\ !=\ alives[i].end();\ ++prev\_it)\ \{}
+\DoxyCodeLine{00667\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Par*\ el\ =\ *prev\_it;}
+\DoxyCodeLine{00668\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ cur\_it\ =\ std::find(alives\_upd[i].begin(),\ alives\_upd[i].end(),\ el);}
+\DoxyCodeLine{00669\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alives\_upd[i].erase(cur\_it);}
+\DoxyCodeLine{00670\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::array<std::vector<Par*>,\ simulDim>\ visible\ =\ getVisible(prev\_it);}
+\DoxyCodeLine{00671\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ TArray<Types...>\ closest(visible);}
+\DoxyCodeLine{00672\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ calculations\_fs[i](el,\ closest,\ dt);}
+\DoxyCodeLine{00673\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alives\_upd[i].insert(el);}
+\DoxyCodeLine{00674\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00675\ \ \ \ \ \ \ \ \ \ \ \ \ \});}
+\DoxyCodeLine{00676\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00677\ }
+\DoxyCodeLine{00678\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\&\ thread\ :\ threads)\ \{}
+\DoxyCodeLine{00679\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (thread.joinable())\ \{}
+\DoxyCodeLine{00680\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ thread.join();}
+\DoxyCodeLine{00681\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00682\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00683\ }
+\DoxyCodeLine{00684\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ !=\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00685\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ j\ =\ alives\_upd[i].begin();}
+\DoxyCodeLine{00686\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (j\ !=\ alives\_upd[i].end())\ \{}
+\DoxyCodeLine{00687\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((*j)-\/>getMass()\ <=\ 0.2\ *\ (*j)-\/>getStartMass())\ \{}
+\DoxyCodeLine{00688\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ die(i,\ j);}
+\DoxyCodeLine{00689\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00690\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00691\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++j;}
+\DoxyCodeLine{00692\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00693\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00694\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00695\ \ \ \ \ \ \ \ \ alives\ =\ alives\_upd;}
+\DoxyCodeLine{00696\ }
+\DoxyCodeLine{00697\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ !=\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00698\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ prev\_it\ =\ alives[i].begin();\ prev\_it\ !=\ alives[i].end();\ ++prev\_it)\ \{}
+\DoxyCodeLine{00699\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Par*\ el\ =\ *prev\_it;}
+\DoxyCodeLine{00700\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ cur\_it\ =\ std::find(alives\_upd[i].begin(),\ alives\_upd[i].end(),\ el);}
+\DoxyCodeLine{00701\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alives\_upd[i].erase(cur\_it);}
+\DoxyCodeLine{00702\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ move\_fs[i](el,\ dt);}
+\DoxyCodeLine{00703\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alives\_upd[i].insert(el);}
+\DoxyCodeLine{00704\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00705\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00706\ }
+\DoxyCodeLine{00707\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ !=\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00708\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ j\ =\ alives\_upd[i].begin();}
+\DoxyCodeLine{00709\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (j\ !=\ alives\_upd[i].end())\ \{}
+\DoxyCodeLine{00710\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((*j)-\/>getMass()\ <=\ 0.2\ *\ (*j)-\/>getStartMass())\ \{}
+\DoxyCodeLine{00711\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ die(i,\ j);}
+\DoxyCodeLine{00712\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00713\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00714\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++j;}
+\DoxyCodeLine{00715\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00716\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00717\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00718\ \ \ \ \ \ \ \ \ alives\ =\ alives\_upd;}
+\DoxyCodeLine{00719\ }
+\DoxyCodeLine{00720\ \ \ \ \ \ \ \ \ std::array\ <\ std::array<std::vector<std::vector<bool>>,\ simulDim>,\ simulDim\ >\ isInteracted;}
+\DoxyCodeLine{00721\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00722\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ simulDim;\ ++j)\ \{}
+\DoxyCodeLine{00723\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ isInteracted[i][j]\ =\ std::vector<std::vector<bool>>(alives[i].size(),\ std::vector<bool>(alives[j].size(),\ \textcolor{keyword}{false}));}
+\DoxyCodeLine{00724\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00725\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00726\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00727\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ alives[i].size();\ ++j)\ \{}
+\DoxyCodeLine{00728\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ isInteracted[i][i][j][j]\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00729\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00730\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00731\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ !=\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00732\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ first\_prev\_it\ =\ alives[i].begin();\ first\_prev\_it\ !=\ alives[i].end();\ ++first\_prev\_it)\ \{}
+\DoxyCodeLine{00733\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Par*\ first\_el\ =\ *first\_prev\_it;}
+\DoxyCodeLine{00734\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ !=\ simulDim;\ ++k)\ \{}
+\DoxyCodeLine{00735\ }
+\DoxyCodeLine{00736\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Par\ first\_seen\ =\ *first\_el;}
+\DoxyCodeLine{00737\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ first\_seen.moveX(-\/first\_seen.radius());}
+\DoxyCodeLine{00738\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Par\ last\_seen\ =\ *first\_el;}
+\DoxyCodeLine{00739\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ last\_seen.moveX(last\_seen.radius());}
+\DoxyCodeLine{00740\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ begin\ =\ alives[k].lower\_bound(\&first\_seen);}
+\DoxyCodeLine{00741\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ end\ =\ alives[k].upper\_bound(\&last\_seen);}
+\DoxyCodeLine{00742\ }
+\DoxyCodeLine{00743\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ first\_cur\_it\ =\ std::find(alives\_upd[i].begin(),\ alives\_upd[i].end(),\ first\_el);}
+\DoxyCodeLine{00744\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alives\_upd[i].erase(first\_cur\_it);}
+\DoxyCodeLine{00745\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ second\_prev\_it\ =\ begin;\ second\_prev\_it\ !=\ end;\ ++second\_prev\_it)\ \{}
+\DoxyCodeLine{00746\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Par*\ second\_el\ =\ *second\_prev\_it;}
+\DoxyCodeLine{00747\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((first\_el-\/>getX()\ -\/\ second\_el-\/>getX())\ *\ (first\_el-\/>getX()\ -\/\ second\_el-\/>getX())\ +\ (first\_el-\/>getY()\ -\/\ second\_el-\/>getY())\ *\ (first\_el-\/>getY()\ -\/\ second\_el-\/>getY())\ >\ (first\_el-\/>radius()\ +\ second\_el-\/>radius())\ *\ (first\_el-\/>radius()\ +\ second\_el-\/>radius()))\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00748\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (isInteracted[i][k][std::distance(alives[i].begin(),\ first\_prev\_it)][std::distance(alives[k].begin(),\ second\_prev\_it)])\ \textcolor{keywordflow}{continue};}
+\DoxyCodeLine{00749\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ isInteracted[k][i][std::distance(alives[k].begin(),\ second\_prev\_it)][std::distance(alives[i].begin(),\ first\_prev\_it)]\ =\ \textcolor{keyword}{true};}
+\DoxyCodeLine{00750\ }
+\DoxyCodeLine{00751\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{auto}\ second\_cur\_it\ =\ std::find(alives\_upd[k].begin(),\ alives\_upd[k].end(),\ second\_el);}
+\DoxyCodeLine{00752\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alives\_upd[k].erase(second\_cur\_it);}
+\DoxyCodeLine{00753\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ collision\_fs[i][k](first\_el,\ second\_el);}
+\DoxyCodeLine{00754\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alives\_upd[k].insert(second\_el);}
+\DoxyCodeLine{00755\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00756\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alives\_upd[i].insert(first\_el);}
+\DoxyCodeLine{00757\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00758\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00759\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00760\ \ \ \ \ \ \ \ \ alives\ =\ alives\_upd;}
+\DoxyCodeLine{00761\ }
+\DoxyCodeLine{00762\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00763\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ j\ =\ alives\_upd[i].begin();\ j\ !=\ alives\_upd[i].end();\ ++j)\ \{}
+\DoxyCodeLine{00764\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((*j)-\/>hasVictim())\ \{}
+\DoxyCodeLine{00765\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ kill(*j);}
+\DoxyCodeLine{00766\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00767\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00768\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00769\ }
+\DoxyCodeLine{00770\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ !=\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00771\ \ \ \ \ \ \ \ \ \ \ \ \ std::multiset<Par*,\ \textcolor{keyword}{decltype}(cmp)>::iterator\ j\ =\ alives\_upd[i].begin();}
+\DoxyCodeLine{00772\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (j\ !=\ alives\_upd[i].end())\ \{}
+\DoxyCodeLine{00773\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((*j)-\/>isDead()\ ||\ ((*j)-\/>getMass()\ <=\ 0.2\ *\ (*j)-\/>getStartMass()))\ \{}
+\DoxyCodeLine{00774\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ die(i,\ j);}
+\DoxyCodeLine{00775\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00776\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00777\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++j;}
+\DoxyCodeLine{00778\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00779\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00780\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00781\ \ \ \ \ \ \ \ \ alives\ =\ alives\_upd;}
+\DoxyCodeLine{00782\ }
+\DoxyCodeLine{00783\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ !=\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00784\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ j\ =\ alives[i].begin();\ j\ !=\ alives[i].end();\ ++j)\ \{}
+\DoxyCodeLine{00785\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ std::vector<Par*>\ newAlives;}
+\DoxyCodeLine{00786\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reproduction\_fs[i](*j,\ newAlives);}
+\DoxyCodeLine{00787\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ k\ =\ 0;\ k\ <\ newAlives.size();\ ++k)\ \{}
+\DoxyCodeLine{00788\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alives\_upd[i].insert(newAlives[k]);}
+\DoxyCodeLine{00789\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00790\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00791\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00792\ \ \ \ \ \ \ \ \ alives\ =\ alives\_upd;}
+\DoxyCodeLine{00793\ }
+\DoxyCodeLine{00794\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ !=\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00795\ \ \ \ \ \ \ \ \ \ \ \ \ std::multiset<Par*,\ \textcolor{keyword}{decltype}(cmp)>::iterator\ j\ =\ alives\_upd[i].begin();}
+\DoxyCodeLine{00796\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ (j\ !=\ alives\_upd[i].end())\ \{}
+\DoxyCodeLine{00797\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ ((*j)-\/>getMass()\ <=\ 0.2\ *\ (*j)-\/>getStartMass())\ \{}
+\DoxyCodeLine{00798\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ die(i,\ j);}
+\DoxyCodeLine{00799\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00800\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00801\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ++j;}
+\DoxyCodeLine{00802\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00803\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00804\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00805\ \ \ \ \ \ \ \ \ alives\ =\ alives\_upd;}
+\DoxyCodeLine{00806\ }
+\DoxyCodeLine{00807\ \ \ \ \ \ \ \ \ std::array<std::vector<Par*>,\ simulDim>\ newAlivesVec;}
+\DoxyCodeLine{00808\ \ \ \ \ \ \ \ \ TArray<Types...>\ newAlives(newAlivesVec);}
+\DoxyCodeLine{00809\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{double}\ massLeft\ =\ totalMass;}
+\DoxyCodeLine{00810\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00811\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ j\ =\ alives\_upd[i].begin();\ j\ !=\ alives\_upd[i].end();\ ++j)\ \{}
+\DoxyCodeLine{00812\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ massLeft\ -\/=\ (*j)-\/>getMass();}
+\DoxyCodeLine{00813\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00814\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00815\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (massLeft\ <\ 0)\ \textcolor{keywordflow}{throw}\ std::exception(\textcolor{stringliteral}{"{}mass"{}});}
+\DoxyCodeLine{00816\ \ \ \ \ \ \ \ \ spawn\_f(newAlives,\ massLeft,\ w,\ h,\ dt);}
+\DoxyCodeLine{00817\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ simulDim;\ ++i)\ \{}
+\DoxyCodeLine{00818\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ j\ =\ 0;\ j\ <\ newAlivesVec[i].size();\ ++j)\ \{}
+\DoxyCodeLine{00819\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ alives\_upd[i].insert(newAlivesVec[i][j]);}
+\DoxyCodeLine{00820\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00821\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00822\ \ \ \ \ \ \ \ \ alives\ =\ alives\_upd;}
+\DoxyCodeLine{00823\ }
+\DoxyCodeLine{00824\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ el\ :\ deathNote)\ \{}
+\DoxyCodeLine{00825\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}\ el;}
+\DoxyCodeLine{00826\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00827\ \ \ \ \ \ \ \ \ deathNote.clear();}
+\DoxyCodeLine{00828\ \ \ \ \ \}}
+\DoxyCodeLine{00829\ }
+\DoxyCodeLine{00830\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00831\ \ \ \ \ \textcolor{keywordtype}{void}\ DarwinSimulator<Types...>::update(\textcolor{keywordtype}{int}\ times)\ \{}
+\DoxyCodeLine{00832\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ <\ times;\ ++i)\ \{}
+\DoxyCodeLine{00833\ \ \ \ \ \ \ \ \ \ \ \ \ update();}
+\DoxyCodeLine{00834\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00835\ \ \ \ \ \}}
+\DoxyCodeLine{00836\ }
+\DoxyCodeLine{00837\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00838\ \ \ \ \ \textcolor{keywordtype}{void}\ DarwinSimulator<Types...>::writeTo(std::ostream\&\ ostrm)\ \{}
+\DoxyCodeLine{00839\ \ \ \ \ \ \ \ \ ostrm\ <<\ dt\ <<\ \textcolor{charliteral}{'\ '}\ <<\ w\ <<\ \textcolor{charliteral}{'\ '}\ <<\ h\ <<\ \textcolor{charliteral}{'\ '}\ <<\ totalMass\ <<\ std::endl;}
+\DoxyCodeLine{00840\ \ \ \ \ \ \ \ \ writeArrOfMultisetTo(alives\_upd,\ TList<Types...>\{\},\ ostrm);}
+\DoxyCodeLine{00841\ \ \ \ \ \}}
+\DoxyCodeLine{00842\ }
+\DoxyCodeLine{00843\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00844\ \ \ \ \ \textcolor{keywordtype}{void}\ DarwinSimulator<Types...>::readFrom(std::istream\&\ istrm)\ \{}
+\DoxyCodeLine{00845\ \ \ \ \ \ \ \ \ istrm\ >>\ dt\ >>\ w\ >>\ h\ >>\ totalMass;}
+\DoxyCodeLine{00846\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{int}\ i\ =\ 0;\ i\ !=\ alives.size();\ ++i)\ \{}
+\DoxyCodeLine{00847\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keyword}{auto}\ j\ =\ alives[i].begin();\ j\ !=\ alives[i].end();\ ++j)\ \{}
+\DoxyCodeLine{00848\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keyword}{delete}*\ j;}
+\DoxyCodeLine{00849\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00850\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00851\ \ \ \ \ \ \ \ \ readArrOfMultisetFrom(alives\_upd,\ TList<Types...>\{\},\ istrm);}
+\DoxyCodeLine{00852\ \ \ \ \ \}}
+\DoxyCodeLine{00853\ }
+\DoxyCodeLine{00854\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00855\ \ \ \ \ \textcolor{keywordtype}{double}\ DarwinSimulator<Types...>::getWidth()\ \{}
+\DoxyCodeLine{00856\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ w;}
+\DoxyCodeLine{00857\ \ \ \ \ \}}
+\DoxyCodeLine{00858\ }
+\DoxyCodeLine{00859\ \ \ \ \ \textcolor{keyword}{template}<ParC...\ Types>}
+\DoxyCodeLine{00860\ \ \ \ \ \textcolor{keywordtype}{double}\ DarwinSimulator<Types...>::getHeight()\ \{}
+\DoxyCodeLine{00861\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ h;}
+\DoxyCodeLine{00862\ \ \ \ \ \}}
+\DoxyCodeLine{00863\ }
+\DoxyCodeLine{00869\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}...\ Types>}
+\DoxyCodeLine{00870\ \ \ \ \ std::ostream\&\ operator<<(std::ostream\&\ ostrm,\ DarwinSimulator<Types...>\&\ simul)\ \{}
+\DoxyCodeLine{00871\ \ \ \ \ \ \ \ \ simul.writeTo(ostrm);}
+\DoxyCodeLine{00872\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ ostrm;}
+\DoxyCodeLine{00873\ \ \ \ \ \}}
+\DoxyCodeLine{00874\ }
+\DoxyCodeLine{00880\ \ \ \ \ \textcolor{keyword}{template}<\textcolor{keyword}{class}...\ Types>}
+\DoxyCodeLine{00881\ \ \ \ \ std::istream\&\ operator>>(std::istream\&\ istrm,\ DarwinSimulator<Types...>\&\ simul)\ \{}
+\DoxyCodeLine{00882\ \ \ \ \ \ \ \ \ simul.readFrom(istrm);}
+\DoxyCodeLine{00883\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ istrm;}
+\DoxyCodeLine{00884\ \ \ \ \ \}}
+\DoxyCodeLine{00885\ }
+\DoxyCodeLine{00886\ \}}
+\DoxyCodeLine{00887\ }
+\DoxyCodeLine{00888\ \textcolor{preprocessor}{\#endif}}
+
+\end{DoxyCode}

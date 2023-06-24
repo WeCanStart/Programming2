@@ -1,0 +1,689 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_darwin__simul_8hpp_source" xml:lang="en-US">
+<title>darwin_simul.hpp</title>
+<indexterm><primary>C:/Users/artem/Programming2/khapilov_a_o/prj.cw/include/darwin_simul/darwin_simul.hpp</primary></indexterm>
+<programlisting linenumbering="unnumbered">1 <emphasis role="preprocessor">#pragma&#32;once</emphasis>
+2 <emphasis role="preprocessor">#ifndef&#32;DARWIN_SIMUL_HPP_20230503</emphasis>
+3 <emphasis role="preprocessor">#define&#32;DARWIN_SIMUL_HPP_20230503</emphasis>
+4 
+5 <emphasis role="preprocessor">#include&#32;&lt;iostream&gt;</emphasis>
+6 <emphasis role="preprocessor">#include&#32;&lt;exception&gt;</emphasis>
+7 <emphasis role="preprocessor">#include&#32;&lt;cmath&gt;</emphasis>
+8 <emphasis role="preprocessor">#include&#32;&lt;array&gt;</emphasis>
+9 <emphasis role="preprocessor">#include&#32;&lt;vector&gt;</emphasis>
+10 <emphasis role="preprocessor">#include&#32;&lt;set&gt;</emphasis>
+11 <emphasis role="preprocessor">#include&#32;&lt;functional&gt;</emphasis>
+12 <emphasis role="preprocessor">#include&#32;&lt;algorithm&gt;</emphasis>
+13 <emphasis role="preprocessor">#include&#32;&lt;type_traits&gt;</emphasis>
+14 <emphasis role="preprocessor">#include&#32;&lt;thread&gt;</emphasis>
+15 
+16 
+17 
+18 <emphasis role="keyword">namespace&#32;</emphasis>ds&#32;{
+19 
+22 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keyword">class</emphasis>...&#32;Types&gt;
+23 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis><link linkend="_classds_1_1_t_list">TList</link>&#32;{};
+24 
+27 &#32;&#32;&#32;&#32;<emphasis role="keyword">constexpr</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;tSize(<link linkend="_classds_1_1_t_list">TList&lt;&gt;</link>)&#32;{
+28 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
+29 &#32;&#32;&#32;&#32;}
+30 
+36 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keyword">class&#32;</emphasis>Head,&#32;<emphasis role="keyword">class</emphasis>...&#32;Tail&gt;
+37 &#32;&#32;&#32;&#32;<emphasis role="keyword">constexpr</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;tSize(TList&lt;Head,&#32;Tail...&gt;&#32;list)&#32;{
+38 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;1&#32;+&#32;tSize(TList&lt;Tail...&gt;{});
+39 &#32;&#32;&#32;&#32;}
+40 
+41 
+44 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keyword">class</emphasis>&#32;T,&#32;<emphasis role="keyword">class</emphasis>&#32;Head&gt;
+45 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;inTList(TList&lt;T,&#32;Head&gt;)&#32;{
+46 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::is_same&lt;T,&#32;Head&gt;::value;
+47 &#32;&#32;&#32;&#32;}
+48 
+55 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keyword">class&#32;</emphasis>T,&#32;<emphasis role="keyword">class&#32;</emphasis>Head,&#32;<emphasis role="keyword">class</emphasis>...&#32;Tail&gt;
+56 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;inTList(TList&lt;T,&#32;Head,&#32;Tail...&gt;&#32;list)&#32;{
+57 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;(std::is_same&lt;T,&#32;Head&gt;::value&#32;||&#32;inTList(TList&lt;T,&#32;Tail...&gt;{}));
+58 &#32;&#32;&#32;&#32;}
+59 
+60 
+63 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keyword">class</emphasis>&#32;T,&#32;<emphasis role="keyword">class</emphasis>&#32;Head&gt;
+64 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;indexTList(TList&lt;T,&#32;Head&gt;)&#32;{
+65 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;0;
+66 &#32;&#32;&#32;&#32;}
+67 
+74 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keyword">class&#32;</emphasis>T,&#32;<emphasis role="keyword">class&#32;</emphasis>Head,&#32;<emphasis role="keyword">class</emphasis>...&#32;Tail&gt;
+75 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;indexTList(TList&lt;T,&#32;Head,&#32;Tail...&gt;&#32;list)&#32;{
+76 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;std::is_same&lt;T,&#32;Head&gt;::value&#32;?&#32;0&#32;:&#32;1&#32;+&#32;indexTList(TList&lt;T,&#32;Tail...&gt;{});
+77 &#32;&#32;&#32;&#32;}
+78 
+79 
+80 
+82 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis>Par;
+83 
+85 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&#32;&lt;<emphasis role="keyword">class</emphasis>&#32;T&gt;
+86 &#32;&#32;&#32;&#32;<emphasis role="keyword">concept&#32;</emphasis><link linkend="_conceptds_1_1_par_c">ParC</link>&#32;=&#32;std::is_base_of&lt;Par,&#32;T&gt;::value;
+87 
+89 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis><link linkend="_classds_1_1_par">Par</link>&#32;{
+90 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+91 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;
+93 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_par_1aebe5a80460bd202baf43f4d8d4bfc89c">Par</link>()&#32;=&#32;<emphasis role="keywordflow">default</emphasis>;
+94 
+100 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_par_1a100289f8c65da828047f3ea0ce50b39c">Par</link>(<emphasis role="keywordtype">double</emphasis>&#32;mass_,&#32;<emphasis role="keywordtype">double</emphasis>&#32;x_,&#32;<emphasis role="keywordtype">double</emphasis>&#32;y_,&#32;<emphasis role="keywordtype">double</emphasis>&#32;viewRange_)&#32;:&#32;startMass(mass_),&#32;mass(mass_),&#32;x(x_),&#32;y(y_),&#32;viewRange(viewRange_)&#32;{};
+101 
+103 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">virtual</emphasis>&#32;<link linkend="_classds_1_1_par_1aecba4caa107a0581db6ea09afdcba6ee">~Par</link>()&#32;=&#32;<emphasis role="keywordflow">default</emphasis>;
+104 
+106 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_classds_1_1_par_1a3bf512de7544ace59502913263c29849">radius</link>()<emphasis role="keyword">&#32;const&#32;</emphasis>{
+107 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;5&#32;*&#32;std::pow(mass,&#32;0.3333);
+108 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+109 
+111 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_par_1af8f76d6a3c6702bc25e3e98a8c3ebcb6">looseMass</link>(<emphasis role="keywordtype">double</emphasis>&#32;loose)&#32;{
+112 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(loose&#32;&lt;&#32;0)&#32;<emphasis role="keywordflow">throw</emphasis>&#32;std::exception(<emphasis role="stringliteral">&quot;bad&#32;loose&quot;</emphasis>);
+113 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;mass&#32;-=&#32;loose;
+114 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+115 
+117 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_classds_1_1_par_1ab7eb81ec9dced9b7fef4be32339931b9">getMass</link>()<emphasis role="keyword">&#32;const&#32;</emphasis>{
+118 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;mass;
+119 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+120 
+122 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_classds_1_1_par_1a55f25407fefa1d950f6203177127d2aa">getStartMass</link>()<emphasis role="keyword">&#32;const&#32;</emphasis>{
+123 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;startMass;
+124 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+125 
+127 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_classds_1_1_par_1a53c1c6a03e1921b7a73c4c2ef08dca2e">getX</link>()<emphasis role="keyword">&#32;const&#32;</emphasis>{
+128 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;x;
+129 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+130 
+132 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_classds_1_1_par_1af96ed9f921c7f4316021d71091fa6b8e">getY</link>()<emphasis role="keyword">&#32;const&#32;</emphasis>{
+133 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;y;
+134 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+135 
+137 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_par_1aa7c92b1b8f7f4f5b0ec7bc470685a0f5">moveX</link>(<emphasis role="keywordtype">double</emphasis>&#32;dx)&#32;{
+138 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;x&#32;+=&#32;dx;
+139 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+140 
+142 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_par_1a6a563ea592772a82d55b9bddcbf355a7">moveY</link>(<emphasis role="keywordtype">double</emphasis>&#32;dy)&#32;{
+143 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;y&#32;+=&#32;dy;
+144 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+145 
+147 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_par_1a81522e78c819ae8d2adac5d415faaa84">setX</link>(<emphasis role="keywordtype">double</emphasis>&#32;x_)&#32;{
+148 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;x&#32;=&#32;x_;
+149 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+150 
+152 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_par_1a5a4f5767cb6e78ce4f303d8dba8f23c2">setY</link>(<emphasis role="keywordtype">double</emphasis>&#32;y_)&#32;{
+153 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;y&#32;=&#32;y_;
+154 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+155 
+157 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classds_1_1_par_1a265f620b41b17671e6bc10bf629b3fc5">isDead</link>()&#32;{
+158 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;killerNumber;
+159 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+160 
+165 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_par_1a92ccc639a35470a3efc7ebd4d096a634">eat</link>(<link linkend="_classds_1_1_par">Par</link>*&#32;rhs)&#32;{
+166 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(<emphasis role="keyword">this</emphasis>&#32;==&#32;rhs)&#32;<emphasis role="keywordflow">throw</emphasis>&#32;std::exception(<emphasis role="stringliteral">&quot;Form&#32;of&#32;live&#32;cannot&#32;eat&#32;itself&quot;</emphasis>);
+167 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;victim&#32;=&#32;rhs;
+168 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++rhs-&gt;killerNumber;
+169 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+170 
+172 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_par_1a106aba866c7f8472064af1a51ab79f48">die</link>()&#32;{
+173 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++killerNumber;
+174 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+175 
+177 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">bool</emphasis>&#32;<link linkend="_classds_1_1_par_1aca304c60df0360a25afb6ad176868798">hasVictim</link>()&#32;{
+178 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;victim;
+179 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+180 
+183 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_par_1a920633108dc009fff9923cd8da128d63">writeTo</link>(std::ostream&amp;&#32;ostrm)<emphasis role="keyword">&#32;const&#32;</emphasis>{
+184 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ostrm&#32;&lt;&lt;&#32;startMass&#32;&lt;&lt;&#32;<emphasis role="charliteral">&apos;&#32;&apos;</emphasis>&#32;&lt;&lt;&#32;mass&#32;&lt;&lt;&#32;<emphasis role="charliteral">&apos;&#32;&apos;</emphasis>&#32;&lt;&lt;&#32;x&#32;&lt;&lt;&#32;<emphasis role="charliteral">&apos;&#32;&apos;</emphasis>&#32;&lt;&lt;&#32;y&#32;&lt;&lt;&#32;<emphasis role="charliteral">&apos;&#32;&apos;</emphasis>&#32;&lt;&lt;&#32;viewRange&#32;&lt;&lt;&#32;<emphasis role="charliteral">&apos;&#32;&apos;</emphasis>;
+185 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+186 
+189 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_par_1a21b78ef2249fdea5e1059692664fd860">readFrom</link>(std::istream&amp;&#32;istrm)&#32;{
+190 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;istrm&#32;&gt;&gt;&#32;startMass&#32;&gt;&gt;&#32;mass&#32;&gt;&gt;&#32;x&#32;&gt;&gt;&#32;y&#32;&gt;&gt;&#32;viewRange;
+191 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+192 
+195 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<link linkend="_conceptds_1_1_par_c">ParC</link>...&#32;Types&gt;
+196 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">friend</emphasis>&#32;<emphasis role="keyword">class&#32;</emphasis><link linkend="_classds_1_1_darwin_simulator">DarwinSimulator</link>;
+197 
+198 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;viewRange&#32;=&#32;10;
+199 
+200 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+201 
+202 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;startMass&#32;=&#32;0;
+203 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;mass&#32;=&#32;1;
+204 
+205 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;x&#32;=&#32;0,&#32;y&#32;=&#32;0;
+206 
+207 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_par">Par</link>*&#32;victim&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>;
+208 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;killerNumber&#32;=&#32;0;
+209 &#32;&#32;&#32;&#32;};
+210 
+215 &#32;&#32;&#32;&#32;std::ostream&amp;&#32;operator&lt;&lt;(std::ostream&amp;&#32;ostrm,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_classds_1_1_par">Par</link>&amp;&#32;p)&#32;{
+216 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;p.<link linkend="_classds_1_1_par_1a920633108dc009fff9923cd8da128d63">writeTo</link>(ostrm);
+217 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;ostrm;
+218 &#32;&#32;&#32;&#32;}
+219 
+224 &#32;&#32;&#32;&#32;std::istream&amp;&#32;operator&gt;&gt;(std::istream&amp;&#32;istrm,&#32;Par&amp;&#32;p)&#32;{
+225 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;p.readFrom(istrm);
+226 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;istrm;
+227 &#32;&#32;&#32;&#32;}
+228 
+229 
+230 
+232 &#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;cmp&#32;=&#32;[](<emphasis role="keyword">const</emphasis>&#32;Par*&#32;lhs,&#32;<emphasis role="keyword">const</emphasis>&#32;Par*&#32;rhs)&#32;{&#32;<emphasis role="keywordflow">return</emphasis>&#32;(lhs-&gt;getX()&#32;==&#32;rhs-&gt;getX())&#32;?&#32;(lhs-&gt;getY()&#32;&lt;&#32;rhs-&gt;getY())&#32;:&#32;(lhs-&gt;getX()&#32;&lt;&#32;rhs-&gt;getX());&#32;};
+233 
+235 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keywordtype">int</emphasis>&#32;dim,&#32;ParC&#32;Head&gt;
+236 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;writeArrOfMultisetTo(std::array&lt;std::multiset&lt;Par*,&#32;<emphasis role="keyword">decltype</emphasis>(cmp)&gt;,&#32;dim&gt;&amp;&#32;arr,&#32;TList&lt;Head&gt;,&#32;std::ostream&amp;&#32;ostrm,&#32;<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0)&#32;{
+237 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ostrm&#32;&lt;&lt;&#32;arr[i].size()&#32;&lt;&lt;&#32;std::endl;
+238 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;el&#32;:&#32;arr[i])&#32;{
+239 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ostrm&#32;&lt;&lt;&#32;*reinterpret_cast&lt;Head*&gt;(el)&#32;&lt;&lt;&#32;std::endl;
+240 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+241 &#32;&#32;&#32;&#32;}
+242 
+251 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keywordtype">int</emphasis>&#32;dim,&#32;ParC&#32;Head,&#32;ParC...&#32;Tail&gt;
+252 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;writeArrOfMultisetTo(std::array&lt;std::multiset&lt;Par*,&#32;<emphasis role="keyword">decltype</emphasis>(cmp)&gt;,&#32;dim&gt;&amp;&#32;arr,&#32;TList&lt;Head,&#32;Tail...&gt;&#32;list,&#32;std::ostream&amp;&#32;ostrm,&#32;<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0)&#32;{
+253 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ostrm&#32;&lt;&lt;&#32;arr[i].size()&#32;&lt;&lt;&#32;std::endl;
+254 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;el&#32;:&#32;arr[i])&#32;{
+255 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ostrm&#32;&lt;&lt;&#32;*reinterpret_cast&lt;Head*&gt;(el)&#32;&lt;&lt;&#32;std::endl;
+256 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+257 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;writeArrOfMultisetTo(arr,&#32;TList&lt;Tail...&gt;{},&#32;ostrm,&#32;i&#32;+&#32;1);
+258 &#32;&#32;&#32;&#32;}
+259 
+260 
+262 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keywordtype">int</emphasis>&#32;dim,&#32;ParC&#32;Head&gt;
+263 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;readArrOfMultisetFrom(std::array&lt;std::multiset&lt;Par*,&#32;<emphasis role="keyword">decltype</emphasis>(cmp)&gt;,&#32;dim&gt;&amp;&#32;arr,&#32;TList&lt;Head&gt;,&#32;std::istream&amp;&#32;istrm,&#32;<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0)&#32;{
+264 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;size&#32;=&#32;0;
+265 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;istrm&#32;&gt;&gt;&#32;size;
+266 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;j&#32;=&#32;0;&#32;j&#32;&lt;&#32;size;&#32;++j)&#32;{
+267 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Head&#32;var&#32;=&#32;Head();
+268 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;istrm&#32;&gt;&gt;&#32;var;
+269 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;arr[i].insert(<emphasis role="keyword">reinterpret_cast&lt;</emphasis>Par*<emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">new</emphasis>&#32;Head(var)));
+270 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+271 &#32;&#32;&#32;&#32;}
+272 
+281 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keywordtype">int</emphasis>&#32;dim,&#32;ParC&#32;Head,&#32;ParC...&#32;Tail&gt;
+282 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;readArrOfMultisetFrom(std::array&lt;std::multiset&lt;Par*,&#32;<emphasis role="keyword">decltype</emphasis>(cmp)&gt;,&#32;dim&gt;&amp;&#32;arr,&#32;TList&lt;Head,&#32;Tail...&gt;,&#32;std::istream&amp;&#32;istrm,&#32;<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0)&#32;{
+283 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;size&#32;=&#32;0;
+284 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;istrm&#32;&gt;&gt;&#32;size;
+285 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;j&#32;=&#32;0;&#32;j&#32;&lt;&#32;size;&#32;++j)&#32;{
+286 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Head&#32;var&#32;=&#32;Head();
+287 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;istrm&#32;&gt;&gt;&#32;var;
+288 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;arr[i].insert(<emphasis role="keyword">reinterpret_cast&lt;</emphasis>Par*<emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">new</emphasis>&#32;Head(var)));
+289 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+290 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;readArrOfMultisetFrom(arr,&#32;TList&lt;Tail...&gt;{},&#32;istrm,&#32;i&#32;+&#32;1);
+291 &#32;&#32;&#32;&#32;}
+292 
+295 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC...&#32;Types&gt;
+296 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis><link linkend="_classds_1_1_t_array">TArray</link>&#32;{
+297 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+300 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_t_array_1ae388efd24aaa3f126f9b45e8cdf15c9d">TArray</link>(std::array&#32;&lt;&#32;std::vector&lt;Par*&gt;,&#32;tSize(<link linkend="_classds_1_1_t_list">TList&lt;Types...&gt;</link>{})&#32;&gt;&amp;&#32;inpArr)&#32;:&#32;data(inpArr)&#32;{};
+301 
+304 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;T&gt;
+305 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">const</emphasis>&#32;std::vector&lt;T*&gt;&#32;<link linkend="_classds_1_1_t_array_1a04694d0c734abe84c34eb94fc10930a8">getByType</link>()<emphasis role="keyword">&#32;const&#32;</emphasis>{
+306 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;ind&#32;=&#32;indexTList(<link linkend="_classds_1_1_t_list">TList&lt;T, Types...&gt;</link>{});
+307 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;size&#32;=&#32;data[ind].size();
+308 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;T*&gt;&#32;retVec(size);
+309 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;size;&#32;++i)&#32;{
+310 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;retVec[i]&#32;=&#32;<emphasis role="keyword">reinterpret_cast&lt;</emphasis>T*<emphasis role="keyword">&gt;</emphasis>(data[ind][i]);
+311 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+312 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;retVec;
+313 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+314 
+317 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;T&gt;
+318 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_t_array_1a5676bd1fdae08475c9cc8fc3f0deca92">putByType</link>(<emphasis role="keyword">const</emphasis>&#32;std::vector&lt;T&gt;&amp;&#32;newVec)&#32;{
+319 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;size&#32;=&#32;data[indexTList(<link linkend="_classds_1_1_t_list">TList&lt;T, Types...&gt;</link>{})].size();
+320 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;Par*&gt;&amp;&#32;vecToChange&#32;=&#32;data[size];
+321 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&amp;&#32;el&#32;:&#32;vecToChange)&#32;<emphasis role="keyword">delete</emphasis>&#32;el;
+322 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">int</emphasis>&#32;newSize&#32;=&#32;newVec.size();
+323 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vecToChange.resize(newSize);
+324 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;newSize;&#32;++i)&#32;{
+325 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;vecToChange[i]&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;<link linkend="_classds_1_1_par">Par</link>(newVec[i]);
+326 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+327 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+328 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+329 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">constexpr</emphasis>&#32;<emphasis role="keyword">static</emphasis>&#32;<link linkend="_classds_1_1_t_list">TList</link>&lt;Types...&gt;&#32;list;
+330 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&#32;&lt;&#32;std::vector&lt;Par*&gt;,&#32;tSize(list)&#32;&gt;&amp;&#32;data;
+331 &#32;&#32;&#32;&#32;};
+332 
+333 
+340 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;T,&#32;ParC...&#32;Types&gt;
+341 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;calculations(T*&#32;myOrg,&#32;<emphasis role="keyword">const</emphasis>&#32;TArray&lt;Types...&gt;&amp;&#32;visible,&#32;<emphasis role="keywordtype">double</emphasis>&#32;dt_)&#32;{};
+342 
+347 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;T&gt;
+348 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;move(T*&#32;myOrg,&#32;<emphasis role="keywordtype">double</emphasis>&#32;dt_)&#32;{};
+349 
+355 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;T1,&#32;ParC&#32;T2&gt;
+356 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;collision(T1*&#32;lhs,&#32;T2*&#32;rhs)&#32;{};
+357 
+362 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;T&gt;
+363 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;reproduction(T*&#32;myOrg,&#32;std::vector&lt;T&gt;&amp;&#32;childs)&#32;{};
+364 
+373 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC...&#32;Types&gt;
+374 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;spawn(TArray&lt;Types...&gt;&amp;&#32;organisms,&#32;<emphasis role="keywordtype">double</emphasis>&#32;massLeft,&#32;<emphasis role="keywordtype">double</emphasis>&#32;wid,&#32;<emphasis role="keywordtype">double</emphasis>&#32;high,&#32;<emphasis role="keywordtype">double</emphasis>&#32;dt_)&#32;{};
+375 
+376 
+377 
+380 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC...&#32;Types&gt;
+381 &#32;&#32;&#32;&#32;<emphasis role="keyword">class&#32;</emphasis><link linkend="_classds_1_1_darwin_simulator">DarwinSimulator</link>&#32;{
+382 &#32;&#32;&#32;&#32;<emphasis role="keyword">public</emphasis>:
+384 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">constexpr</emphasis>&#32;<emphasis role="keyword">static</emphasis>&#32;<emphasis role="keywordtype">int</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1a7ab528999859a379fc98330c6a34ffc7">simulDim</link>&#32;=&#32;tSize(<link linkend="_classds_1_1_t_list">TList&lt;Types...&gt;</link>{});
+385 
+387 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_darwin_simulator_1a79c24796b2deba288a6aafea6acb2503">DarwinSimulator</link>();
+388 
+394 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_darwin_simulator_1a79c24796b2deba288a6aafea6acb2503">DarwinSimulator</link>(<emphasis role="keywordtype">double</emphasis>&#32;dt_,&#32;<emphasis role="keywordtype">double</emphasis>&#32;w_,&#32;<emphasis role="keywordtype">double</emphasis>&#32;h_,&#32;<emphasis role="keywordtype">double</emphasis>&#32;totalMass_);
+395 
+397 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_darwin_simulator_1a5488295f33d262ee31232cac7f456460">~DarwinSimulator</link>();
+398 
+402 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;T&gt;
+403 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1aa91b85cebb23ab4349ccdb2ecd58c13d">addAlive</link>(<emphasis role="keyword">const</emphasis>&#32;T&amp;&#32;inp);
+404 
+408 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;T&gt;
+409 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;T*&gt;&#32;<link linkend="_classds_1_1_darwin_simulator_1a6c0aa0b4531f67e1da7da8b2ea537f47">get</link>();
+410 
+412 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1a18e2adae3b2bf31e40857b73bbd760a8">getWidth</link>();
+413 
+415 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1a38527d18b145d781b22fce25accb29cc">getHeight</link>();
+416 
+418 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1a5435ae9918fe9d1c38cb634c44ba4df6">update</link>();
+419 
+422 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1a5435ae9918fe9d1c38cb634c44ba4df6">update</link>(<emphasis role="keywordtype">int</emphasis>&#32;times);
+423 
+426 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1afb501bfbba4a63370b63140372267a8a">writeTo</link>(std::ostream&amp;&#32;ostrm);
+427 
+430 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1ac07df94792ddc88fc9b462365a3f3f8b">readFrom</link>(std::istream&amp;&#32;istrm);
+431 
+432 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+433 
+435 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;Head&gt;
+436 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;set(<link linkend="_classds_1_1_t_list">TList&lt;Head&gt;</link>,&#32;<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0)&#32;{
+437 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;calculations_fs[i]&#32;=&#32;[<emphasis role="keyword">this</emphasis>](<link linkend="_classds_1_1_par">Par</link>*&#32;p,&#32;<emphasis role="keyword">const</emphasis>&#32;<link linkend="_classds_1_1_t_array">TArray</link>&lt;Types...&gt;&amp;&#32;arr,&#32;<emphasis role="keywordtype">double</emphasis>&#32;dt_)&#32;{
+438 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;calculations(<emphasis role="keyword">reinterpret_cast&lt;</emphasis>Head*<emphasis role="keyword">&gt;</emphasis>(p),&#32;arr,&#32;dt_);
+439 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+440 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;move_fs[i]&#32;=&#32;[](Par*&#32;p,&#32;<emphasis role="keywordtype">double</emphasis>&#32;dt_)&#32;{
+441 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;move(<emphasis role="keyword">reinterpret_cast&lt;</emphasis>Head*<emphasis role="keyword">&gt;</emphasis>(p),&#32;dt_);
+442 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+443 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reproduction_fs[i]&#32;=&#32;[](Par*&#32;p,&#32;std::vector&lt;Par*&gt;&amp;&#32;readyChildren)&#32;{
+444 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;Head&gt;&#32;children;
+445 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reproduction(<emphasis role="keyword">reinterpret_cast&lt;</emphasis>Head*<emphasis role="keyword">&gt;</emphasis>(p),&#32;children);
+446 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;readyChildren.resize(children.size());
+447 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;j&#32;=&#32;0;&#32;j&#32;&lt;&#32;children.size();&#32;++j)&#32;{
+448 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;readyChildren[j]&#32;=&#32;<emphasis role="keyword">reinterpret_cast&lt;</emphasis>Par*<emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">new</emphasis>&#32;Head(children[j]));
+449 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+450 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+451 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+452 
+457 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;Head,&#32;ParC...&#32;Tail&gt;
+458 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;set(TList&lt;Head,&#32;Tail...&gt;&#32;list,&#32;<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0)&#32;{
+459 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;calculations_fs[i]&#32;=&#32;[<emphasis role="keyword">this</emphasis>](Par*&#32;p,&#32;<emphasis role="keyword">const</emphasis>&#32;TArray&lt;Types...&gt;&amp;&#32;arr,&#32;<emphasis role="keywordtype">double</emphasis>&#32;dt_)&#32;{
+460 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;calculations(<emphasis role="keyword">reinterpret_cast&lt;</emphasis>Head*<emphasis role="keyword">&gt;</emphasis>(p),&#32;arr,&#32;dt_);
+461 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+462 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;move_fs[i]&#32;=&#32;[](Par*&#32;p,&#32;<emphasis role="keywordtype">double</emphasis>&#32;dt_)&#32;{
+463 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;move(<emphasis role="keyword">reinterpret_cast&lt;</emphasis>Head*<emphasis role="keyword">&gt;</emphasis>(p),&#32;dt_);
+464 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+465 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reproduction_fs[i]&#32;=&#32;[](Par*&#32;p,&#32;std::vector&lt;Par*&gt;&amp;&#32;readyChildren)&#32;{
+466 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;Head&gt;&#32;children;
+467 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reproduction(<emphasis role="keyword">reinterpret_cast&lt;</emphasis>Head*<emphasis role="keyword">&gt;</emphasis>(p),&#32;children);
+468 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;readyChildren.resize(children.size());
+469 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;j&#32;=&#32;0;&#32;j&#32;&lt;&#32;children.size();&#32;++j)&#32;{
+470 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;readyChildren[j]&#32;=&#32;<emphasis role="keyword">reinterpret_cast&lt;</emphasis>Par*<emphasis role="keyword">&gt;</emphasis>(<emphasis role="keyword">new</emphasis>&#32;Head(children[j]));
+471 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+472 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+473 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;set(TList&lt;Tail...&gt;{},&#32;i&#32;+&#32;1);
+474 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+475 
+481 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;T,&#32;ParC&#32;Head&gt;
+482 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;set1d(TList&lt;T&gt;,&#32;TList&lt;Head&gt;,&#32;<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0,&#32;<emphasis role="keywordtype">int</emphasis>&#32;j&#32;=&#32;0)&#32;{
+483 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;collision_fs[i][j]&#32;=&#32;<emphasis role="keyword">reinterpret_cast&lt;</emphasis><emphasis role="keywordtype">void</emphasis>(*)(Par*,&#32;Par*)<emphasis role="keyword">&gt;</emphasis>(&amp;collision&lt;T,&#32;Head&gt;);
+484 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;collision_fs[j][i]&#32;=&#32;<emphasis role="keyword">reinterpret_cast&lt;</emphasis><emphasis role="keywordtype">void</emphasis>(*)(Par*,&#32;Par*)<emphasis role="keyword">&gt;</emphasis>(&amp;collision&lt;Head,&#32;T&gt;);
+485 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+486 
+493 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;T,&#32;ParC&#32;Head,&#32;ParC...&#32;Tail&gt;
+494 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;set1d(TList&lt;T&gt;,&#32;TList&lt;Head,&#32;Tail...&gt;,&#32;<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0,&#32;<emphasis role="keywordtype">int</emphasis>&#32;j&#32;=&#32;0)&#32;{
+495 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;collision_fs[i][j]&#32;=&#32;<emphasis role="keyword">reinterpret_cast&lt;</emphasis><emphasis role="keywordtype">void</emphasis>(*)(Par*,&#32;Par*)<emphasis role="keyword">&gt;</emphasis>(&amp;collision&lt;T,&#32;Head&gt;);
+496 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;collision_fs[j][i]&#32;=&#32;<emphasis role="keyword">reinterpret_cast&lt;</emphasis><emphasis role="keywordtype">void</emphasis>(*)(Par*,&#32;Par*)<emphasis role="keyword">&gt;</emphasis>(&amp;collision&lt;Head,&#32;T&gt;);
+497 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;set1d(TList&lt;T&gt;{},&#32;TList&lt;Tail...&gt;{},&#32;i,&#32;j&#32;+&#32;1);
+498 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+499 
+503 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;Head&gt;
+504 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;set2d(TList&lt;Head&gt;,&#32;<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0)&#32;{
+505 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;collision_fs[i][i]&#32;=&#32;<emphasis role="keyword">reinterpret_cast&lt;</emphasis><emphasis role="keywordtype">void</emphasis>(*)(Par*,&#32;Par*)<emphasis role="keyword">&gt;</emphasis>(&amp;collision&lt;Head,&#32;Head&gt;);
+506 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+507 
+524 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;Head,&#32;ParC...&#32;Tail&gt;
+525 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">inline</emphasis>&#32;<emphasis role="keywordtype">void</emphasis>&#32;set2d(TList&lt;Head,&#32;Tail...&gt;,&#32;<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0)&#32;{
+526 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;collision_fs[i][i]&#32;=&#32;<emphasis role="keyword">reinterpret_cast&lt;</emphasis><emphasis role="keywordtype">void</emphasis>(*)(Par*,&#32;Par*)<emphasis role="keyword">&gt;</emphasis>(&amp;collision&lt;Head,&#32;Head&gt;);
+527 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;set1d(TList&lt;Head&gt;{},&#32;TList&lt;Tail...&gt;{},&#32;i,&#32;i&#32;+&#32;1);
+528 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;set2d(TList&lt;Tail...&gt;{},&#32;i&#32;+&#32;1);
+529 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+530 
+535 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&#32;&lt;&#32;std::vector&lt;Par*&gt;,&#32;tSize(TList&lt;Types...&gt;{})&#32;&gt;&#32;getVisible(<emphasis role="keyword">const</emphasis>&#32;std::multiset&lt;Par*,&#32;<emphasis role="keyword">decltype</emphasis>(cmp)&gt;::iterator&amp;&#32;myOrg)&#32;{
+536 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&#32;&lt;&#32;std::vector&lt;Par*&gt;,&#32;tSize(TList&lt;Types...&gt;{})&#32;&gt;&#32;retArr;
+537 
+538 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Par*&#32;leftAl&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;Par;
+539 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;Par*&#32;rightAl&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;Par;
+540 
+541 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;leftAl-&gt;setX((*myOrg)-&gt;getX()&#32;-&#32;(*myOrg)-&gt;viewRange);
+542 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;rightAl-&gt;setX((*myOrg)-&gt;getX()&#32;+&#32;(*myOrg)-&gt;viewRange);
+543 
+544 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;retArr.size();&#32;++i)&#32;{
+545 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;retArr[i].clear();
+546 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;first&#32;=&#32;alives[i].lower_bound(leftAl);&#32;<emphasis role="comment">//not&#32;sure</emphasis>
+547 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;last&#32;=&#32;alives[i].upper_bound(rightAl);&#32;<emphasis role="comment">//not&#32;sure</emphasis>
+548 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;iter&#32;=&#32;first;&#32;iter&#32;!=&#32;last;&#32;++iter)&#32;{
+549 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(*iter&#32;==&#32;*myOrg)&#32;{
+550 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">continue</emphasis>;
+551 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+552 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(((*iter)-&gt;getX()&#32;-&#32;(*myOrg)-&gt;getX())&#32;*&#32;((*iter)-&gt;getX()&#32;-&#32;(*myOrg)-&gt;getX())&#32;+&#32;((*iter)-&gt;getY()&#32;-&#32;(*myOrg)-&gt;getY())&#32;*&#32;((*iter)-&gt;getY()&#32;-&#32;(*myOrg)-&gt;getY())&#32;&lt;=&#32;(*myOrg)-&gt;viewRange&#32;*&#32;(*myOrg)-&gt;viewRange)&#32;{
+553 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;retArr[i].push_back(*iter);
+554 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+555 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+556 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+557 
+558 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">delete</emphasis>&#32;leftAl;
+559 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">delete</emphasis>&#32;rightAl;
+560 
+561 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;retArr;
+562 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+563 
+567 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;die(<emphasis role="keywordtype">int</emphasis>&#32;i,&#32;std::multiset&lt;Par*,&#32;<emphasis role="keyword">decltype</emphasis>(cmp)&gt;::iterator&amp;&#32;it)&#32;{
+568 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::multiset&lt;Par*,&#32;<emphasis role="keyword">decltype</emphasis>(cmp)&gt;::iterator&#32;tmp&#32;=&#32;it;
+569 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;tmp&#32;=&#32;it;
+570 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++tmp;
+571 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;deathNote.push_back(*it);
+572 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives_upd[i].erase(it);
+573 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;it&#32;=&#32;tmp;
+574 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+575 
+578 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;kill(Par*&#32;par)&#32;{
+579 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!par-&gt;victim)&#32;<emphasis role="keywordflow">throw</emphasis>&#32;std::exception(<emphasis role="stringliteral">&quot;This&#32;form&#32;of&#32;live&#32;has&#32;no&#32;victim&quot;</emphasis>);
+580 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;par-&gt;mass&#32;+=&#32;0.5&#32;*&#32;par-&gt;victim-&gt;getMass()&#32;/&#32;par-&gt;victim-&gt;killerNumber;
+581 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;par-&gt;victim&#32;=&#32;<emphasis role="keyword">nullptr</emphasis>;
+582 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+583 
+584 &#32;&#32;&#32;&#32;<emphasis role="keyword">private</emphasis>:
+585 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;dt&#32;=&#32;0.01;
+586 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;w&#32;=&#32;100;
+587 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;h&#32;=&#32;100;
+588 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;totalMass&#32;=&#32;0;
+589 
+590 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&lt;std::thread,&#32;simulDim&gt;&#32;threads;
+591 
+592 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&#32;&lt;&#32;std::multiset&lt;Par*,&#32;<emphasis role="keyword">decltype</emphasis>(cmp)&gt;,&#32;<link linkend="_classds_1_1_darwin_simulator_1a7ab528999859a379fc98330c6a34ffc7">simulDim</link>&#32;&gt;&#32;alives;
+593 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&#32;&lt;&#32;std::multiset&lt;Par*,&#32;<emphasis role="keyword">decltype</emphasis>(cmp)&gt;,&#32;<link linkend="_classds_1_1_darwin_simulator_1a7ab528999859a379fc98330c6a34ffc7">simulDim</link>&#32;&gt;&#32;alives_upd;
+594 
+595 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;Par*&gt;&#32;deathNote;
+596 
+598 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&#32;&lt;&#32;std::function&lt;void(Par*,&#32;<emphasis role="keyword">const</emphasis>&#32;TArray&lt;Types...&gt;&amp;,&#32;<emphasis role="keywordtype">double</emphasis>)&gt;,&#32;<link linkend="_classds_1_1_darwin_simulator_1a7ab528999859a379fc98330c6a34ffc7">simulDim</link>&gt;&#32;calculations_fs;
+600 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&#32;&lt;&#32;std::function&lt;void(Par*,&#32;<emphasis role="keywordtype">double</emphasis>)&gt;,&#32;<link linkend="_classds_1_1_darwin_simulator_1a7ab528999859a379fc98330c6a34ffc7">simulDim</link>&gt;&#32;move_fs;
+602 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&#32;&lt;&#32;std::array&#32;&lt;&#32;std::function&lt;void(Par*,&#32;Par*)&gt;,&#32;<link linkend="_classds_1_1_darwin_simulator_1a7ab528999859a379fc98330c6a34ffc7">simulDim</link>&gt;,&#32;<link linkend="_classds_1_1_darwin_simulator_1a7ab528999859a379fc98330c6a34ffc7">simulDim</link>&gt;&#32;collision_fs;
+604 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&#32;&lt;&#32;std::function&lt;void(Par*,&#32;std::vector&lt;Par*&gt;&amp;)&gt;,&#32;<link linkend="_classds_1_1_darwin_simulator_1a7ab528999859a379fc98330c6a34ffc7">simulDim</link>&gt;&#32;reproduction_fs;
+606 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::function&lt;void(TArray&lt;Types...&gt;&amp;,&#32;<emphasis role="keywordtype">double</emphasis>,&#32;<emphasis role="keywordtype">double</emphasis>,&#32;<emphasis role="keywordtype">double</emphasis>,&#32;<emphasis role="keywordtype">double</emphasis>)&gt;&#32;spawn_f;
+607 &#32;&#32;&#32;&#32;};
+608 
+609 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC...&#32;Types&gt;
+610 &#32;&#32;&#32;&#32;<link linkend="_classds_1_1_darwin_simulator_1a79c24796b2deba288a6aafea6acb2503">DarwinSimulator&lt;Types...&gt;::DarwinSimulator</link>()&#32;{
+611 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;spawn_f&#32;=&#32;[](<link linkend="_classds_1_1_t_array">TArray</link>&lt;Types...&gt;&amp;&#32;alives,&#32;<emphasis role="keywordtype">double</emphasis>&#32;massLeft,&#32;<emphasis role="keywordtype">double</emphasis>&#32;wid,&#32;<emphasis role="keywordtype">double</emphasis>&#32;high,&#32;<emphasis role="keywordtype">double</emphasis>&#32;dt)&#32;{
+612 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;spawn(alives,&#32;massLeft,&#32;wid,&#32;high,&#32;dt);
+613 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+614 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;set(<link linkend="_classds_1_1_t_list">TList&lt;Types...&gt;</link>{});
+615 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;set2d(<link linkend="_classds_1_1_t_list">TList&lt;Types...&gt;</link>{});
+616 &#32;&#32;&#32;&#32;}
+617 
+618 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<link linkend="_conceptds_1_1_par_c">ParC</link>...&#32;Types&gt;
+619 &#32;&#32;&#32;&#32;<link linkend="_classds_1_1_darwin_simulator_1a79c24796b2deba288a6aafea6acb2503">DarwinSimulator&lt;Types...&gt;::DarwinSimulator</link>(
+620 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;dt_,&#32;<emphasis role="keywordtype">double</emphasis>&#32;w_,&#32;<emphasis role="keywordtype">double</emphasis>&#32;h_,&#32;<emphasis role="keywordtype">double</emphasis>&#32;totalMass_)&#32;:
+621 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;dt(dt_),&#32;w(w_),&#32;h(h_),&#32;totalMass(totalMass_)&#32;{
+622 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;spawn_f&#32;=&#32;[](<link linkend="_classds_1_1_t_array">TArray</link>&lt;Types...&gt;&amp;&#32;alives,&#32;<emphasis role="keywordtype">double</emphasis>&#32;massLeft,&#32;<emphasis role="keywordtype">double</emphasis>&#32;wid,&#32;<emphasis role="keywordtype">double</emphasis>&#32;high,&#32;<emphasis role="keywordtype">double</emphasis>&#32;dt)&#32;{
+623 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;spawn(alives,&#32;massLeft,&#32;wid,&#32;high,&#32;dt);
+624 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;};
+625 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;set(<link linkend="_classds_1_1_t_list">TList&lt;Types...&gt;</link>{});
+626 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;set2d(<link linkend="_classds_1_1_t_list">TList&lt;Types...&gt;</link>{});
+627 &#32;&#32;&#32;&#32;}
+628 
+629 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<link linkend="_conceptds_1_1_par_c">ParC</link>...&#32;Types&gt;
+630 &#32;&#32;&#32;&#32;<link linkend="_classds_1_1_darwin_simulator_1a5488295f33d262ee31232cac7f456460">DarwinSimulator&lt;Types...&gt;::~DarwinSimulator</link>()&#32;{
+631 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;!=&#32;alives.size();&#32;++i)&#32;{
+632 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;j&#32;=&#32;alives[i].begin();&#32;j&#32;!=&#32;alives[i].end();&#32;++j)&#32;{
+633 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">delete</emphasis>*&#32;j;
+634 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+635 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+636 &#32;&#32;&#32;&#32;}
+637 
+638 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<link linkend="_conceptds_1_1_par_c">ParC</link>...&#32;Types&gt;
+639 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;T&gt;
+640 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1aa91b85cebb23ab4349ccdb2ecd58c13d">DarwinSimulator&lt;Types...&gt;::addAlive</link>(<emphasis role="keyword">const</emphasis>&#32;T&amp;&#32;inp)&#32;{
+641 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;T*&#32;myOrg&#32;=&#32;<emphasis role="keyword">new</emphasis>&#32;T;
+642 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;*myOrg&#32;=&#32;inp;
+643 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;totalMass&#32;+=&#32;inp.getMass();
+644 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(!inTList(<link linkend="_classds_1_1_t_list">TList&lt;T, Types...&gt;</link>{}))&#32;{
+645 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">throw</emphasis>&#32;std::invalid_argument(<emphasis role="stringliteral">&quot;Imposible&#32;to&#32;add&#32;this&#32;form&#32;of&#32;live&quot;</emphasis>);
+646 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+647 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives[indexTList(<link linkend="_classds_1_1_t_list">TList&lt;T, Types...&gt;</link>{})].insert(<emphasis role="keyword">reinterpret_cast&lt;</emphasis><link linkend="_classds_1_1_par">Par</link>*<emphasis role="keyword">&gt;</emphasis>(myOrg));&#32;<emphasis role="comment">//спорно</emphasis>
+648 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives_upd[indexTList(<link linkend="_classds_1_1_t_list">TList&lt;T, Types...&gt;</link>{})].insert(<emphasis role="keyword">reinterpret_cast&lt;</emphasis><link linkend="_classds_1_1_par">Par</link>*<emphasis role="keyword">&gt;</emphasis>(myOrg));
+649 &#32;&#32;&#32;&#32;}
+650 
+651 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<link linkend="_conceptds_1_1_par_c">ParC</link>...&#32;Types&gt;
+652 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;ParC&#32;T&gt;
+653 &#32;&#32;&#32;&#32;std::vector&lt;T*&gt;&#32;<link linkend="_classds_1_1_darwin_simulator_1a6c0aa0b4531f67e1da7da8b2ea537f47">DarwinSimulator&lt;Types...&gt;::get</link>()&#32;{
+654 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;T*&gt;&#32;tmp;
+655 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;al&#32;=&#32;alives[indexTList(<link linkend="_classds_1_1_t_list">TList&lt;T, Types...&gt;</link>{})].begin();&#32;al&#32;!=&#32;alives[indexTList(<link linkend="_classds_1_1_t_list">TList&lt;T, Types...&gt;</link>{})].end();&#32;++al)&#32;{
+656 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;tmp.push_back(<emphasis role="keyword">reinterpret_cast&lt;</emphasis>T*<emphasis role="keyword">&gt;</emphasis>(*al));
+657 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+658 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;tmp;
+659 &#32;&#32;&#32;&#32;}
+660 
+661 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<link linkend="_conceptds_1_1_par_c">ParC</link>...&#32;Types&gt;
+662 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1a5435ae9918fe9d1c38cb634c44ba4df6">DarwinSimulator&lt;Types...&gt;::update</link>()&#32;{
+663 
+664 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;!=&#32;simulDim;&#32;++i)&#32;{
+665 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;threads[i]&#32;=&#32;std::thread([<emphasis role="keyword">this</emphasis>,&#32;i]&#32;{
+666 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;prev_it&#32;=&#32;alives[i].begin();&#32;prev_it&#32;!=&#32;alives[i].end();&#32;++prev_it)&#32;{
+667 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_par">Par</link>*&#32;el&#32;=&#32;*prev_it;
+668 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;cur_it&#32;=&#32;std::find(alives_upd[i].begin(),&#32;alives_upd[i].end(),&#32;el);
+669 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives_upd[i].erase(cur_it);
+670 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&lt;std::vector&lt;Par*&gt;,&#32;simulDim&gt;&#32;visible&#32;=&#32;getVisible(prev_it);
+671 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_t_array">TArray</link>&lt;Types...&gt;&#32;closest(visible);
+672 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;calculations_fs[i](el,&#32;closest,&#32;dt);
+673 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives_upd[i].insert(el);
+674 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+675 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;});
+676 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+677 
+678 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&amp;&#32;thread&#32;:&#32;threads)&#32;{
+679 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(thread.joinable())&#32;{
+680 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;thread.join();
+681 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+682 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+683 
+684 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;!=&#32;simulDim;&#32;++i)&#32;{
+685 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;j&#32;=&#32;alives_upd[i].begin();
+686 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(j&#32;!=&#32;alives_upd[i].end())&#32;{
+687 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;((*j)-&gt;getMass()&#32;&lt;=&#32;0.2&#32;*&#32;(*j)-&gt;getStartMass())&#32;{
+688 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;die(i,&#32;j);
+689 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+690 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+691 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++j;
+692 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+693 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+694 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+695 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives&#32;=&#32;alives_upd;
+696 
+697 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;!=&#32;simulDim;&#32;++i)&#32;{
+698 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;prev_it&#32;=&#32;alives[i].begin();&#32;prev_it&#32;!=&#32;alives[i].end();&#32;++prev_it)&#32;{
+699 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_par">Par</link>*&#32;el&#32;=&#32;*prev_it;
+700 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;cur_it&#32;=&#32;std::find(alives_upd[i].begin(),&#32;alives_upd[i].end(),&#32;el);
+701 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives_upd[i].erase(cur_it);
+702 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;move_fs[i](el,&#32;dt);
+703 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives_upd[i].insert(el);
+704 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+705 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+706 
+707 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;!=&#32;simulDim;&#32;++i)&#32;{
+708 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;j&#32;=&#32;alives_upd[i].begin();
+709 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(j&#32;!=&#32;alives_upd[i].end())&#32;{
+710 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;((*j)-&gt;getMass()&#32;&lt;=&#32;0.2&#32;*&#32;(*j)-&gt;getStartMass())&#32;{
+711 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;die(i,&#32;j);
+712 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+713 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+714 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++j;
+715 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+716 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+717 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+718 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives&#32;=&#32;alives_upd;
+719 
+720 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&#32;&lt;&#32;std::array&lt;std::vector&lt;std::vector&lt;bool&gt;&gt;,&#32;simulDim&gt;,&#32;simulDim&#32;&gt;&#32;isInteracted;
+721 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;simulDim;&#32;++i)&#32;{
+722 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;j&#32;=&#32;0;&#32;j&#32;&lt;&#32;simulDim;&#32;++j)&#32;{
+723 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;isInteracted[i][j]&#32;=&#32;std::vector&lt;std::vector&lt;bool&gt;&gt;(alives[i].size(),&#32;std::vector&lt;bool&gt;(alives[j].size(),&#32;<emphasis role="keyword">false</emphasis>));
+724 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+725 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+726 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;simulDim;&#32;++i)&#32;{
+727 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;j&#32;=&#32;0;&#32;j&#32;&lt;&#32;alives[i].size();&#32;++j)&#32;{
+728 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;isInteracted[i][i][j][j]&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+729 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+730 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+731 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;!=&#32;simulDim;&#32;++i)&#32;{
+732 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;first_prev_it&#32;=&#32;alives[i].begin();&#32;first_prev_it&#32;!=&#32;alives[i].end();&#32;++first_prev_it)&#32;{
+733 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_par">Par</link>*&#32;first_el&#32;=&#32;*first_prev_it;
+734 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;k&#32;=&#32;0;&#32;k&#32;!=&#32;simulDim;&#32;++k)&#32;{
+735 
+736 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_par">Par</link>&#32;first_seen&#32;=&#32;*first_el;
+737 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;first_seen.<link linkend="_classds_1_1_par_1aa7c92b1b8f7f4f5b0ec7bc470685a0f5">moveX</link>(-first_seen.<link linkend="_classds_1_1_par_1a3bf512de7544ace59502913263c29849">radius</link>());
+738 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_par">Par</link>&#32;last_seen&#32;=&#32;*first_el;
+739 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;last_seen.<link linkend="_classds_1_1_par_1aa7c92b1b8f7f4f5b0ec7bc470685a0f5">moveX</link>(last_seen.<link linkend="_classds_1_1_par_1a3bf512de7544ace59502913263c29849">radius</link>());
+740 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;begin&#32;=&#32;alives[k].lower_bound(&amp;first_seen);
+741 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;end&#32;=&#32;alives[k].upper_bound(&amp;last_seen);
+742 
+743 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;first_cur_it&#32;=&#32;std::find(alives_upd[i].begin(),&#32;alives_upd[i].end(),&#32;first_el);
+744 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives_upd[i].erase(first_cur_it);
+745 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;second_prev_it&#32;=&#32;begin;&#32;second_prev_it&#32;!=&#32;end;&#32;++second_prev_it)&#32;{
+746 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_par">Par</link>*&#32;second_el&#32;=&#32;*second_prev_it;
+747 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;((first_el-&gt;<link linkend="_classds_1_1_par_1a53c1c6a03e1921b7a73c4c2ef08dca2e">getX</link>()&#32;-&#32;second_el-&gt;<link linkend="_classds_1_1_par_1a53c1c6a03e1921b7a73c4c2ef08dca2e">getX</link>())&#32;*&#32;(first_el-&gt;<link linkend="_classds_1_1_par_1a53c1c6a03e1921b7a73c4c2ef08dca2e">getX</link>()&#32;-&#32;second_el-&gt;<link linkend="_classds_1_1_par_1a53c1c6a03e1921b7a73c4c2ef08dca2e">getX</link>())&#32;+&#32;(first_el-&gt;<link linkend="_classds_1_1_par_1af96ed9f921c7f4316021d71091fa6b8e">getY</link>()&#32;-&#32;second_el-&gt;<link linkend="_classds_1_1_par_1af96ed9f921c7f4316021d71091fa6b8e">getY</link>())&#32;*&#32;(first_el-&gt;<link linkend="_classds_1_1_par_1af96ed9f921c7f4316021d71091fa6b8e">getY</link>()&#32;-&#32;second_el-&gt;<link linkend="_classds_1_1_par_1af96ed9f921c7f4316021d71091fa6b8e">getY</link>())&#32;&gt;&#32;(first_el-&gt;<link linkend="_classds_1_1_par_1a3bf512de7544ace59502913263c29849">radius</link>()&#32;+&#32;second_el-&gt;<link linkend="_classds_1_1_par_1a3bf512de7544ace59502913263c29849">radius</link>())&#32;*&#32;(first_el-&gt;<link linkend="_classds_1_1_par_1a3bf512de7544ace59502913263c29849">radius</link>()&#32;+&#32;second_el-&gt;<link linkend="_classds_1_1_par_1a3bf512de7544ace59502913263c29849">radius</link>()))&#32;<emphasis role="keywordflow">continue</emphasis>;
+748 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(isInteracted[i][k][std::distance(alives[i].begin(),&#32;first_prev_it)][std::distance(alives[k].begin(),&#32;second_prev_it)])&#32;<emphasis role="keywordflow">continue</emphasis>;
+749 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;isInteracted[k][i][std::distance(alives[k].begin(),&#32;second_prev_it)][std::distance(alives[i].begin(),&#32;first_prev_it)]&#32;=&#32;<emphasis role="keyword">true</emphasis>;
+750 
+751 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">auto</emphasis>&#32;second_cur_it&#32;=&#32;std::find(alives_upd[k].begin(),&#32;alives_upd[k].end(),&#32;second_el);
+752 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives_upd[k].erase(second_cur_it);
+753 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;collision_fs[i][k](first_el,&#32;second_el);
+754 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives_upd[k].insert(second_el);
+755 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+756 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives_upd[i].insert(first_el);
+757 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+758 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+759 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+760 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives&#32;=&#32;alives_upd;
+761 
+762 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;simulDim;&#32;++i)&#32;{
+763 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;j&#32;=&#32;alives_upd[i].begin();&#32;j&#32;!=&#32;alives_upd[i].end();&#32;++j)&#32;{
+764 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;((*j)-&gt;hasVictim())&#32;{
+765 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;kill(*j);
+766 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+767 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+768 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+769 
+770 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;!=&#32;simulDim;&#32;++i)&#32;{
+771 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::multiset&lt;<link linkend="_classds_1_1_par">Par</link>*,&#32;<emphasis role="keyword">decltype</emphasis>(cmp)&gt;::iterator&#32;j&#32;=&#32;alives_upd[i].begin();
+772 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(j&#32;!=&#32;alives_upd[i].end())&#32;{
+773 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;((*j)-&gt;isDead()&#32;||&#32;((*j)-&gt;getMass()&#32;&lt;=&#32;0.2&#32;*&#32;(*j)-&gt;getStartMass()))&#32;{
+774 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;die(i,&#32;j);
+775 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+776 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+777 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++j;
+778 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+779 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+780 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+781 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives&#32;=&#32;alives_upd;
+782 
+783 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;!=&#32;simulDim;&#32;++i)&#32;{
+784 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;j&#32;=&#32;alives[i].begin();&#32;j&#32;!=&#32;alives[i].end();&#32;++j)&#32;{
+785 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::vector&lt;Par*&gt;&#32;newAlives;
+786 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;reproduction_fs[i](*j,&#32;newAlives);
+787 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;k&#32;=&#32;0;&#32;k&#32;&lt;&#32;newAlives.size();&#32;++k)&#32;{
+788 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives_upd[i].insert(newAlives[k]);
+789 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+790 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+791 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+792 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives&#32;=&#32;alives_upd;
+793 
+794 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;!=&#32;simulDim;&#32;++i)&#32;{
+795 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::multiset&lt;<link linkend="_classds_1_1_par">Par</link>*,&#32;<emphasis role="keyword">decltype</emphasis>(cmp)&gt;::iterator&#32;j&#32;=&#32;alives_upd[i].begin();
+796 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">while</emphasis>&#32;(j&#32;!=&#32;alives_upd[i].end())&#32;{
+797 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;((*j)-&gt;getMass()&#32;&lt;=&#32;0.2&#32;*&#32;(*j)-&gt;getStartMass())&#32;{
+798 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;die(i,&#32;j);
+799 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+800 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">else</emphasis>&#32;{
+801 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;++j;
+802 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+803 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+804 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+805 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives&#32;=&#32;alives_upd;
+806 
+807 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;std::array&lt;std::vector&lt;Par*&gt;,&#32;simulDim&gt;&#32;newAlivesVec;
+808 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<link linkend="_classds_1_1_t_array">TArray</link>&lt;Types...&gt;&#32;newAlives(newAlivesVec);
+809 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;massLeft&#32;=&#32;totalMass;
+810 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;simulDim;&#32;++i)&#32;{
+811 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;j&#32;=&#32;alives_upd[i].begin();&#32;j&#32;!=&#32;alives_upd[i].end();&#32;++j)&#32;{
+812 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;massLeft&#32;-=&#32;(*j)-&gt;getMass();
+813 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+814 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+815 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">if</emphasis>&#32;(massLeft&#32;&lt;&#32;0)&#32;<emphasis role="keywordflow">throw</emphasis>&#32;std::exception(<emphasis role="stringliteral">&quot;mass&quot;</emphasis>);
+816 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;spawn_f(newAlives,&#32;massLeft,&#32;w,&#32;h,&#32;dt);
+817 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;simulDim;&#32;++i)&#32;{
+818 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;j&#32;=&#32;0;&#32;j&#32;&lt;&#32;newAlivesVec[i].size();&#32;++j)&#32;{
+819 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives_upd[i].insert(newAlivesVec[i][j]);
+820 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+821 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+822 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;alives&#32;=&#32;alives_upd;
+823 
+824 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;el&#32;:&#32;deathNote)&#32;{
+825 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">delete</emphasis>&#32;el;
+826 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+827 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;deathNote.clear();
+828 &#32;&#32;&#32;&#32;}
+829 
+830 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<link linkend="_conceptds_1_1_par_c">ParC</link>...&#32;Types&gt;
+831 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1a5435ae9918fe9d1c38cb634c44ba4df6">DarwinSimulator&lt;Types...&gt;::update</link>(<emphasis role="keywordtype">int</emphasis>&#32;times)&#32;{
+832 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;&lt;&#32;times;&#32;++i)&#32;{
+833 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;update();
+834 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+835 &#32;&#32;&#32;&#32;}
+836 
+837 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<link linkend="_conceptds_1_1_par_c">ParC</link>...&#32;Types&gt;
+838 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1afb501bfbba4a63370b63140372267a8a">DarwinSimulator&lt;Types...&gt;::writeTo</link>(std::ostream&amp;&#32;ostrm)&#32;{
+839 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;ostrm&#32;&lt;&lt;&#32;dt&#32;&lt;&lt;&#32;<emphasis role="charliteral">&apos;&#32;&apos;</emphasis>&#32;&lt;&lt;&#32;w&#32;&lt;&lt;&#32;<emphasis role="charliteral">&apos;&#32;&apos;</emphasis>&#32;&lt;&lt;&#32;h&#32;&lt;&lt;&#32;<emphasis role="charliteral">&apos;&#32;&apos;</emphasis>&#32;&lt;&lt;&#32;totalMass&#32;&lt;&lt;&#32;std::endl;
+840 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;writeArrOfMultisetTo(alives_upd,&#32;<link linkend="_classds_1_1_t_list">TList&lt;Types...&gt;</link>{},&#32;ostrm);
+841 &#32;&#32;&#32;&#32;}
+842 
+843 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<link linkend="_conceptds_1_1_par_c">ParC</link>...&#32;Types&gt;
+844 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">void</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1ac07df94792ddc88fc9b462365a3f3f8b">DarwinSimulator&lt;Types...&gt;::readFrom</link>(std::istream&amp;&#32;istrm)&#32;{
+845 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;istrm&#32;&gt;&gt;&#32;dt&#32;&gt;&gt;&#32;w&#32;&gt;&gt;&#32;h&#32;&gt;&gt;&#32;totalMass;
+846 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keywordtype">int</emphasis>&#32;i&#32;=&#32;0;&#32;i&#32;!=&#32;alives.size();&#32;++i)&#32;{
+847 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">for</emphasis>&#32;(<emphasis role="keyword">auto</emphasis>&#32;j&#32;=&#32;alives[i].begin();&#32;j&#32;!=&#32;alives[i].end();&#32;++j)&#32;{
+848 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keyword">delete</emphasis>*&#32;j;
+849 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+850 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;}
+851 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;readArrOfMultisetFrom(alives_upd,&#32;<link linkend="_classds_1_1_t_list">TList&lt;Types...&gt;</link>{},&#32;istrm);
+852 &#32;&#32;&#32;&#32;}
+853 
+854 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<link linkend="_conceptds_1_1_par_c">ParC</link>...&#32;Types&gt;
+855 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1a18e2adae3b2bf31e40857b73bbd760a8">DarwinSimulator&lt;Types...&gt;::getWidth</link>()&#32;{
+856 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;w;
+857 &#32;&#32;&#32;&#32;}
+858 
+859 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<link linkend="_conceptds_1_1_par_c">ParC</link>...&#32;Types&gt;
+860 &#32;&#32;&#32;&#32;<emphasis role="keywordtype">double</emphasis>&#32;<link linkend="_classds_1_1_darwin_simulator_1a38527d18b145d781b22fce25accb29cc">DarwinSimulator&lt;Types...&gt;::getHeight</link>()&#32;{
+861 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;h;
+862 &#32;&#32;&#32;&#32;}
+863 
+869 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keyword">class</emphasis>...&#32;Types&gt;
+870 &#32;&#32;&#32;&#32;std::ostream&amp;&#32;operator&lt;&lt;(std::ostream&amp;&#32;ostrm,&#32;<link linkend="_classds_1_1_darwin_simulator">DarwinSimulator&lt;Types...&gt;</link>&amp;&#32;simul)&#32;{
+871 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;simul.<link linkend="_classds_1_1_darwin_simulator_1afb501bfbba4a63370b63140372267a8a">writeTo</link>(ostrm);
+872 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;ostrm;
+873 &#32;&#32;&#32;&#32;}
+874 
+880 &#32;&#32;&#32;&#32;<emphasis role="keyword">template</emphasis>&lt;<emphasis role="keyword">class</emphasis>...&#32;Types&gt;
+881 &#32;&#32;&#32;&#32;std::istream&amp;&#32;operator&gt;&gt;(std::istream&amp;&#32;istrm,&#32;DarwinSimulator&lt;Types...&gt;&amp;&#32;simul)&#32;{
+882 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;simul.readFrom(istrm);
+883 &#32;&#32;&#32;&#32;&#32;&#32;&#32;&#32;<emphasis role="keywordflow">return</emphasis>&#32;istrm;
+884 &#32;&#32;&#32;&#32;}
+885 
+886 }
+887 
+888 <emphasis role="preprocessor">#endif</emphasis>
+</programlisting></section>

@@ -1,0 +1,352 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_classds_1_1_darwin_simulator" xml:lang="en-US">
+<title>ds::DarwinSimulator&lt; Types &gt; Class Template Reference</title>
+<indexterm><primary>ds::DarwinSimulator&lt; Types &gt;</primary></indexterm>
+<para>
+
+<para>Main class which represents simulation. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;darwin_simul.hpp&gt;</computeroutput>
+</para>
+<simplesect>
+    <title>Public Member Functions    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_classds_1_1_darwin_simulator_1a79c24796b2deba288a6aafea6acb2503"/><emphasis role="strong">DarwinSimulator</emphasis> ()</para>
+
+<para>Empty ctor. </para>
+</listitem>
+            <listitem><para><link linkend="_classds_1_1_darwin_simulator_1a61843448629ff1fb41574cd252a8e812">DarwinSimulator</link> (double dt_, double w_, double h_, double totalMass_)</para>
+
+<para>Main ctor. </para>
+</listitem>
+            <listitem><para><anchor xml:id="_classds_1_1_darwin_simulator_1a5488295f33d262ee31232cac7f456460"/><emphasis role="strong">~DarwinSimulator</emphasis> ()</para>
+
+<para>Empty dtor. </para>
+</listitem>
+            <listitem><para>template&lt;ParC T&gt; </para><para>void <link linkend="_classds_1_1_darwin_simulator_1aa91b85cebb23ab4349ccdb2ecd58c13d">addAlive</link> (const T &amp;inp)</para>
+
+<para>Method, which adds organism to simulation. </para>
+</listitem>
+            <listitem><para>template&lt;ParC T&gt; </para><para>std::vector&lt; T * &gt; <link linkend="_classds_1_1_darwin_simulator_1a6c0aa0b4531f67e1da7da8b2ea537f47">get</link> ()</para>
+
+<para>Getter of organisms by type. </para>
+</listitem>
+            <listitem><para>double <link linkend="_classds_1_1_darwin_simulator_1a18e2adae3b2bf31e40857b73bbd760a8">getWidth</link> ()</para>
+</listitem>
+            <listitem><para>double <link linkend="_classds_1_1_darwin_simulator_1a38527d18b145d781b22fce25accb29cc">getHeight</link> ()</para>
+</listitem>
+            <listitem><para><anchor xml:id="_classds_1_1_darwin_simulator_1a5435ae9918fe9d1c38cb634c44ba4df6"/>void <emphasis role="strong">update</emphasis> ()</para>
+
+<para>Method that updates simulation for dt seconds. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classds_1_1_darwin_simulator_1a08efbfd1372b9f2b0d91917c490f0ae3">update</link> (int times)</para>
+
+<para>Method that updates simulation some times. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classds_1_1_darwin_simulator_1afb501bfbba4a63370b63140372267a8a">writeTo</link> (std::ostream &amp;ostrm)</para>
+
+<para>Function that writes simulation&apos;s state to output stream. </para>
+</listitem>
+            <listitem><para>void <link linkend="_classds_1_1_darwin_simulator_1ac07df94792ddc88fc9b462365a3f3f8b">readFrom</link> (std::istream &amp;istrm)</para>
+
+<para>Read simulation&apos;s state from input stream. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<simplesect>
+    <title>Static Public Attributes    </title>
+        <itemizedlist>
+            <listitem><para><anchor xml:id="_classds_1_1_darwin_simulator_1a7ab528999859a379fc98330c6a34ffc7"/>static constexpr int <emphasis role="strong">simulDim</emphasis> = tSize(<link linkend="_classds_1_1_t_list">TList</link>&lt;Types...&gt;{})</para>
+
+<para>Number of organism types. </para>
+</listitem>
+        </itemizedlist>
+</simplesect>
+<section>
+<title>Detailed Description</title>
+<simplesect><title>template&lt;ParC... Types&gt;<?linebreak?>class ds::DarwinSimulator&lt; Types &gt;</title></simplesect>
+
+<para>Main class which represents simulation. </para>
+
+
+
+<para>
+                <formalpara>
+                    <title>
+Template Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>Types...</entry><entry>
+<para>Types of organisms that can be added to simulation </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+</section>
+<section>
+<title>Constructor &amp; Destructor Documentation</title>
+<anchor xml:id="_classds_1_1_darwin_simulator_1a61843448629ff1fb41574cd252a8e812"/><section>
+    <title>DarwinSimulator()</title>
+<indexterm><primary>DarwinSimulator</primary><secondary>ds::DarwinSimulator&lt; Types &gt;</secondary></indexterm>
+<indexterm><primary>ds::DarwinSimulator&lt; Types &gt;</primary><secondary>DarwinSimulator</secondary></indexterm>
+<computeroutput>template&lt;ParC... Types&gt; </computeroutput><para><computeroutput><link linkend="_classds_1_1_darwin_simulator">ds::DarwinSimulator</link>&lt; Types &gt;::DarwinSimulator (double dt_, double w_, double h_, double totalMass_)</computeroutput></para><para>
+
+<para>Main ctor. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>dt_</entry><entry>
+<para>Simulation&apos;s time step </para>
+</entry>
+                            </row>
+                            <row>
+<entry>w_</entry><entry>
+<para>Width of the simulation&apos;s scene </para>
+</entry>
+                            </row>
+                            <row>
+<entry>h_</entry><entry>
+<para>Height of the simulation&apos;s scene </para>
+</entry>
+                            </row>
+                            <row>
+<entry>totalMass_</entry><entry>
+<para>Maximal mass of simulation&apos;s organisms&apos; </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+</section>
+</section>
+<section>
+<title>Member Function Documentation</title>
+<anchor xml:id="_classds_1_1_darwin_simulator_1aa91b85cebb23ab4349ccdb2ecd58c13d"/><section>
+    <title>addAlive()</title>
+<indexterm><primary>addAlive</primary><secondary>ds::DarwinSimulator&lt; Types &gt;</secondary></indexterm>
+<indexterm><primary>ds::DarwinSimulator&lt; Types &gt;</primary><secondary>addAlive</secondary></indexterm>
+<computeroutput>template&lt;ParC... Types&gt; </computeroutput><computeroutput>template&lt;ParC T&gt; </computeroutput><para><computeroutput>void <link linkend="_classds_1_1_darwin_simulator">ds::DarwinSimulator</link>&lt; Types &gt;::addAlive (const T &amp; inp)</computeroutput></para><para>
+
+<para>Method, which adds organism to simulation. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Template Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>T</entry><entry>
+<para>Type of organism </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>inp</entry><entry>
+<para>Input organism </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+</section>
+<anchor xml:id="_classds_1_1_darwin_simulator_1a6c0aa0b4531f67e1da7da8b2ea537f47"/><section>
+    <title>get()</title>
+<indexterm><primary>get</primary><secondary>ds::DarwinSimulator&lt; Types &gt;</secondary></indexterm>
+<indexterm><primary>ds::DarwinSimulator&lt; Types &gt;</primary><secondary>get</secondary></indexterm>
+<computeroutput>template&lt;ParC... Types&gt; </computeroutput><computeroutput>template&lt;ParC T&gt; </computeroutput><para><computeroutput>std::vector&lt; T * &gt; <link linkend="_classds_1_1_darwin_simulator">ds::DarwinSimulator</link>&lt; Types &gt;::get</computeroutput></para><para>
+
+<para>Getter of organisms by type. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Template Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>T</entry><entry>
+<para>Type which user wants to get organisms of </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                <formalpara><title>Returns</title>
+
+<para>Vector of organisms </para>
+</formalpara>
+</para>
+</section>
+<anchor xml:id="_classds_1_1_darwin_simulator_1a38527d18b145d781b22fce25accb29cc"/><section>
+    <title>getHeight()</title>
+<indexterm><primary>getHeight</primary><secondary>ds::DarwinSimulator&lt; Types &gt;</secondary></indexterm>
+<indexterm><primary>ds::DarwinSimulator&lt; Types &gt;</primary><secondary>getHeight</secondary></indexterm>
+<computeroutput>template&lt;ParC... Types&gt; </computeroutput><para><computeroutput>double <link linkend="_classds_1_1_darwin_simulator">ds::DarwinSimulator</link>&lt; Types &gt;::getHeight</computeroutput></para>
+<para><formalpara><title>Returns</title>
+
+<para>Height of scene </para>
+</formalpara>
+</para>
+</section>
+<anchor xml:id="_classds_1_1_darwin_simulator_1a18e2adae3b2bf31e40857b73bbd760a8"/><section>
+    <title>getWidth()</title>
+<indexterm><primary>getWidth</primary><secondary>ds::DarwinSimulator&lt; Types &gt;</secondary></indexterm>
+<indexterm><primary>ds::DarwinSimulator&lt; Types &gt;</primary><secondary>getWidth</secondary></indexterm>
+<computeroutput>template&lt;ParC... Types&gt; </computeroutput><para><computeroutput>double <link linkend="_classds_1_1_darwin_simulator">ds::DarwinSimulator</link>&lt; Types &gt;::getWidth</computeroutput></para>
+<para><formalpara><title>Returns</title>
+
+<para>Width of scene </para>
+</formalpara>
+</para>
+</section>
+<anchor xml:id="_classds_1_1_darwin_simulator_1ac07df94792ddc88fc9b462365a3f3f8b"/><section>
+    <title>readFrom()</title>
+<indexterm><primary>readFrom</primary><secondary>ds::DarwinSimulator&lt; Types &gt;</secondary></indexterm>
+<indexterm><primary>ds::DarwinSimulator&lt; Types &gt;</primary><secondary>readFrom</secondary></indexterm>
+<computeroutput>template&lt;ParC... Types&gt; </computeroutput><para><computeroutput>void <link linkend="_classds_1_1_darwin_simulator">ds::DarwinSimulator</link>&lt; Types &gt;::readFrom (std::istream &amp; istrm)</computeroutput></para><para>
+
+<para>Read simulation&apos;s state from input stream. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>istrm</entry><entry>
+<para>Input stream </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+</section>
+<anchor xml:id="_classds_1_1_darwin_simulator_1a08efbfd1372b9f2b0d91917c490f0ae3"/><section>
+    <title>update()</title>
+<indexterm><primary>update</primary><secondary>ds::DarwinSimulator&lt; Types &gt;</secondary></indexterm>
+<indexterm><primary>ds::DarwinSimulator&lt; Types &gt;</primary><secondary>update</secondary></indexterm>
+<computeroutput>template&lt;ParC... Types&gt; </computeroutput><para><computeroutput>void <link linkend="_classds_1_1_darwin_simulator">ds::DarwinSimulator</link>&lt; Types &gt;::update (int times)</computeroutput></para><para>
+
+<para>Method that updates simulation some times. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>times</entry><entry>
+<para>Number of times simulation updates </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+</section>
+<anchor xml:id="_classds_1_1_darwin_simulator_1afb501bfbba4a63370b63140372267a8a"/><section>
+    <title>writeTo()</title>
+<indexterm><primary>writeTo</primary><secondary>ds::DarwinSimulator&lt; Types &gt;</secondary></indexterm>
+<indexterm><primary>ds::DarwinSimulator&lt; Types &gt;</primary><secondary>writeTo</secondary></indexterm>
+<computeroutput>template&lt;ParC... Types&gt; </computeroutput><para><computeroutput>void <link linkend="_classds_1_1_darwin_simulator">ds::DarwinSimulator</link>&lt; Types &gt;::writeTo (std::ostream &amp; ostrm)</computeroutput></para><para>
+
+<para>Function that writes simulation&apos;s state to output stream. </para>
+</para>
+
+<para>
+                <formalpara>
+                    <title>
+Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>ostrm</entry><entry>
+<para>Output stream </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+</section>
+<para>
+The documentation for this class was generated from the following file:</para>
+C:/Users/artem/Programming2/khapilov_a_o/prj.cw/include/darwin_simul/darwin_simul.hpp</section>
+</section>

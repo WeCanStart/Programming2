@@ -1,0 +1,228 @@
+\doxysubsection{ds\+::Par Class Reference}
+\label{classds_1_1_par}\index{ds::Par@{ds::Par}}
+
+
+Class which represents form of live, which library works with.  
+
+
+
+
+{\ttfamily \#include $<$darwin\+\_\+simul.\+hpp$>$}
+
+\doxysubsubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\label{classds_1_1_par_aebe5a80460bd202baf43f4d8d4bfc89c} 
+{\bfseries Par} ()=default
+\begin{DoxyCompactList}\small\item\em Default ctor. \end{DoxyCompactList}\item 
+\textbf{ Par} (double mass\+\_\+, double x\+\_\+, double y\+\_\+, double view\+Range\+\_\+)
+\begin{DoxyCompactList}\small\item\em Ctor with common \doxyref{Par}{p.}{classds_1_1_par} params. \end{DoxyCompactList}\item 
+\label{classds_1_1_par_aecba4caa107a0581db6ea09afdcba6ee} 
+virtual {\bfseries $\sim$\+Par} ()=default
+\begin{DoxyCompactList}\small\item\em Default dtor. \end{DoxyCompactList}\item 
+double \textbf{ radius} () const
+\item 
+\label{classds_1_1_par_af8f76d6a3c6702bc25e3e98a8c3ebcb6} 
+void {\bfseries loose\+Mass} (double loose)
+\begin{DoxyCompactList}\small\item\em Decrease mass. \end{DoxyCompactList}\item 
+double \textbf{ get\+Mass} () const
+\item 
+double \textbf{ get\+Start\+Mass} () const
+\item 
+double \textbf{ getX} () const
+\item 
+double \textbf{ getY} () const
+\item 
+\label{classds_1_1_par_aa7c92b1b8f7f4f5b0ec7bc470685a0f5} 
+void {\bfseries moveX} (double dx)
+\begin{DoxyCompactList}\small\item\em Change organism\textquotesingle{}s x coordinate by dx. \end{DoxyCompactList}\item 
+\label{classds_1_1_par_a6a563ea592772a82d55b9bddcbf355a7} 
+void {\bfseries moveY} (double dy)
+\begin{DoxyCompactList}\small\item\em Change organism\textquotesingle{}s y coordinate by dy. \end{DoxyCompactList}\item 
+\label{classds_1_1_par_a81522e78c819ae8d2adac5d415faaa84} 
+void {\bfseries setX} (double x\+\_\+)
+\begin{DoxyCompactList}\small\item\em Change organism\textquotesingle{}s x coordinate to x\+\_\+. \end{DoxyCompactList}\item 
+\label{classds_1_1_par_a5a4f5767cb6e78ce4f303d8dba8f23c2} 
+void {\bfseries setY} (double y\+\_\+)
+\begin{DoxyCompactList}\small\item\em Change organism\textquotesingle{}s y coordinate to y\+\_\+. \end{DoxyCompactList}\item 
+bool \textbf{ is\+Dead} ()
+\item 
+void \textbf{ eat} (\textbf{ Par} $\ast$rhs)
+\begin{DoxyCompactList}\small\item\em Lhs organism makes rhs organism dead and gain mass by the end of the turn. \end{DoxyCompactList}\item 
+\label{classds_1_1_par_a106aba866c7f8472064af1a51ab79f48} 
+void {\bfseries die} ()
+\begin{DoxyCompactList}\small\item\em Makes organism look dead for user. \end{DoxyCompactList}\item 
+bool \textbf{ has\+Victim} ()
+\item 
+void \textbf{ write\+To} (std\+::ostream \&ostrm) const
+\begin{DoxyCompactList}\small\item\em Write main params of an organism to ostrm. \end{DoxyCompactList}\item 
+void \textbf{ read\+From} (std\+::istream \&istrm)
+\begin{DoxyCompactList}\small\item\em Read main params of an organism from istrm. \end{DoxyCompactList}\end{DoxyCompactItemize}
+\doxysubsubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\label{classds_1_1_par_a03669a6c7f5b6bfd56fb853c4fe25f9c} 
+double {\bfseries view\+Range} = 10
+\end{DoxyCompactItemize}
+\doxysubsubsubsection*{Friends}
+\begin{DoxyCompactItemize}
+\item 
+{\footnotesize template$<$Par\+C... Types$>$ }\\class \textbf{ Darwin\+Simulator}
+\begin{DoxyCompactList}\small\item\em Main class which represents simulation. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\doxysubsubsection{Detailed Description}
+Class which represents form of live, which library works with. 
+
+\doxysubsubsection{Constructor \& Destructor Documentation}
+\label{classds_1_1_par_a100289f8c65da828047f3ea0ce50b39c} 
+\index{ds::Par@{ds::Par}!Par@{Par}}
+\index{Par@{Par}!ds::Par@{ds::Par}}
+\doxyparagraph{Par()}
+{\footnotesize\ttfamily ds\+::\+Par\+::\+Par (\begin{DoxyParamCaption}\item[{double}]{mass\+\_\+,  }\item[{double}]{x\+\_\+,  }\item[{double}]{y\+\_\+,  }\item[{double}]{view\+Range\+\_\+ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Ctor with common \doxyref{Par}{p.}{classds_1_1_par} params. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em mass\+\_\+} & Start mass \\
+\hline
+{\em x\+\_\+} & Start x coordinate \\
+\hline
+{\em y\+\_\+} & Start y coordinate \\
+\hline
+{\em view\+Range\+\_\+} & start distance organism can see other organisms for \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsubsection{Member Function Documentation}
+\label{classds_1_1_par_a92ccc639a35470a3efc7ebd4d096a634} 
+\index{ds::Par@{ds::Par}!eat@{eat}}
+\index{eat@{eat}!ds::Par@{ds::Par}}
+\doxyparagraph{eat()}
+{\footnotesize\ttfamily void ds\+::\+Par\+::eat (\begin{DoxyParamCaption}\item[{\textbf{ Par} $\ast$}]{rhs }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Lhs organism makes rhs organism dead and gain mass by the end of the turn. 
+
+Lhs organism makes rhs organism dead and gain mass by the end of the turn in inverse proportion to number of killers of this organism \label{classds_1_1_par_ab7eb81ec9dced9b7fef4be32339931b9} 
+\index{ds::Par@{ds::Par}!getMass@{getMass}}
+\index{getMass@{getMass}!ds::Par@{ds::Par}}
+\doxyparagraph{getMass()}
+{\footnotesize\ttfamily double ds\+::\+Par\+::get\+Mass (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+Current mass of the organism 
+\end{DoxyReturn}
+\label{classds_1_1_par_a55f25407fefa1d950f6203177127d2aa} 
+\index{ds::Par@{ds::Par}!getStartMass@{getStartMass}}
+\index{getStartMass@{getStartMass}!ds::Par@{ds::Par}}
+\doxyparagraph{getStartMass()}
+{\footnotesize\ttfamily double ds\+::\+Par\+::get\+Start\+Mass (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+Start mass of the organism 
+\end{DoxyReturn}
+\label{classds_1_1_par_a53c1c6a03e1921b7a73c4c2ef08dca2e} 
+\index{ds::Par@{ds::Par}!getX@{getX}}
+\index{getX@{getX}!ds::Par@{ds::Par}}
+\doxyparagraph{getX()}
+{\footnotesize\ttfamily double ds\+::\+Par\+::getX (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+Current x coordinate 
+\end{DoxyReturn}
+\label{classds_1_1_par_af96ed9f921c7f4316021d71091fa6b8e} 
+\index{ds::Par@{ds::Par}!getY@{getY}}
+\index{getY@{getY}!ds::Par@{ds::Par}}
+\doxyparagraph{getY()}
+{\footnotesize\ttfamily double ds\+::\+Par\+::getY (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+Current y coordinate 
+\end{DoxyReturn}
+\label{classds_1_1_par_aca304c60df0360a25afb6ad176868798} 
+\index{ds::Par@{ds::Par}!hasVictim@{hasVictim}}
+\index{hasVictim@{hasVictim}!ds::Par@{ds::Par}}
+\doxyparagraph{hasVictim()}
+{\footnotesize\ttfamily bool ds\+::\+Par\+::has\+Victim (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+True is organism has victim 
+\end{DoxyReturn}
+\label{classds_1_1_par_a265f620b41b17671e6bc10bf629b3fc5} 
+\index{ds::Par@{ds::Par}!isDead@{isDead}}
+\index{isDead@{isDead}!ds::Par@{ds::Par}}
+\doxyparagraph{isDead()}
+{\footnotesize\ttfamily bool ds\+::\+Par\+::is\+Dead (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+True if organism is going to die 
+\end{DoxyReturn}
+\label{classds_1_1_par_a3bf512de7544ace59502913263c29849} 
+\index{ds::Par@{ds::Par}!radius@{radius}}
+\index{radius@{radius}!ds::Par@{ds::Par}}
+\doxyparagraph{radius()}
+{\footnotesize\ttfamily double ds\+::\+Par\+::radius (\begin{DoxyParamCaption}{ }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+\begin{DoxyReturn}{Returns}
+Radius of the cell based on its mass 
+\end{DoxyReturn}
+\label{classds_1_1_par_a21b78ef2249fdea5e1059692664fd860} 
+\index{ds::Par@{ds::Par}!readFrom@{readFrom}}
+\index{readFrom@{readFrom}!ds::Par@{ds::Par}}
+\doxyparagraph{readFrom()}
+{\footnotesize\ttfamily void ds\+::\+Par\+::read\+From (\begin{DoxyParamCaption}\item[{std\+::istream \&}]{istrm }\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Read main params of an organism from istrm. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em istrm} & Input stream \\
+\hline
+\end{DoxyParams}
+\label{classds_1_1_par_a920633108dc009fff9923cd8da128d63} 
+\index{ds::Par@{ds::Par}!writeTo@{writeTo}}
+\index{writeTo@{writeTo}!ds::Par@{ds::Par}}
+\doxyparagraph{writeTo()}
+{\footnotesize\ttfamily void ds\+::\+Par\+::write\+To (\begin{DoxyParamCaption}\item[{std\+::ostream \&}]{ostrm }\end{DoxyParamCaption}) const\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Write main params of an organism to ostrm. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em ostrm} & Output stream \\
+\hline
+\end{DoxyParams}
+
+
+\doxysubsubsection{Friends And Related Symbol Documentation}
+\label{classds_1_1_par_abf86b2c44e4f445319d5d2214af9ed7e} 
+\index{ds::Par@{ds::Par}!DarwinSimulator@{DarwinSimulator}}
+\index{DarwinSimulator@{DarwinSimulator}!ds::Par@{ds::Par}}
+\doxyparagraph{DarwinSimulator}
+{\footnotesize\ttfamily template$<$Par\+C... Types$>$ \\
+friend class \textbf{ Darwin\+Simulator}\hspace{0.3cm}{\ttfamily [friend]}}
+
+
+
+Main class which represents simulation. 
+
+
+\begin{DoxyTemplParams}{Template Parameters}
+{\em Types...} & Types of organisms that can be added to simulation \\
+\hline
+\end{DoxyTemplParams}
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+C\+:/\+Users/artem/\+Programming2/khapilov\+\_\+a\+\_\+o/prj.\+cw/include/darwin\+\_\+simul/darwin\+\_\+simul.\+hpp\end{DoxyCompactItemize}

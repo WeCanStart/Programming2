@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' standalone='no'?>
+<section xmlns="http://docbook.org/ns/docbook" version="5.0" xmlns:xlink="http://www.w3.org/1999/xlink" xml:id="_classds_1_1_t_list" xml:lang="en-US">
+<title>ds::TList&lt; Types &gt; Class Template Reference</title>
+<indexterm><primary>ds::TList&lt; Types &gt;</primary></indexterm>
+<para>
+
+<para>Class which represents list of types. </para>
+ 
+</para>
+<para>
+<computeroutput>#include &lt;darwin_simul.hpp&gt;</computeroutput>
+</para>
+<section>
+<title>Detailed Description</title>
+<simplesect><title>template&lt;class... Types&gt;<?linebreak?>class ds::TList&lt; Types &gt;</title></simplesect>
+
+<para>Class which represents list of types. </para>
+
+
+
+<para>
+                <formalpara>
+                    <title>
+Template Parameters</title>
+                    <para>
+                    <table frame="all">
+                        <tgroup cols="2" align="left" colsep="1" rowsep="1">
+                        <colspec colwidth="1*"/>
+                        <colspec colwidth="4*"/>
+                        <tbody>
+                            <row>
+<entry>Types...</entry><entry>
+<para>Types which this class is storaging </para>
+</entry>
+                            </row>
+                        </tbody>
+                        </tgroup>
+                    </table>
+                    </para>
+                </formalpara>
+                </para>
+<para>
+The documentation for this class was generated from the following file:</para>
+C:/Users/artem/Programming2/khapilov_a_o/prj.cw/include/darwin_simul/darwin_simul.hpp</section>
+</section>
