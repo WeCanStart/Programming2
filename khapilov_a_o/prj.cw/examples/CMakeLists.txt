@@ -7,3 +7,5 @@ find_package(SFML COMPONENTS window graphics system REQUIRED)
 
 add_executable(example example.cpp)
 target_link_libraries(example plHePrSimul sfml-window sfml-graphics)
+
+install(TARGETS generator example DESTINATION bin COMPONENT test)

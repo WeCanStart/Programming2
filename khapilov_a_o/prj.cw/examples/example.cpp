@@ -9,12 +9,14 @@
 
 int main(int argc, char* argv[]) {
     std::string iPath = "save.txt";
+    std::string oPath = "result.txt";
     if (argc >= 3) {
         std::cout << "Incorrent number of arguments. Must be 0 or 1";
         return -1;
     }
     if (argc == 2) {
-        iPath = argv[1];
+        iPath = argv[1] + iPath;
+        oPath = argv[1] + oPath;
     }
     std::ifstream istrm(iPath);
 
@@ -55,7 +57,7 @@ int main(int argc, char* argv[]) {
 
             const std::vector<Herbivore*> hrbvrs = s.get<Herbivore>();
             for (Herbivore* hrbvr : hrbvrs) {
-                cir.setFillColor(sf::Color(hrbvr->viewRange / std::max(wid, hei) * 255, hrbvr->speed / std::min(wid, hei) * 255 * 4, hrbvr->danger));
+                cir.setFillColor(sf::Color(hrbvr->viewRange / std::max(wid, hei) * 255, hrbvr->speed / std::min(wid, hei) * s.getTimeStep() * 255, hrbvr->danger));
                 cir.setPosition(sf::Vector2f(hrbvr->getX(), hrbvr->getY()));
                 cir.setRadius(hrbvr->radius());
                 w.draw(cir);
@@ -63,7 +65,7 @@ int main(int argc, char* argv[]) {
 
             const std::vector<Predator*> prdtrs = s.get<Predator>();
             for (Predator* prdtr : prdtrs) {
-                cir.setFillColor(sf::Color(prdtr->viewRange / std::max(wid, hei) * 255, prdtr->speed / std::min(wid, hei) * 255 * 4, prdtr->danger));
+                cir.setFillColor(sf::Color(prdtr->viewRange / std::max(wid, hei) * 255, prdtr->speed / std::min(wid, hei) * s.getTimeStep() * 255, prdtr->danger));
                 cir.setPosition(sf::Vector2f(prdtr->getX(), prdtr->getY()));
                 cir.setRadius(prdtr->radius());
                 cir.setOutlineColor(sf::Color::Black);
@@ -74,5 +76,9 @@ int main(int argc, char* argv[]) {
         }
         s.update();
     }
+
+    std::ofstream ostrm(oPath);
+    ostrm << s;
+
     return 0;
 }

@@ -256,7 +256,7 @@ void ds::calculations(Herbivore* p, const TArray<Plant, Herbivore, Predator>& ar
             p->setTarget(plnt);
         }
     }
-    p->looseMass(dt * p->danger * p->speed * p->viewRange * p->getMass() / 700000 + 0.03 * p->getMass() * dt);
+    p->looseMass((p->danger / 255 + p->speed / 768 + p->viewRange / 768 + p->getMass() / 200 + 0.03) * dt * p->getMass());
 
     if (p->timeOut()) {
         p->die();
@@ -291,7 +291,7 @@ void ds::calculations(Predator* p, const TArray<Plant, Herbivore, Predator>& arr
         }
     }
 
-    p->looseMass(dt * p->danger * p->speed * p->viewRange * p->getMass() / 700000000 /*+ 0.03 * p->getMass() * dt */);
+    p->looseMass((p->danger / 255 + p->speed / 768 + p->viewRange / 768 + p->getMass() / 200 + 0.03) * dt * p->getMass() / 10);
 
     if (p->timeOut()) {
         p->die();
@@ -311,7 +311,7 @@ void ds::move(Herbivore* p, double dt) {
         if (dist == 0) return;
         p->moveX(ds * dist_x / dist);
         p->moveY(ds * dist_y / dist);
-        p->looseMass(p->danger * p->speed * ds * p->getMass() / 33100000);
+        p->looseMass(p->speed * ds * p->getMass() / 331000);
         p->looseTarget();
     }
 }
@@ -327,7 +327,7 @@ void ds::move(Predator* p, double dt) {
             if (dist == 0) return;
             p->moveX(ds * dist_x / dist);
             p->moveY(ds * dist_y / dist);
-            p->looseMass(p->danger * p->speed * ds * p->getMass() / 33100000000);
+            p->looseMass(p->speed * ds * p->getMass() / 331000000);
         }
         p->looseTarget();
     }

@@ -414,6 +414,9 @@ namespace ds {
         /// @return Height of scene
         double getHeight();
 
+        /// @return update time step
+        double getTimeStep();
+
         /// @brief Method that updates simulation for dt seconds
         void update();
 
@@ -859,6 +862,11 @@ namespace ds {
     template<ParC... Types>
     double DarwinSimulator<Types...>::getHeight() {
         return h;
+    }
+
+    template<ParC... Types>
+    double DarwinSimulator<Types...>::getTimeStep() {
+        return dt;
     }
 
     /// @brief Operator which writes simulation to ostrm
